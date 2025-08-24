@@ -1,0 +1,693 @@
+{% extends 'base.html' %}
+
+{% block title %}Memory Game - Bharat States Saga{% endblock %}
+
+{% block styles %}
+<style>
+    :root {
+        --primary: #2563eb;
+        --secondary: #1e40af;
+        --accent: #64748b;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --neutral: #475569;
+        --surface: #1e293b;
+        --surface-light: #334155;
+        --border: #334155;
+        --gradient-primary: linear-gradient(135deg, #2563eb, #3b82f6);
+        --gradient-secondary: linear-gradient(135deg, #1e40af, #2563eb);
+        --gradient-accent: linear-gradient(135deg, #4338ca, #6366f1);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        background-color: var(--dark);
+        color: var(--light);
+        font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .memory-card {
+        perspective: 1000px;
+        height: 150px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .memory-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .memory-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .memory-card.flipped .memory-card-inner {
+        transform: rotateY(180deg);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.3);
+    }
+    
+    .memory-card-front, .memory-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-lg);
+        font-weight: bold;
+        font-size: 18px;
+        text-align: center;
+        padding: 10px;
+    }
+    
+    .memory-card-front {
+        background: var(--gradient-primary);
+        color: white;
+        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .memory-card-back {
+        background: rgba(30, 41, 59, 0.7);
+        transform: rotateY(180deg);
+        border: 1px solid var(--border);
+        color: var(--light);
+        backdrop-filter: blur(4px);
+    }
+    
+    .memory-card.matched .memory-card-back {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: var(--primary);
+        color: var(--light);
+        animation: borderGlow 3s infinite;
+    }
+    
+    .timer-display {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--light);
+    }
+    
+    .game-over-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(6px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .game-over-card {
+        background-color: rgba(30, 41, 59, 0.95);
+        padding: 30px;
+        border-radius: var(--radius-xl);
+        max-width: 500px;
+        text-align: center;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.2);
+        color: var(--light);
+        animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .game-over-card h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--light);
+    }
+    
+    .game-over-card .lead {
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+    
+    .game-over-card p {
+        margin-bottom: 8px;
+    }
+    
+    /* Timer countdown styles */
+    .countdown-timer {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 20px;
+    }
+    
+    .countdown-circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+    
+    .countdown-circle-bg {
+        background-color: rgba(51, 65, 85, 0.6);
+        z-index: 1;
+    }
+    
+    .countdown-circle-progress {
+        background: conic-gradient(#ff9933 0%, transparent 0%);
+        z-index: 2;
+    }
+    
+    .countdown-text {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-size: 2rem;
+        font-weight: bold;
+        z-index: 3;
+    }
+    
+    /* Timer state colors */
+    .timer-normal {
+        color: var(--light);
+    }
+    
+    .timer-warning {
+        color: #ff9933;
+        text-shadow: 0 0 10px rgba(255, 153, 51, 0.5);
+    }
+    
+    .timer-danger {
+        color: #ef4444;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes borderGlow {
+        0%, 100% {
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+        }
+    }
+    
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    .card {
+        background-color: rgba(30, 41, 59, 0.5);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+    }
+    
+    .card:hover {
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.2);
+        border-color: var(--primary);
+    }
+    
+    .card-body {
+        padding: 25px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
+        text-transform: uppercase;
+        z-index: 1;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(-100%);
+        transition: var(--transition);
+        z-index: -1;
+    }
+    
+    .btn:hover::before {
+        transform: translateX(0);
+    }
+    
+    .btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+        transform: translateY(-3px);
+    }
+    
+    .btn-secondary {
+        background: var(--gradient-secondary);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        box-shadow: 0 7px 14px rgba(30, 64, 175, 0.4);
+        transform: translateY(-3px);
+    }
+    
+    .badge {
+        padding: 5px 10px;
+        border-radius: var(--radius-md);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: var(--surface-light);
+        color: var(--light);
+    }
+    
+    .d-grid {
+        display: grid;
+    }
+    
+    .gap-2 {
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2>State-Capital Memory Game <span class="badge bg-secondary">{{ difficulty }}</span></h2>
+        <p>Match each state with its capital city. Try to complete the game as quickly as possible!</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="countdown-timer">
+            <div class="countdown-circle countdown-circle-bg"></div>
+            <div class="countdown-circle countdown-circle-progress" id="timer-progress"></div>
+            <div class="countdown-text timer-normal" id="timer-text">
+                03:00
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row" id="memory-board">
+            <!-- Memory cards will be generated here -->
+        </div>
+    </div>
+</div>
+
+<div id="game-over" class="game-over-overlay" style="display: none;">
+    <div class="game-over-card">
+        <h2>Game Complete!</h2>
+        <p class="lead">You've matched all the pairs!</p>
+        <div class="mb-3">
+            <p>Time: <span id="final-time">00:00</span></p>
+            <p>Matches: <span id="match-count">0</span></p>
+            <p>Attempts: <span id="attempt-count">0</span></p>
+            <p>Points Earned: <span id="points-earned">0</span></p>
+        </div>
+        <div class="d-grid gap-2">
+            <a href="/memory_game?difficulty={{ difficulty }}" class="btn btn-primary">Play Again</a>
+            <a href="/home" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<div id="time-up" class="game-over-overlay" style="display: none;">
+    <div class="game-over-card">
+        <h2>Time's Up!</h2>
+        <p class="lead">You ran out of time!</p>
+        <div class="mb-3">
+            <p>Matches: <span id="time-up-match-count">0</span>/<span id="time-up-total-pairs">0</span></p>
+            <p>Points Earned: <span id="time-up-points-earned">0</span></p>
+        </div>
+        <div class="d-grid gap-2">
+            <a href="/memory_game?difficulty={{ difficulty }}" class="btn btn-primary">Try Again</a>
+            <a href="/home" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Game variables
+    const pairs = {{ pairs|tojson }};
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let attempts = 0;
+    let isProcessing = false;
+    let gameStarted = false;
+    let timerInterval;
+    let timeRemaining = 180; // 3 minutes in seconds
+    let totalGameTime = 180;
+    
+    // Initialize the game
+    $(document).ready(function() {
+        setupGame();
+        
+        // Start the timer when the first card is clicked
+        $(document).on('click', '.memory-card:not(.flipped):not(.matched)', function() {
+            if (!gameStarted) {
+                startGame();
+            }
+        });
+    });
+    
+    function setupGame() {
+        // Create array with states and capitals
+        cards = [];
+        pairs.forEach(function(pair) {
+            cards.push({
+                id: pair.id + '-state',
+                type: 'state',
+                pairId: pair.id,
+                content: pair.state
+            });
+            cards.push({
+                id: pair.id + '-capital',
+                type: 'capital',
+                pairId: pair.id,
+                content: pair.capital
+            });
+        });
+        
+        // Shuffle the cards
+        shuffleArray(cards);
+        
+        // Generate HTML
+        let html = '';
+        cards.forEach(function(card) {
+            html += `
+                <div class="col-md-3 col-sm-4 col-6">
+                    <div class="memory-card" data-id="${card.id}" data-pair-id="${card.pairId}" data-type="${card.type}">
+                        <div class="memory-card-inner">
+                            <div class="memory-card-front">
+                                <span>Bharat States</span>
+                            </div>
+                            <div class="memory-card-back">
+                                <span>${card.content}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        $('#memory-board').html(html);
+        
+        // Attach click event
+        $('.memory-card').click(function() {
+            if (!isProcessing && !$(this).hasClass('flipped') && !$(this).hasClass('matched')) {
+                flipCard($(this));
+            }
+        });
+        
+        // Reset game state
+        flippedCards = [];
+        matchedPairs = 0;
+        attempts = 0;
+        isProcessing = false;
+        gameStarted = false;
+        
+        // Adjust time based on difficulty
+        if ('{{ difficulty }}' === 'Easy') {
+            timeRemaining = 180; // 3 minutes
+            totalGameTime = 180;
+        } else if ('{{ difficulty }}' === 'Medium') {
+            timeRemaining = 120; // 2 minutes
+            totalGameTime = 120;
+        } else { // Hard
+            timeRemaining = 90; // 1.5 minutes
+            totalGameTime = 90;
+        }
+        
+        // Update timer display
+        updateTimerDisplay();
+    }
+    
+    function startGame() {
+        gameStarted = true;
+        
+        // Clear any existing timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        
+        // Start timer
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+    
+    function updateTimer() {
+        timeRemaining--;
+        
+        // Update display
+        updateTimerDisplay();
+        
+        // Check if time is up
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            timeUp();
+        }
+    }
+    
+  function updateTimerDisplay() {
+        // Calculate minutes and seconds
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        
+        // Format the time
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Update text
+        $('#timer-text').text(formattedTime);
+        
+        // Update progress circle
+        const percentage = (timeRemaining / totalGameTime) * 100;
+        $('#timer-progress').css('background', `conic-gradient(#ff9933 ${percentage}%, transparent ${percentage}%)`);
+        
+        // Update timer color based on time remaining
+        if (timeRemaining <= totalGameTime * 0.25) {
+            // Less than 25% time remaining - danger
+            $('#timer-text').removeClass('timer-normal timer-warning').addClass('timer-danger');
+        } else if (timeRemaining <= totalGameTime * 0.5) {
+            // Less than 50% time remaining - warning
+            $('#timer-text').removeClass('timer-normal timer-danger').addClass('timer-warning');
+        } else {
+            // More than 50% time remaining - normal
+            $('#timer-text').removeClass('timer-warning timer-danger').addClass('timer-normal');
+        }
+    }
+    
+    function timeUp() {
+        // Game over - out of time
+        $('#time-up-match-count').text(matchedPairs);
+        $('#time-up-total-pairs').text(pairs.length);
+        
+        // Submit score to server
+        $.ajax({
+            url: '/api/submit_game_score',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                game_type: 'memory',
+                score: matchedPairs,
+                time_taken: totalGameTime,  // Used all time
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                $('#time-up-points-earned').text(data.points_earned);
+                
+                // Handle level up
+                if (data.level_up) {
+                    alert(`Congratulations! You've reached level ${data.new_level}!`);
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    alert(`You've earned new badges: ${badgeNames}`);
+                }
+                
+                // Show time up screen
+                $('#time-up').fadeIn();
+            },
+            error: function(error) {
+                console.error("Error submitting score:", error);
+                alert("Failed to submit your score. Your progress might not be saved.");
+                $('#time-up').fadeIn();
+            }
+        });
+    }
+    
+    function flipCard(card) {
+        card.addClass('flipped');
+        flippedCards.push(card);
+        
+        // Check if we have a pair
+        if (flippedCards.length === 2) {
+            attempts++;
+            isProcessing = true;
+            
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            
+            // Check if they match
+            if (card1.data('pair-id') === card2.data('pair-id') && 
+                card1.data('type') !== card2.data('type')) {
+                // Match found
+                setTimeout(function() {
+                    card1.addClass('matched');
+                    card2.addClass('matched');
+                    flippedCards = [];
+                    isProcessing = false;
+                    matchedPairs++;
+                    
+                    // Check if game is complete
+                    if (matchedPairs === pairs.length) {
+                        endGame();
+                    }
+                }, 500);
+            } else {
+                // No match
+                setTimeout(function() {
+                    card1.removeClass('flipped');
+                    card2.removeClass('flipped');
+                    flippedCards = [];
+                    isProcessing = false;
+                }, 1000);
+            }
+        }
+    }
+    
+    function endGame() {
+        // Stop timer
+        clearInterval(timerInterval);
+        
+        // Calculate final time
+        const timeElapsed = totalGameTime - timeRemaining;
+        const minutes = Math.floor(timeElapsed / 60);
+        const seconds = timeElapsed % 60;
+        const finalTimeStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        // Update game over screen
+        $('#final-time').text(finalTimeStr);
+        $('#match-count').text(matchedPairs);
+        $('#attempt-count').text(attempts);
+        
+        // Submit score to server
+        $.ajax({
+            url: '/api/submit_game_score',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                game_type: 'memory',
+                score: matchedPairs,
+                time_taken: timeElapsed,
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                $('#points-earned').text(data.points_earned);
+                
+                // Handle level up
+                if (data.level_up) {
+                    alert(`Congratulations! You've reached level ${data.new_level}!`);
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    alert(`You've earned new badges: ${badgeNames}`);
+                }
+                
+                // Show game over screen
+                $('#game-over').fadeIn();
+            },
+            error: function(error) {
+                console.error("Error submitting score:", error);
+                alert("Failed to submit your score. Your progress might not be saved.");
+                $('#game-over').fadeIn();
+            }
+        });
+    }
+    
+    // Utility function to shuffle array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+</script>
+{% endblock %}

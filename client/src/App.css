@@ -1,0 +1,400 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f172a;
+  color: #f8fafc;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 18px;
+  color: #f8fafc;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.content-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.map-container {
+  flex: 1;
+  min-width: 450px;
+  background-color: #1e293b;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border: 1px solid #334155;
+}
+
+.state-info {
+  flex: 1;
+  min-width: 300px;
+  background-color: #1e293b;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-height: 450px;
+  border: 1px solid #334155;
+  position: relative;
+}
+
+.state-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  background: rgba(51, 65, 85, 0.6);
+  border: none;
+  color: #f8fafc;
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(51, 65, 85, 0.9);
+  transform: rotate(90deg);
+}
+
+.state-info h2 {
+  color: #2563eb;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 5px;
+  font-size: 18px;
+}
+
+.state-info h3 {
+  color: #f8fafc;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.current-party {
+  margin: 12px 0;
+  padding: 8px;
+  background-color: rgba(51, 65, 85, 0.5);
+  border-radius: 8px;
+  border-left: 3px solid #2563eb;
+}
+
+.party-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.cm-list-container {
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-top: 10px;
+}
+
+.cm-list {
+  list-style: none;
+}
+
+.cm-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 6px;
+  background-color: rgba(51, 65, 85, 0.4);
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.cm-item:hover {
+  transform: translateY(-2px);
+  background-color: rgba(51, 65, 85, 0.6);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.cm-name {
+  font-weight: bold;
+  flex: 2;
+  font-size: 13px;
+}
+
+.cm-period {
+  flex: 1;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.cm-party {
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 50px;
+  text-align: center;
+}
+
+.year-selector {
+  text-align: center;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.year-selector h3 {
+  font-size: 15px;
+  color: #94a3b8;
+}
+
+.year-dropdown {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  font-size: 14px;
+  background-color: #1e293b;
+  color: #f8fafc;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.selected-year {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2563eb;
+  min-width: 60px;
+  display: inline-block;
+}
+
+.legend {
+  margin-top: 16px;
+  padding: 10px;
+  background-color: rgba(30, 41, 59, 0.7);
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.legend h4 {
+  margin-bottom: 8px;
+  color: #f8fafc;
+  font-size: 14px;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
+  margin-bottom: 6px;
+}
+
+.color-box {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  border-radius: 3px;
+}
+
+.legend-item span {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Circle tooltip styling */
+.circle-tooltip {
+  text-align: center;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Leaflet specific styles */
+.leaflet-container {
+  width: 100%;
+  height: 450px;
+  border-radius: 8px;
+  z-index: 1;
+  background-color: #1e293b;
+}
+
+.leaflet-tooltip {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid #334155;
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+  padding: 3px 8px;
+  font-size: 10px;
+  color: #f8fafc;
+}
+
+/* Custom scrollbar for state info */
+.cm-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cm-list-container::-webkit-scrollbar-track {
+  background: rgba(51, 65, 85, 0.3);
+  border-radius: 4px;
+}
+
+.cm-list-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border-radius: 4px;
+}
+
+.cm-list-container::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .content-container {
+    flex-direction: column;
+  }
+    
+  .map-container,
+  .state-info {
+    min-width: 100%;
+  }
+  
+  .state-info {
+    max-height: 400px;
+  }
+  
+  .cm-list-container {
+    max-height: 250px;
+  }
+  
+  .leaflet-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px;
+  }
+  
+  h1 {
+    font-size: 18px;
+  }
+  
+  .year-selector {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .year-dropdown {
+    width: 100%;
+  }
+  
+  .cm-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .cm-name, .cm-period, .cm-party {
+    width: 100%;
+  }
+  
+  .leaflet-container {
+    height: 350px;
+  }
+}
+
+/* Additional transitions for smooth interactions */
+.leaflet-fade-anim .leaflet-tile, .leaflet-zoom-anim .leaflet-zoom-animated {
+  transition: opacity 0.2s linear, transform 0.2s cubic-bezier(0, 0, 0.25, 1);
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+  will-change: transform;
+}
+
+/* Disable zoom animations to prevent scaling issues */
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+  transition: none;
+}
+
+/* Animation for appearing/disappearing state info panel */
+.state-info {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.cm-info {
+  background-color: rgba(51, 65, 85, 0.7);
+  border-left: 3px solid #2563eb;
+  padding: 8px;
+  margin-top: 5px;
+  position: relative;
+  font-size: 12px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  color: #f8fafc;
+  line-height: 1.4;
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.cm-info-close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #94a3b8;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cm-info-close:hover {
+  color: #f8fafc;
+  transform: rotate(90deg) scale(1.1);
+}
+

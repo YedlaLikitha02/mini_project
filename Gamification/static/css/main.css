@@ -1,0 +1,78 @@
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --dark-color: #2c3e50;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.game-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    color: white;
+    border: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.game-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.achievement-badge {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin: 3px;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(255,215,0,0.3);
+}
+
+.progress-bar-custom {
+    height: 25px;
+    border-radius: 15px;
+    background: #e9ecef;
+    overflow: hidden;
+}
+
+.progress-bar-custom .progress-bar {
+    background: linear-gradient(90deg, var(--success-color), var(--primary-color));
+    border-radius: 15px;
+    transition: width 0.6s ease;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.btn-game {
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.card-custom {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card-custom:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}

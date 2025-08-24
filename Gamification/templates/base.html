@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Formation and Leadership Saga of Bharat States{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --neutral: #475569;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --border: #334155;
+            --gradient-primary: linear-gradient(135deg, #2563eb, #3b82f6);
+            --gradient-secondary: linear-gradient(135deg, #1e40af, #2563eb);
+            --gradient-accent: linear-gradient(135deg, #4338ca, #6366f1);
+            --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            padding-bottom: 70px;
+        }
+
+        /* Background with overlay */
+        .bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://images.pexels.com/photos/4338095/pexels-photo-4338095.jpeg");
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.2) saturate(0.8);
+            transition: filter 3s ease;
+            animation: pulsateScale 20s infinite ease-in-out;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.95) 100%);
+            opacity: 0.9;
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0.2;
+            pointer-events: none;
+            animation: floatY 10s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .floating-element.el1 {
+            top: 20%;
+            left: 10%;
+            font-size: 3rem;
+            color: var(--primary);
+            animation-delay: 0s;
+        }
+
+        .floating-element.el2 {
+            top: 30%;
+            right: 15%;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            animation: floatX 12s infinite ease-in-out;
+        }
+
+        .floating-element.el3 {
+            bottom: 25%;
+            left: 15%;
+            font-size: 2rem;
+            color: var(--accent);
+            animation-delay: 2s;
+        }
+
+        .floating-element.el4 {
+            bottom: 20%;
+            right: 10%;
+            font-size: 3.5rem;
+            color: var(--primary);
+            animation: floatX 15s infinite ease-in-out reverse;
+            animation-delay: 1s;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 28px;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(15, 23, 42, 0.85);
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar.scrolled {
+            padding: 10px 28px;
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--light);
+            text-decoration: none;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo span {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .logo:hover span:first-child {
+            color: var(--primary);
+            transform: translateY(-2px);
+            animation: glow 1.5s infinite;
+        }
+
+        .logo:hover span:last-child {
+            color: var(--secondary);
+            transform: translateY(2px);
+            animation: glow 1.5s infinite 0.2s;
+        }
+
+        .logo-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(360deg);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.7);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .navbar-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .navbar-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        .navbar-link:hover {
+            color: var(--light);
+        }
+
+        .navbar-link:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.3);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--light);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Tables */
+        .table {
+            color: var(--light);
+            border-color: var(--border);
+        }
+
+        .table-hover tbody tr:hover {
+            background: rgba(51, 65, 85, 0.5);
+        }
+
+        .table th {
+            border-color: var(--border);
+            color: var(--accent);
+            font-weight: 600;
+            padding: 12px 15px;
+        }
+
+        .table td {
+            border-color: var(--border);
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+        .table-primary {
+            background: rgba(37, 99, 235, 0.2) !important;
+        }
+
+        /* Badges and icons */
+        .badge {
+            padding: 6px 10px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .streak-counter {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            border: none;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(30, 64, 175, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--light);
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            z-index: 900;
+        }
+
+        /* Animation keyframes */
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes floatX {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(15px); }
+        }
+
+        @keyframes pulsateScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 5px rgba(37, 99, 235, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 30px rgba(37, 99, 235, 0.6); }
+        }
+
+        @keyframes scorePopup {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Custom India map background */
+        .india-map-bg {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/36/India-locator-map-blank.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.05;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(51, 65, 85, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+            
+            .navbar-collapse {
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(12px);
+                border-radius: var(--radius-md);
+                padding: 15px;
+                margin-top: 10px;
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-wrapper">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+    </div>
+    
+    <div class="india-map-bg"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-element el1"><i class="fas fa-map-marker-alt"></i></div>
+    <div class="floating-element el2"><i class="fas fa-landmark"></i></div>
+    <div class="floating-element el3"><i class="fas fa-flag"></i></div>
+    <div class="floating-element el4"><i class="fas fa-star"></i></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="logo" href="/home">
+                <div class="logo-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div>
+                    <span>Bharat</span> <span>States Saga</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    style="background-color: var(--primary); border: none;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="navbar-link" href="/home"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="navbar-link" href="/leaderboard"><i class="fas fa-trophy"></i> Leaderboard</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link" style="color: var(--accent);">
+                            <i class="fas fa-user-circle"></i> <span id="navbar-username">
+                                {% if 'username' in session %}
+                                    {{ session.username }}
+                                {% else %}
+                                    Guest
+                                {% endif %}
+                            </span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" style="color: var(--accent);">
+                            <i class="fas fa-fire"></i> Streak: <span id="navbar-streak">0</span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" style="color: var(--accent);">
+                            <i class="fas fa-star"></i> Level: <span id="navbar-level">1</span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" style="color: var(--accent);">
+                            <i class="fas fa-trophy"></i> Score: <span id="navbar-score">0</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Formation and Leadership Saga of Bharat States</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Load user stats for navbar
+        $.ajax({
+            url: '/api/user_stats',
+            method: 'GET',
+            success: function(data) {
+                // Always update all fields, even for new users
+                $('#navbar-streak').text(data.streak || 0);
+                $('#navbar-level').text(data.level || 1);
+                $('#navbar-score').text(data.score || 0);
+                $('#navbar-username').text(data.username || 'Guest');
+                
+                console.log("User stats loaded:", data); // Add this for debugging
+            },
+            error: function(err) {
+                console.error("Error loading user stats:", err);
+                // Set defaults on error
+                $('#navbar-streak').text(0);
+                $('#navbar-level').text(1);
+                $('#navbar-score').text(0);
+                $('#navbar-username').text('Guest');
+            }
+        });
+    });
+</script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

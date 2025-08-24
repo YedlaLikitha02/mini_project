@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Bharat States Saga{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card tricolor-border">
+            <div class="card-body text-center">
+                <h2 class="card-title">Formation and Leadership Saga of Bharat States</h2>
+                <p class="card-text">Welcome, <span class="text-primary fw-bold">{{ username }}</span>! Test your knowledge about the formation of Indian states, their Chief Ministers, ruling political parties, and key leaders who fought for statehood.</p>
+                <div class="d-flex justify-content-center">
+                    <div class="streak-counter mx-2">
+                        <i class="fas fa-fire"></i> Streak: <span id="current-streak">0</span>
+                    </div>
+                    <div class="mx-2 badge bg-primary">
+                        <i class="fas fa-star"></i> Level: <span id="current-level">1</span>
+                    </div>
+                    <div class="mx-2 badge bg-warning text-dark">
+                        <i class="fas fa-trophy"></i> Score: <span id="current-score">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5><i class="fas fa-gamepad"></i> Games</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">                    
+                    <!-- Memory Game -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <h5>State-Capital Memory</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Match states with their capitals in this memory card game.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="/memory_game?difficulty=Easy" class="btn btn-sm btn-success">Easy</a>
+                                    <a href="/memory_game?difficulty=Medium" class="btn btn-sm btn-warning">Medium</a>
+                                    <a href="/memory_game?difficulty=Hard" class="btn btn-sm btn-danger">Hard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Word Scramble Game (replacing Map Puzzle) -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-danger text-white">
+                                <h5>Word Scramble</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Unscramble words related to Indian states and capitals. Test your language skills!</p>
+                                <div class="d-grid gap-2">
+                                    <a href="/word_scramble?difficulty=Easy" class="btn btn-sm btn-success">Easy</a>
+                                    <a href="/word_scramble?difficulty=Medium" class="btn btn-sm btn-warning">Medium</a>
+                                    <a href="/word_scramble?difficulty=Hard" class="btn btn-sm btn-danger">Hard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline Game -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-secondary text-white">
+                                <h5>State Formation Timeline</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Arrange historical events in the correct chronological order of state formation.</p>
+                                <div class="d-grid gap-2">
+                                    <a href="/timeline_game?difficulty=Easy" class="btn btn-sm btn-success">Easy</a>
+                                    <a href="/timeline_game?difficulty=Medium" class="btn btn-sm btn-warning">Medium</a>
+                                    <a href="/timeline_game?difficulty=Hard" class="btn btn-sm btn-danger">Hard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Game (with direct buttons) -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-info text-white">
+                                <h5>State Knowledge Quiz</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Test your knowledge about Indian states with multiple-choice questions.</p>
+                                <div id="quizOptions">
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label for="state-select" class="form-label">Select State/UT:</label>
+                                            <select id="state-select" class="form-select form-select-sm">
+                                                <option value="All States">All States</option>
+                                                <optgroup label="States">
+                                                    {% for state in states %}
+                                                    <option value="{{ state }}">{{ state }}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                                <optgroup label="Union Territories">
+                                                    {% for ut in union_territories %}
+                                                    <option value="{{ ut }}">{{ ut }}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label for="category-select" class="form-label">Select Category:</label>
+                                            <select id="category-select" class="form-select form-select-sm">
+                                                {% for category in categories %}
+                                                <option value="{{ category }}">{{ category }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <a href="#" class="btn btn-sm btn-success" id="start-easy-quiz">Easy</a>
+                                        <a href="#" class="btn btn-sm btn-warning" id="start-medium-quiz">Medium</a>
+                                        <a href="#" class="btn btn-sm btn-danger" id="start-hard-quiz">Hard</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5><i class="fas fa-award"></i> Achievements</h5>
+            </div>
+            <div class="card-body">
+                <div id="recent-achievements" class="d-flex flex-wrap justify-content-center">
+                    <!-- Achievements will be loaded here -->
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <a href="/leaderboard" class="btn btn-outline-primary">View Leaderboard</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Level Progress Card -->
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5><i class="fas fa-graduation-cap"></i> Quiz Progress</h5>
+            </div>
+            <div class="card-body">
+                <div id="quiz-level-progress">
+                    <h6 class="text-center">Quiz Level: <span id="quiz-current-level">1</span></h6>
+                    <div class="progress mb-2">
+                        <div id="quiz-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p class="text-center">
+                        <small id="quiz-progress-text">0/5 questions to next level</small>
+                    </p>
+                    <div class="text-center mt-3">
+                        <p>Complete quiz questions to level up and earn bonus points!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Load user stats
+        $.ajax({
+            url: '/api/user_stats',
+            method: 'GET',
+            success: function(data) {
+                $('#current-streak').text(data.streak);
+                $('#current-level').text(data.level);
+                $('#current-score').text(data.score);
+                
+                // Update quiz level progress
+                if (data.quiz_progress) {
+                    $('#quiz-current-level').text(data.quiz_progress.current_level);
+                    
+                    // Calculate percentage
+                    const currentLevel = data.quiz_progress.current_level;
+                    const questionsAnswered = data.quiz_progress.questions_answered;
+                    const totalQuestions = getQuestionsForLevel(currentLevel);
+                    const percentage = Math.min(100, Math.round((questionsAnswered / totalQuestions) * 100));
+                    
+                    // Update progress bar
+                    $('#quiz-progress-bar').css('width', percentage + '%');
+                    $('#quiz-progress-text').text(`${questionsAnswered}/${totalQuestions} questions to next level`);
+                }
+                
+                // Load badges
+                if (data.badges && data.badges.length > 0) {
+                    let badgeHtml = '';
+                    data.badges.forEach(function(badge) {
+                        let badgeName = badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase());
+                        let badgeColor = '';
+                        
+                        if (badge.startsWith('streak')) {
+                            badgeColor = '#dc3545';
+                        } else if (badge.startsWith('master')) {
+                            badgeColor = '#007bff';
+                        } else if (badge.startsWith('memory')) {
+                            badgeColor = '#28a745';
+                        } else if (badge.startsWith('word')) {
+                            badgeColor = '#fd7e14';
+                        } else if (badge.startsWith('timeline')) {
+                            badgeColor = '#6610f2';
+                        } else if (badge.startsWith('quiz_level')) {
+                            badgeColor = '#17a2b8';
+                        } else {
+                            badgeColor = '#6c757d';
+                        }
+                        
+                        badgeHtml += `<div class="badge-item" style="background-color: ${badgeColor}">
+                                        <i class="fas fa-award"></i>
+                                        <div>${badgeName}</div>
+                                      </div>`;
+                    });
+                    
+                    $('#recent-achievements').html(badgeHtml);
+                } else {
+                    $('#recent-achievements').html('<p>No achievements yet. Start playing to earn badges!</p>');
+                }
+            }
+        });
+        
+        // Helper function to get questions needed for each quiz level
+        function getQuestionsForLevel(level) {
+            const levelQuestions = {
+                1: 5,
+                2: 10,
+                3: 15,
+                4: 20,
+                5: 25
+            };
+            
+            return levelQuestions[level] || 25;
+        }
+        
+        // Quiz buttons with difficulty
+        function startQuiz(difficulty) {
+            const state = $('#state-select').val();
+            const category = $('#category-select').val();
+            
+            window.location.href = `/game?state=${encodeURIComponent(state)}&category=${encodeURIComponent(category)}&difficulty=${encodeURIComponent(difficulty)}`;
+        }
+        
+        $('#start-easy-quiz').click(function(e) {
+            e.preventDefault();
+            startQuiz('Easy');
+        });
+        
+        $('#start-medium-quiz').click(function(e) {
+            e.preventDefault();
+            startQuiz('Medium');
+        });
+        
+        $('#start-hard-quiz').click(function(e) {
+            e.preventDefault();
+            startQuiz('Hard');
+        });
+    });
+</script>
+{% endblock %}

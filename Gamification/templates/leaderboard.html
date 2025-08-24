@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Leaderboard - Bharat States Saga{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-trophy me-2"></i>Leaderboard</h3>
+            </div>
+            <div class="card-body">
+                {% if users %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag me-1"></i>Rank</th>
+                                    <th><i class="fas fa-user me-1"></i>Player</th>
+                                    <th><i class="fas fa-star me-1"></i>Level</th>
+                                    <th><i class="fas fa-trophy me-1"></i>Score</th>
+                                    <th><i class="fas fa-fire me-1"></i>Streak</th>
+                                    <th><i class="fas fa-award me-1"></i>Badges</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                <tr {% if session.user_id == user._id|string %}class="table-primary"{% endif %}>
+                                    <td>
+                                        {% if loop.index == 1 %}
+                                            <span style="color: gold; font-weight: bold;">{{ loop.index }}</span>
+                                        {% elif loop.index == 2 %}
+                                            <span style="color: silver; font-weight: bold;">{{ loop.index }}</span>
+                                        {% elif loop.index == 3 %}
+                                            <span style="color: #cd7f32; font-weight: bold;">{{ loop.index }}</span>
+                                        {% else %}
+                                            {{ loop.index }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                                                <i class="fas fa-user text-white"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">{{ user.username }}</div>
+                                                {% if loop.index <= 3 %}
+                                                <div>
+                                                    <i class="fas fa-crown {% if loop.index == 1 %}text-warning{% elif loop.index == 2 %}text-secondary{% else %}text-danger{% endif %}"></i>
+                                                    <span class="ms-1 small" style="opacity: 0.7;">
+                                                        {% if loop.index == 1 %}Gold Leader{% elif loop.index == 2 %}Silver Champion{% else %}Bronze Achiever{% endif %}
+                                                    </span>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background: var(--gradient-primary);">{{ user.level }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">{{ user.score }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="streak-counter">
+                                            <i class="fas fa-fire"></i> {{ user.streak }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="badge bg-secondary">
+                                            <i class="fas fa-award me-1"></i>{{ user.badges|length }}
+                                        </div>
+                                        {% if user.badges|length > 0 %}
+                                        <button class="btn btn-sm" style="background: none; border: none; color: var(--primary);" title="View Badges">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="background: rgba(37, 99, 235, 0.1); border: 1px solid var(--primary); border-radius: var(--radius-lg); padding: 30px; text-align: center;">
+                        <i class="fas fa-trophy fa-3x mb-3" style="color: var(--primary);"></i>
+                        <h4>No Players Yet</h4>
+                        <p class="text-center mb-0" style="color: var(--accent);">Be the first to join the leaderboard!</p>
+                    </div>
+                {% endif %}
+                
+                <div class="text-center mt-4">
+                    <a href="/home" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Card -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>Leaderboard Stats</h4>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div style="padding: 15px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius-lg);">
+                            <i class="fas fa-users fa-2x mb-2" style="color: var(--primary);"></i>
+                            <h4>{{ users|length if users else 0 }}</h4>
+                            <p class="mb-0" style="color: var(--accent);">Total Players</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="padding: 15px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius-lg);">
+                            <i class="fas fa-trophy fa-2x mb-2" style="color: var(--primary);"></i>
+                            <h4>{{ users[0].score if users else 0 }}</h4>
+                            <p class="mb-0" style="color: var(--accent);">Top Score</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="padding: 15px; background: rgba(37, 99, 235, 0.1); border-radius: var(--radius-lg);">
+                            <i class="fas fa-fire fa-2x mb-2" style="color: var(--primary);"></i>
+                            <h4>{{ users[0].streak if users else 0 }}</h4>
+                            <p class="mb-0" style="color: var(--accent);">Top Streak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add animation to the leaderboard rows
+    $(document).ready(function() {
+        $('tbody tr').each(function(index) {
+            $(this).css({
+                'opacity': '0',
+                'transform': 'translateY(20px)'
+            });
+            
+            setTimeout(() => {
+                $(this).css({
+                    'opacity': '1',
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.3s ease-out'
+                });
+            }, 100 * index);
+        });
+    });
+</script>
+{% endblock %}

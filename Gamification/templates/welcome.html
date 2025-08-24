@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome - Formation and Leadership Saga of Bharat States{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card tricolor-border mt-5">
+                <div class="card-body text-center">
+                    <h1 class="mb-4">Formation and Leadership Saga of Bharat States</h1>
+                    <p class="lead">Test your knowledge about the formation of Indian states, their Chief Ministers, ruling political parties, and key leaders who fought for statehood.</p>
+                    
+                    <div class="mt-5">
+                        <form method="post" action="/set_name">
+                            <div class="mb-3">
+                                <label for="player_name" class="form-label">Enter your name to begin:</label>
+                                <input type="text" class="form-control form-control-lg" id="player_name" name="player_name" placeholder="Your Name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg">Start Playing</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p>Learn about the fascinating history of Indian states through interactive games and quizzes!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

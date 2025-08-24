@@ -1,0 +1,11 @@
+PyTorch — For deep learning.
+
+NumPy — For numerical computations.
+
+SciPy — For scientific computing.
+
+SoundFile — For audio processing.
+
+Coqui TTS — Main TTS framework.
+
+Librosa — For audio handling.

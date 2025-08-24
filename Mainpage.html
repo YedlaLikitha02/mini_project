@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register | State Explorer</title>
+    
+    <!-- ✅ Link CSS -->
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="login.js" defer></script>
+    <script type="module" src="register.js" defer></script>
+    <script  src="script.js"></script>
+
+</head>
+<body>
+
+    <!-- ✅ Navbar -->
+    <header><h2 class="logo">Unvieling India.</h2>
+    
+</header>
+
+    <!-- ✅ Main Container -->
+    <div class="container">
+
+        <!-- ✅ Login Form -->
+        <div id="login-form" class="form-container active">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
+            <div class="password-container">
+                <input type="password" id="login-password" placeholder="Enter your password" required>
+                <span class="toggle-password" onclick="togglePassword('login-password')"></span>
+            </div>
+            <button id="login-btn">Login</button>
+            <p>Don't have an account? <a href="javascript:void(0)" id="show-register">Register</a></p>
+            <p id="error-msg"></p>
+        </div>
+       
+            <div id="register-form" class="form-container">
+                <h2>Register</h2>
+                <input type="email" id="register-email" placeholder="Enter your email" required>
+                <div class="password-container">
+                    <input type="password" id="register-password" placeholder="Enter your password" required>
+                    <span class="toggle-password" onclick="togglePassword('register-password')"></span>
+                </div>
+                <button id="register-btn">Register</button>
+                <p>Already have an account? <a href="javascript:void(0)" id="show-login">Login</a></p>
+                <p id="error-msg-register"></p>
+            </div>
+
+    </div>
+
+</body>
+</html>

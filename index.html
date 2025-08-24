@@ -1,0 +1,4133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHARAT STATES CHRONICLE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+       :root {
+    --primary: #2563eb;
+    --secondary: #1e40af;
+    --accent: #64748b;
+    --dark: #0f172a;
+    --light: #f8fafc;
+    --neutral: #475569;
+    --surface: #1e293b;
+    --surface-light: #334155;
+    --border: #334155;
+    --gradient-primary: linear-gradient(135deg, #2563eb, #3b82f6);
+    --gradient-secondary: linear-gradient(135deg, #1e40af, #2563eb);
+    --gradient-accent: linear-gradient(135deg, #4338ca, #6366f1);
+    --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+    font-size: 0.9rem; /* Reduced font size */
+}
+
+/* Enhanced animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes borderGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+    }
+}
+
+@keyframes floatY {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes floatX {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(15px);
+    }
+}
+
+@keyframes pulsateScale {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes rotate3D {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(360deg);
+    }
+}
+
+@keyframes flipCard {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+@keyframes morphText {
+    0% {
+        filter: blur(0px);
+        opacity: 1;
+    }
+    20% {
+        filter: blur(10px);
+        opacity: 0.8;
+    }
+    30% {
+        filter: blur(0px);
+        opacity: 1;
+    }
+    100% {
+        filter: blur(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes revealText {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 30px rgba(37, 99, 235, 0.6);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+@keyframes fadeInBlur {
+    0% {
+        opacity: 0;
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@keyframes typing {
+    0%, 60%, 100% { transform: scale(1); opacity: 0.5; }
+    30% { transform: scale(1.3); opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Background video or image with overlay */
+.bg-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://images.pexels.com/photos/4338095/pexels-photo-4338095.jpeg");
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.2) saturate(0.8);
+    transition: filter 3s ease;
+    animation: pulsateScale 20s infinite ease-in-out;
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.95) 100%);
+    opacity: 0.9;
+}
+
+/* Enhanced Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    background: rgba(15, 23, 42, 0.85);
+    transition: var(--transition);
+    border-bottom: 1px solid var(--border);
+}
+
+.navbar.scrolled {
+    padding: 10px 28px;
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: var(--shadow-lg);
+}
+
+.logo {
+    font-size: 1.3rem; /* Reduced font size */
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--light);
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo span {
+    position: relative;
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.logo:hover span:first-child {
+    color: var(--primary);
+    transform: translateY(-2px);
+    animation: glow 1.5s infinite;
+}
+
+.logo:hover span:last-child {
+    color: var(--secondary);
+    transform: translateY(2px);
+    animation: glow 1.5s infinite 0.2s;
+}
+
+.logo-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo:hover .logo-icon {
+    transform: rotate(360deg);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.7);
+}
+
+.navbar-links {
+    display: flex;
+    gap: 22px;
+}
+
+.navbar-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem; /* Reduced font size */
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease;
+}
+
+.navbar-link:hover {
+    color: var(--light);
+}
+
+.navbar-link:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.25rem;
+    color: var(--light);
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-toggle:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+
+
+/* Enhanced Hero Section */
+.hero {
+    min-height: 100vh;
+    padding-top: 70px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 850px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title {
+    font-size: 2.2rem; /* Reduced font size */
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    color: var(--light);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(90deg, #2563eb, #6366f1, #2563eb);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 6s linear infinite, morphText 8s ease-in-out infinite;
+}
+
+.hero-subtitle {
+    font-size: 0.9rem; /* Reduced font size */
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    animation: fadeInUp 1s ease-out 0.3s forwards;
+    opacity: 0;
+    position: relative;
+    overflow: hidden;
+}
+ 
+.hero-subtitle::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--dark), transparent);
+    animation: revealText 1.5s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+
+/* Floating elements */
+.floating-element {
+    position: absolute;
+    opacity: 0.2;
+    pointer-events: none;
+    animation: floatY 10s infinite ease-in-out;
+    z-index: 1;
+}
+
+.floating-element.el1 {
+    top: 20%;
+    left: 10%;
+    font-size: 3rem;
+    color: var(--primary);
+    animation-delay: 0s;
+}
+
+.floating-element.el2 {
+    top: 30%;
+    right: 15%;
+    font-size: 2.5rem;
+    color: var(--secondary);
+    animation: floatX 12s infinite ease-in-out;
+}
+
+.floating-element.el3 {
+    bottom: 25%;
+    left: 15%;
+    font-size: 2rem;
+    color: var(--accent);
+    animation-delay: 2s;
+}
+
+.floating-element.el4 {
+    bottom: 20%;
+    right: 10%;
+    font-size: 3.5rem;
+    color: var(--primary);
+    animation: floatX 15s infinite ease-in-out reverse;
+    animation-delay: 1s;
+}
+
+/* Enhanced Buttons with Better Placement */
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 32px;
+    animation: fadeInUp 1s ease-out 0.6s forwards;
+    opacity: 0;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 1;
+    box-shadow: var(--shadow-md);
+    text-transform: uppercase;
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: var(--transition);
+    z-index: -1;
+}
+
+.btn:hover::before {
+    transform: translateX(0);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease;
+}
+
+.btn:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.btn i {
+    transition: transform 0.3s ease;
+}
+
+.btn:hover i {
+    transform: translateY(-3px);
+    animation: bounce 1s infinite;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+    transform: translateY(-3px);
+}
+
+.btn-secondary {
+    background: var(--gradient-secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    box-shadow: 0 7px 14px rgba(30, 64, 175, 0.4);
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--light);
+    border: 2px solid var(--border);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+    transform: translateY(-3px);
+}
+
+.btn-3d {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    transform: translateZ(0);
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-3d:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+}
+
+/* Button ripple effect */
+.btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Enhanced Content Card Sections */
+.section {
+    padding: 70px 28px; /* Reduced padding */
+    position: relative;
+    overflow: hidden;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.section-title {
+    font-size: 1.8rem; /* Reduced font size */
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    color: var(--light);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: borderGlow 3s infinite;
+}
+
+/* Badge notifications */
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    animation: pulse 1.5s infinite;
+}
+
+/* Enhanced Dashboard Panels */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    border: 1px solid var(--border);
+    height: 200px; /* Reduced height */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient-primary);
+    z-index: 1;
+}
+
+.dashboard-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 1.5s ease;
+    pointer-events: none;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.3);
+    border-color: var(--primary);
+    background: rgba(30, 41, 59, 0.8);
+}
+
+.dashboard-card:hover::after {
+    opacity: 1;
+    transform: translateX(100%);
+}
+
+.card-content {
+    padding: 22px; /* Reduced padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    z-index: 2;
+}
+
+.card-icon {
+    font-size: 2.2rem; /* Reduced size */
+    margin-bottom: 18px;
+    color: var(--primary);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+}
+
+.dashboard-card:hover .card-icon {
+    transform: scale(1.2) translateY(-5px);
+    color: var(--light);
+    text-shadow: 0 0 20px rgba(37, 99, 235, 0.7);
+    animation: bounce 2s infinite;
+}
+
+.card-title {
+    font-size: 1rem; /* Reduced font size */
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: center;
+    color: var(--light);
+    transition: var(--transition);
+    position: relative;
+}
+
+.dashboard-card:hover .card-title {
+    transform: scale(1.05);
+}
+
+.card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.dashboard-card:hover .card-title::after {
+    width: 50%;
+}
+
+/* Enhanced card descriptions */
+.card-description {
+    font-size: 0.8rem;
+    color: var(--accent);
+    text-align: center;
+    max-width: 90%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+}
+
+.dashboard-card:hover .card-description {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Enhanced Action Buttons Section */
+.action-buttons {
+    background: rgba(30, 41, 59, 0.3);
+    padding: 40px 28px; /* Reduced padding */
+    text-align: center;
+    margin-top: 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.action-buttons::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.1) 0%, transparent 30%);
+    animation: pulsateScale 8s infinite alternate ease-in-out;
+    pointer-events: none;
+}
+
+/* About Us Section */
+.about-section {
+    padding: 70px 28px; /* Reduced padding */
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.about-container {
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    padding: 28px; /* Reduced padding */
+    position: relative;
+}
+
+.about-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Reduced min width */
+    gap: 20px; /* Reduced gap */
+    margin-top: 28px; /* Reduced margin */
+}
+
+.team-member {
+    text-align: center;
+    padding: 14px; /* Reduced padding */
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.2);
+    border-color: var(--primary);
+}
+
+.team-member::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 1.5s ease;
+    pointer-events: none;
+}
+
+.team-member:hover::after {
+    opacity: 1;
+    transform: translateX(100%);
+}
+
+.member-avatar {
+    width: 70px; /* Reduced size */
+    height: 70px; /* Reduced size */
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px; /* Reduced margin */
+    font-size: 1.8rem; /* Reduced font size */
+    color: white;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.team-member:hover .member-avatar {
+    transform: scale(1.1) rotate(5deg);
+    animation: pulse 2s infinite;
+}
+
+.member-name {
+    font-size: 1rem; /* Reduced font size */
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--light);
+}
+
+.member-role {
+    font-size: 0.8rem; /* Reduced font size */
+    color: var(--accent);
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+.project-info {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.project-title {
+    font-size: 1.2rem; /* Reduced font size */
+    font-weight: 600;
+    margin-bottom: 14px; /* Reduced margin */
+    color: var(--primary);
+}
+
+.project-description {
+    color: var(--accent);
+    line-height: 1.6;
+    font-size: 0.85rem; /* Reduced font size */
+}
+
+/* Enhanced Chatbot Section */
+.chatbot-section {
+    max-width: 1000px;
+    margin: 28px auto; /* Reduced margin */
+    padding: 28px; /* Reduced padding */
+    background: rgba(30, 41, 59, 0.3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.chatbot-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.07) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.chatbot-header {
+    text-align: center;
+    margin-bottom: 20px; /* Reduced margin */
+    position: relative;
+}
+
+.chatbot-title {
+    font-size: 1.6rem; /* Reduced font size */
+    font-weight: 700;
+    margin-bottom: 10px; /* Reduced margin */
+    color: var(--light);
+    display: inline-block;
+    position: relative;
+}
+
+.chatbot-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+.chatbot-description {
+    color: var(--accent);
+    font-size: 0.85rem; /* Reduced font size */
+    max-width: 600px;
+    margin: 14px auto 0; /* Reduced margin */
+    line-height: 1.6;
+}
+
+.chat-container {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: var(--radius-md);
+    height: 420px; /* Reduced height */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.chat-container:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.2);
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px; /* Reduced padding */
+    display: flex;
+    flex-direction: column;
+    gap: 14px; /* Reduced gap */
+    scroll-behavior: smooth;
+}
+
+.message {
+    display: flex;
+    gap: 10px; /* Reduced gap */
+    max-width: 80%;
+    animation: fadeInUp 0.4s ease;
+}
+
+.message.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.message.bot {
+    align-self: flex-start;
+}
+
+.message-avatar {
+    width: 32px; /* Reduced size */
+    height: 32px; /* Reduced size */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+    font-size: 0.8rem; /* Reduced font size */
+    transition: transform 0.3s ease;
+}
+
+.message:hover .message-avatar {
+    transform: scale(1.1);
+}
+
+.message.user .message-avatar {
+    background: var(--gradient-primary);
+}
+
+.message.bot .message-avatar {
+    background: var(--gradient-secondary);
+}
+
+.message-content {
+    background: rgba(51, 65, 85, 0.6);
+    padding: 10px 14px; /* Reduced padding */
+    border-radius: var(--radius-md);
+    color: var(--light);
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    font-size: 0.8rem; /* Reduced font size */
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.message-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 1.5s ease;
+    pointer-events: none;
+}
+
+.message-content:hover {
+    background: rgba(51, 65, 85, 0.8);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.message-content:hover::after {
+    opacity: 1;
+    transform: translateX(100%);
+}
+
+.message.user .message-content {
+    background: rgba(37, 99, 235, 0.2);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.message.user .message-content:hover {
+    background: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
+}
+
+.message-content ul {
+    margin-left: 16px;
+    margin-top: 8px;
+}
+
+.message-content li {
+    margin-bottom: 4px;
+    font-size: 0.8rem; /* Reduced font size */
+    position: relative;
+}
+
+.message-content li::before {
+    content: '•';
+    position: absolute;
+    left: -12px;
+    color: var(--primary);
+}
+
+.chat-input-container {
+    padding: 14px; /* Reduced padding */
+    border-top: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.8);
+}
+
+.chat-input-wrapper {
+    display: flex;
+    gap: 10px; /* Reduced gap */
+    align-items: center;
+    background: rgba(51, 65, 85, 0.6);
+    border-radius: var(--radius-lg);
+    padding: 7px 14px; /* Reduced padding */
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.chat-input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+    transform: translateY(-2px);
+}
+
+.chat-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 7px; /* Reduced padding */
+    font-size: 0.8rem; /* Reduced font size */
+    color: var(--light);
+}
+
+.chat-input::placeholder {
+    color: var(--accent);
+    transition: color 0.3s ease;
+}
+
+.chat-input:focus::placeholder {
+    color: var(--primary);
+}
+
+.input-controls {
+    display: flex;
+    gap: 10px; /* Reduced gap */
+    align-items: center;
+}
+
+.control-btn {
+    background: transparent;
+    border: none;
+    padding: 7px; /* Reduced padding */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: var(--accent);
+    font-size: 0.9rem; /* Reduced font size */
+}
+
+.control-btn:hover {
+    color: var(--primary);
+    background: rgba(51, 65, 85, 0.6);
+    transform: translateY(-2px);
+}
+
+.send-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 7px 14px; /* Reduced padding */
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.75rem; /* Reduced font size */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Reduced gap */
+    position: relative;
+    overflow: hidden;
+}
+
+.send-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+}
+
+.send-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+
+.send-btn:hover::before {
+    animation: shimmer 1.5s infinite;
+}
+
+.typing-indicator {
+    display: none;
+    padding: 10px 14px; /* Reduced padding */
+    background: rgba(51, 65, 85, 0.6);
+    border-radius: var(--radius-md);
+    align-self: flex-start;
+    margin-left: 40px; /* Reduced margin */
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 7px; /* Reduced size */
+    height: 7px; /* Reduced size */
+    border-radius: 50%;
+    background: var(--accent);
+    animation: typing 1.4s infinite;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.image-preview {
+    max-width: 220px; /* Reduced size */
+    max-height: 220px; /* Reduced size */
+    border-radius: var(--radius-md);
+    margin-top: 10px; /* Reduced margin */
+    box-shadow: var(--shadow-md);
+    transition: all 0.4s ease;
+    border: 1px solid var(--border);
+}
+
+.image-preview:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(37, 99, 235, 0.3);
+    border-color: var(--primary);
+}
+
+.file-input {
+    display: none;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.75rem; /* Reduced font size */
+    margin-top: 7px; /* Reduced margin */
+    font-weight: 500;
+    animation: fadeInUp 0.3s ease;
+}
+
+/* Enhanced Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+}
+
+.modal-content {
+    background: rgba(30, 41, 59, 0.95);
+    margin: 5% auto;
+    padding: 28px; /* Reduced padding */
+    border: 1px solid var(--border);
+    width: 85%;
+    max-width: 950px; /* Reduced max width */
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.2);
+    position: relative;
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: var(--light);
+    overflow: hidden;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.07) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.modal-header {
+    margin-bottom: 22px; /* Reduced margin */
+    position: relative;
+}
+
+.modal-title {
+    font-size: 1.6rem; /* Reduced font size */
+    font-weight: 700;
+    color: var(--light);
+    margin-bottom: 10px; /* Reduced margin */
+    position: relative;
+    display: inline-block;
+}
+
+.modal-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 80px;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    animation: borderGlow 3s infinite;
+}
+
+.modal-description {
+    color: var(--accent);
+    font-size: 0.85rem; /* Reduced font size */
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+.close-btn {
+    position: absolute;
+    top: 14px; /* Reduced position */
+    right: 14px; /* Reduced position */
+    color: var(--accent);
+    font-size: 1.4rem; /* Reduced font size */
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    width: 32px; /* Reduced size */
+    height: 32px; /* Reduced size */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(51, 65, 85, 0.6);
+    border: 1px solid var(--border);
+    z-index: 10;
+}
+
+.close-btn:hover {
+    color: var(--primary);
+    transform: rotate(90deg);
+    background: rgba(51, 65, 85, 0.8);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+}
+
+.map-container {
+    width: 100%;
+    height: 380px; /* Reduced height */
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    margin-top: 22px; /* Reduced margin */
+    position: relative;
+    transition: all 0.4s ease;
+}
+
+.map-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.2);
+    border-color: var(--primary);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Enhanced Panel Modal */
+.panel-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+}
+
+.panel-modal-content {
+    background: rgba(30, 41, 59, 0.95);
+    margin: 5% auto;
+    padding: 28px; /* Reduced padding */
+    border: 1px solid var(--border);
+    width: 85%;
+    max-width: 750px; /* Reduced max width */
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.2);
+    animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: var(--light);
+    position: relative;
+}
+
+.panel-modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(37, 99, 235, 0.07) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.panel-details {
+    padding: 14px 0; /* Reduced padding */
+    position: relative;
+    z-index: 2;
+}
+
+.panel-details h3 {
+    font-size: 1.15rem; /* Reduced font size */
+    color: var(--primary);
+    margin: 18px 0 10px; /* Reduced margin */
+    padding-bottom: 7px; /* Reduced padding */
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.panel-details h3:hover {
+    color: var(--light);
+    transform: translateX(5px);
+}
+
+.panel-details h3::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    width: 4px;
+    height: 0;
+    background: var(--primary);
+    transform: translateY(-50%);
+    transition: height 0.3s ease;
+}
+
+.panel-details h3:hover::before {
+    height: 80%;
+}
+
+.panel-details p {
+    line-height: 1.6;
+    margin-bottom: 10px; /* Reduced margin */
+    color: var(--accent);
+    font-size: 0.85rem; /* Reduced font size */
+    transition: color 0.3s ease;
+}
+
+.panel-details p:hover {
+    color: var(--light);
+}
+
+.panel-details ul {
+    margin-left: 14px; /* Reduced margin */
+    margin-bottom: 14px; /* Reduced margin */
+}
+
+.panel-details li {
+    margin-bottom: 7px; /* Reduced margin */
+    position: relative;
+    padding-left: 18px; /* Reduced padding */
+    color: var(--accent);
+    font-size: 0.85rem; /* Reduced font size */
+    transition: all 0.3s ease;
+}
+
+.panel-details li:hover {
+    color: var(--light);
+    transform: translateX(5px);
+}
+
+.panel-details li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 0.9rem; /* Reduced font size */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.panel-details li:hover::before {
+    color: var(--light);
+    transform: scale(1.2);
+}
+
+/* Enhanced Info Box */
+.info-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: rgba(30, 41, 59, 0.95);
+    padding: 24px; /* Reduced padding */
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.3);
+    z-index: 1000;
+    max-width: 420px; /* Reduced max width */
+    width: 90%;
+    text-align: center;
+    border: 1px solid var(--primary);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    overflow: hidden;
+}
+
+.info-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(37, 99, 235, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.info-box.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.info-box h2 {
+    font-size: 1.4rem; /* Reduced font size */
+    margin-bottom: 14px; /* Reduced margin */
+    color: var(--light);
+    position: relative;
+    display: inline-block;
+}
+
+.info-box h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; /* Reduced width */
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+    animation: borderGlow 3s infinite;
+}
+
+.info-box p {
+    font-size: 0.85rem; /* Reduced font size */
+    line-height: 1.6;
+    color: var(--accent);
+    margin-top: 14px; /* Reduced margin */
+}
+
+/* Enhanced Notification System */
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-lg);
+    border-left: 4px solid var(--primary);
+    max-width: 300px;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    z-index: 1000;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-icon {
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+.notification-text {
+    flex: 1;
+}
+
+.notification-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--light);
+}
+
+.notification-message {
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.notification-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.notification-close:hover {
+    color: var(--light);
+}
+
+/* Enhanced Animation Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Enhanced Particles Effect */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    pointer-events: none;
+    animation: floatParticle 20s linear infinite;
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-30px) translateX(20px) rotate(120deg);
+    }
+    66% {
+        transform: translateY(20px) translateX(-20px) rotate(240deg);
+    }
+    100% {
+        transform: translateY(0) translateX(0) rotate(360deg);
+    }
+}
+
+/* Enhanced Scroll Indicator */
+.scroll-indicator {
+    position: fixed;
+    bottom: 20px; /* Reduced position */
+    right: 20px; /* Reduced position */
+    width: 40px; /* Reduced size */
+    height: 40px; /* Reduced size */
+    border-radius: 50%;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.1rem; /* Reduced font size */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.scroll-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-indicator.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-indicator:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.3);
+    border-color: var(--primary);
+}
+
+.scroll-indicator:hover::before {
+    opacity: 0.2;
+}
+
+.scroll-indicator i {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.scroll-indicator:hover i {
+    color: var(--light);
+    transform: translateY(-3px);
+}
+
+/* Enhanced Loader */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+    animation: pulsateScale 2s infinite ease-in-out;
+}
+
+.loader-spinner {
+    width: 90px; /* Reduced size */
+    height: 90px; /* Reduced size */
+    position: relative;
+    margin-bottom: 20px; /* Reduced margin */
+}
+
+.loader-spinner::before,
+.loader-spinner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.loader-spinner::before {
+    border-top-color: var(--primary);
+    border-right-color: var(--secondary);
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.loader-spinner::after {
+    border-top-color: var(--accent);
+    border-right-color: var(--primary);
+    animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
+}
+
+.loader-text {
+    font-size: 1.3rem; /* Reduced font size */
+    font-weight: 600;
+    color: var(--light);
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 3s linear infinite;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced progress bar */
+.progress-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--gradient-primary);
+    background-size: 200% auto;
+    animation: gradientFlow 3s linear infinite;
+    transition: width 0.3s ease;
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+    width: 7px; /* Reduced width */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(51, 65, 85, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* Stats counter section */
+.stats-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 30px auto;
+    max-width: 1000px;
+    gap: 20px;
+}
+
+.stat-card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.2);
+    border-color: var(--primary);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+/* Timeline component */
+.timeline-container {
+    max-width: 900px;
+    margin: 40px auto;
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: var(--gradient-primary);
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    width: 50%;
+    padding: 0 30px;
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+    text-align: left;
+}
+
+.timeline-content {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.2);
+    border-color: var(--primary);
+}
+
+.timeline-dot {
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 3px solid var(--dark);
+    box-shadow: var(--shadow-md);
+}
+
+.timeline-item:nth-child(odd) .timeline-dot {
+    right: -10px;
+}
+
+.timeline-item:nth-child(even) .timeline-dot {
+    left: -10px;
+}
+
+.timeline-date {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.timeline-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--light);
+}
+
+.timeline-description {
+    font-size: 0.85rem;
+    color: var(--accent);
+    line-height: 1.5;
+}
+
+/* Enhanced tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(30, 41, 59, 0.95);
+    color: var(--light);
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(30, 41, 59, 0.95) transparent transparent transparent;
+}
+
+/* Enhanced Responsive Styles */
+@media (max-width: 1200px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .section {
+        padding: 60px 22px;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar {
+        padding: 10px 14px;
+    }
+    
+    .navbar-links {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 18px;
+        box-shadow: var(--shadow-lg);
+        border-top: 1px solid var(--border);
+        animation: fadeInUp 0.4s ease;
+    }
+    
+    .navbar-links.active {
+        display: flex;
+    }
+    
+    .navbar-link {
+        padding: 10px;
+        border-radius: var(--radius-md);
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-link:hover {
+        background: rgba(51, 65, 85, 0.5);
+        padding-left: 15px;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .btn-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 260px;
+    }
+    
+    .dashboard {
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 14px;
+    }
+    
+    .chat-container {
+        height: 330px;
+    }
+    
+    .message {
+        max-width: 90%;
+    }
+    
+    .modal-content,
+    .panel-modal-content {
+        width: 95%;
+        padding: 22px;
+        margin: 10% auto;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .timeline-item {
+        width: 100%;
+        padding: 0 20px 0 60px;
+        left: 0;
+        text-align: left;
+    }
+    
+    .timeline-line {
+        left: 30px;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-dot,
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 60px;
+    }
+    
+    .hero-title {
+        font-size: 1.6rem;
+        margin-bottom: 14px;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 22px;
+    }
+    
+    .section {
+        padding: 44px 14px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 28px;
+    }
+    
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .dashboard-card {
+        height: 170px;
+    }
+    
+    .card-content {
+        padding: 14px;
+    }
+    
+    .card-icon {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+    }
+    
+    .chatbot-section {
+        margin: 14px auto;
+        padding: 18px;
+    }
+    
+    .chatbot-title {
+        font-size: 1.2rem;
+    }
+    
+    .chatbot-description {
+        font-size: 0.75rem;
+    }
+    
+    .chat-container {
+        height: 280px;
+    }
+    
+    .chat-messages {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .message-content {
+        padding: 7px 10px;
+        font-size: 0.75rem;
+    }
+    
+    .chat-input-container {
+        padding: 10px;
+    }
+    
+    .chat-input {
+        font-size: 0.75rem;
+    }
+    
+    .send-btn {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .scroll-indicator {
+        bottom: 14px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .stats-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .stat-card {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 7px 10px;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+    }
+    
+    .logo-icon {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+    }
+    
+    .hero {
+        padding-top: 48px;
+    }
+    
+    .hero-title {
+        font-size: 1.3rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.75rem;
+    }
+    
+    .btn {
+        padding: 7px 14px;
+        font-size: 0.75rem;
+    }
+    
+    .section {
+        padding: 28px 10px;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-card {
+        height: 150px;
+    }
+    
+    .card-content {
+        padding: 10px;
+    }
+    
+    .card-icon {
+        font-size: 1.2rem;
+        margin-bottom: 7px;
+    }
+    
+    .card-title {
+        font-size: 0.8rem;
+    }
+    
+    .chatbot-section {
+        padding: 14px;
+    }
+    
+    .chat-container {
+        height: 240px;
+    }
+    
+    .message-avatar {
+        width: 26px;
+        height: 26px;
+        font-size: 0.7rem;
+    }
+    
+    .modal-content,
+    .panel-modal-content {
+        padding: 14px;
+        margin: 15% auto;
+    }
+    
+    .modal-title {
+        font-size: 1.2rem;
+    }
+    
+    .info-box {
+        padding: 14px;
+        max-width: 300px;
+    }
+    
+    .info-box h2 {
+        font-size: 1.1rem;
+    }
+    
+    .info-box p {
+        font-size: 0.75rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Focus States for Accessibility */
+.btn:focus,
+.control-btn:focus,
+.send-btn:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.chat-input:focus {
+    outline: none;
+}
+
+.navbar-link:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    :root {
+        --primary: #3b82f6;
+        --secondary: #1d4ed8;
+        --accent: #6b7280;
+        --dark: #000000;
+        --light: #ffffff;
+        --surface: #1f2937;
+        --border: #4b5563;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .loader-spinner::before,
+    .loader-spinner::after {
+        animation: none;
+    }
+    
+  .typing-dots span {
+        animation: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .scroll-indicator,
+    .loader,
+    .modal,
+    .panel-modal,
+    .info-box {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .hero,
+    .section,
+    .chatbot-section {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    
+    .dashboard-card {
+        border: 1px solid #ccc !important;
+        background: white !important;
+        color: black !important;
+    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+
+.position-relative { position: relative; }
+.position-absolute { position: absolute; }
+.position-fixed { position: fixed; }
+
+.w-100 { width: 100%; }
+.h-100 { height: 100%; }
+
+.m-0 { margin: 0; }
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+
+.p-0 { padding: 0; }
+.pt-1 { padding-top: 0.25rem; }
+.pt-2 { padding-top: 0.5rem; }
+.pt-3 { padding-top: 1rem; }
+.pt-4 { padding-top: 1.5rem; }
+
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+
+/* Performance Optimizations */
+.dashboard-card,
+.btn,
+.message {
+    will-change: transform;
+}
+
+.chat-messages {
+    contain: layout style paint;
+}
+
+.particles-container {
+    transform: translateZ(0);
+}
+
+/* Browser-specific Fixes */
+@supports (-webkit-backdrop-filter: blur(10px)) {
+    .navbar,
+    .chat-input-wrapper,
+    .modal,
+    .panel-modal {
+        -webkit-backdrop-filter: blur(12px);
+    }
+}
+
+@supports not (-webkit-backdrop-filter: blur(10px)) {
+    .navbar {
+        background: rgba(15, 23, 42, 0.95);
+    }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .bg-image {
+        filter: brightness(0.15) saturate(0.9);
+    }
+}
+
+/* Loading States */
+.loading {
+    pointer-events: none;
+    opacity: 0.6;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Enhanced Hover Effects */
+.dashboard-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.8s ease;
+    pointer-events: none;
+}
+
+.dashboard-card:hover::after {
+    transform: translateX(100%);
+}
+
+/* Smooth Page Transitions */
+.page-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-transition.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+   
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Unveiling Bharat...</div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Background with Overlay -->
+    <div class="bg-wrapper">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-element el1"><i class="fas fa-map-marker-alt"></i></div>
+    <div class="floating-element el2"><i class="fas fa-landmark"></i></div>
+    <div class="floating-element el3"><i class="fas fa-flag"></i></div>
+    <div class="floating-element el4"><i class="fas fa-star"></i></div>
+    
+    <!-- Particles Container -->
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon"><i class="fas fa-map-marked-alt"></i></div>
+            <div>
+                <span>Bharat</span> <span>Chronicles</span>
+            </div>
+        </a>
+        
+        <div class="navbar-links" id="navLinks">
+            <a href="#" class="navbar-link" data-heading="Home" data-info="Explore India's journey from its formation to modern governance.">Home</a>
+            <a href="#about-section" class="navbar-link" data-heading="About" data-info="Learn about the history of Indian states, their formation dates, and leadership.">About Us</a>
+            <a href="#" class="navbar-link" data-heading="Help" data-info="Need assistance? Find answers to common questions and guides.">Help</a>
+            
+        </div>
+        
+        
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="notification-text">
+                <div class="notification-title">Welcome to Bharat Chronicles</div>
+                <div class="notification-message">Explore the rich history of Indian states</div>
+            </div>
+        </div>
+        <div class="notification-close" id="notificationClose">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">UNVEILING THE FORMATION AND LEADERSHIP SAGA OF BHARAT STATES</h1>
+            <p class="hero-subtitle">Journey through time to discover how India's diverse states were formed, their political evolution, and the leaders who shaped their destinies from independence to the present day.</p>
+            
+            <div class="btn-container">
+                <div class="btn-row">
+                    <button type="button" class="btn btn-primary" id="showPopupButton">
+                        <i class="fas fa-map-marked-alt"></i> EXPLORE MAP
+                    </button>
+                    <button onclick="toggleTimeline()" class="btn btn-secondary" id="toggleBtn">
+                        <i class="fas fa-users"></i> Leadership Lens
+                    </button>
+                </div>
+                <div class="btn-row">
+                    <button onclick="open3DModel()" class="btn btn-3d" id="modelBtn">
+                        <i class="fas fa-cube"></i> 3D Leader Gallery
+                    </button>
+                    <button onclick="openGame()" class="btn btn-outline" id="toggleBtn">
+                        <i class="fas fa-gamepad"></i> PLAY GAME
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <div class="stat-number" id="statesCount">28</div>
+            <div class="stat-label">States</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="utCount">8</div>
+            <div class="stat-label">Union Territories</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="historyYears">78</div>
+            <div class="stat-label">Years of History</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="leaderCount">354</div>
+            <div class="stat-label">State Leaders</div>
+        </div>
+    </div>
+    
+    <!-- Dashboard Section -->
+    <section class="section" id="dashboard-section">
+        <h2 class="section-title">EXPLORE INDIA'S JOURNEY</h2>
+        <div class="dashboard">
+            <div class="dashboard-card" data-panel="stateFormation">
+                <div class="card-content">
+                    <i class="fas fa-map card-icon"></i>
+                    <h3 class="card-title">State Formation</h3>
+                    <p class="card-description">Discover how Indian states were formed and reorganized over time</p>
+                </div>
+                <div class="badge">New</div>
+            </div>
+            <div class="dashboard-card" data-panel="stateLeaders">
+                <div class="card-content">
+                    <i class="fas fa-user-tie card-icon"></i>
+                    <h3 class="card-title">State Leaders</h3>
+                    <p class="card-description">Learn about chief ministers and governors through history</p>
+                </div>
+            </div>
+            <div class="dashboard-card" data-panel="historicalEvents">
+                <div class="card-content">
+                    <i class="fas fa-landmark card-icon"></i>
+                    <h3 class="card-title">Historical Events</h3>
+                    <p class="card-description">Key events that shaped India's administrative boundaries</p>
+                </div>
+            </div>
+            <div class="dashboard-card" data-panel="regionalInfo">
+                <div class="card-content">
+                    <i class="fas fa-info-circle card-icon"></i>
+                    <h3 class="card-title">Regional Info</h3>
+                    <p class="card-description">Details about states, UTs, and special administrative regions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Us Section -->
+    <section class="about-section" id="about-section">
+        <h2 class="section-title">ABOUT US</h2>
+        <div class="about-container">
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">Yedla Likitha</h3>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">Sai Sree Mahathi</h3>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">Shiva Prasad</h3>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">L. Sahithi</h3>
+                </div>
+            </div>
+            
+            <div class="project-info">
+                <h3 class="project-title">Our Project</h3>
+                <p class="project-description">Bharat States Chronicle is an interactive educational platform developed by our team at MVSR Engineering College. This project aims to document and showcase the rich history of Indian states formation, political leadership, and administrative evolution since independence. Our comprehensive portal provides accurate historical data, interactive maps, and engaging educational tools to help users understand the complex journey of India's federal structure.</p>
+                <p class="project-description">The project combines historical research with modern web technologies to create an immersive learning experience. We've developed features like an interactive map, AI-powered chatbot, educational quizzes, and 3D visualizations to make the learning process engaging and accessible to all.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section class="section">
+        <h2 class="section-title">KEY MILESTONES</h2>
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">1947</div>
+                    <div class="timeline-title">Independence and Partition</div>
+                    <div class="timeline-description">India gains independence and is partitioned into India and Pakistan, creating new state boundaries.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">1950</div>
+                    <div class="timeline-title">Constitution Implemented</div>
+                    <div class="timeline-description">The Constitution of India comes into effect, establishing a framework for state governance.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">1956</div>
+                    <div class="timeline-title">States Reorganisation Act</div>
+                    <div class="timeline-description">Major reform of state boundaries along linguistic lines, creating 14 states and 6 union territories.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2000</div>
+                    <div class="timeline-title">New States Created</div>
+                    <div class="timeline-description">Formation of Jharkhand, Chhattisgarh, and Uttarakhand (then Uttaranchal) from existing states.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2014</div>
+                    <div class="timeline-title">Telangana Formation</div>
+                    <div class="timeline-description">Telangana becomes the 29th state of India, carved out of Andhra Pradesh after decades of movement.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Action Buttons Section -->
+    <div class="action-buttons">
+        <div class="btn-container">
+            <div class="btn-row">
+                <button onclick="navigateToLocalhost()" class="btn btn-primary tooltip" id="navigateBtn">
+                    <i class="fas fa-graduation-cap"></i> START QUIZ
+                    <span class="tooltip-text">Test your knowledge about Indian states</span>
+                </button>
+                <button onclick="time()" class="btn btn-secondary tooltip" id="timelinebtn">
+                    <i class="fas fa-history"></i> IMPORTANT TIMELINES
+                    <span class="tooltip-text">Explore key historical events</span>
+                </button>
+            </div>
+            <div class="btn-row">
+                <button onclick="navigateTo()" class="btn btn-primary tooltip" id="navigateBtn">
+                    <i class="fas fa-award"></i> Welfare Schemes
+                    <span class="tooltip-text">View Government Schemes and Development Highlights</span>
+                </button>
+                <button onclick="showFacts()" class="btn btn-outline tooltip" id="factsBtn">
+                    <i class="fas fa-lightbulb"></i> INTERESTING FACTS
+                    <span class="tooltip-text">Discover fascinating facts about Indian states</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chatbot Section -->
+    <section class="chatbot-section">
+        <div class="chatbot-header">
+            <h2 class="chatbot-title">🧠 Bharat Knowledge AI</h2>
+            <p class="chatbot-description">Your intelligent companion for exploring India's states formation history and leadership.</p>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-avatar">🇮🇳</div>
+                    <div class="message-content">
+                        Namaste! I'm your Indian history expert. Ask me anything about Indian states, their formation, leaders, or cultural heritage. You can also:
+                        <ul>
+                            <li>Ask me to <strong>generate an image</strong> (e.g., "Create an image of the Taj Mahal at sunset")</li>
+                            <li><strong>Upload an image</strong> using the camera button for me to analyze</li>
+                            <li>Use the <strong>microphone</strong> to speak your questions</li>
+                        </ul>
+                        How can I assist you today?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about Indian history, states, or leaders..." />
+                    <div class="input-controls">
+                        <button type="button" class="control-btn tooltip" id="imageBtn" title="Upload Image">
+                            <i class="fas fa-camera"></i>
+                            <span class="tooltip-text">Upload image</span>
+                        </button>
+                        <button type="button" class="control-btn tooltip" id="voiceBtn" title="Voice Input">
+                            <i class="fas fa-microphone"></i>
+                            <span class="tooltip-text">Voice input</span>
+                        </button>
+                        <button type="button" class="send-btn" id="sendBtn">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+                <input type="file" id="imageInput" class="file-input" accept="image/*" />
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Info Box -->
+    <div id="infoBox" class="info-box">
+        <h2 id="infoHeading"></h2>
+        <p id="infoText"></p>
+    </div>
+    
+    <!-- Map Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closePopupButton">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Interactive India Map</h2>
+                <p class="modal-description">Explore India's states, their formation history, and leadership details.</p>
+            </div>
+            <div class="map-container" id="mapContainer">
+                <iframe id="mapFrame" src="indiamap.html" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Panel Modal -->
+    <div id="panelModal" class="panel-modal">
+        <div class="panel-modal-content">
+            <span class="close-btn" id="closePanelButton">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title" id="panelModalTitle">Title</h2>
+            </div>
+            <div id="panelModalContent">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Facts Modal -->
+    <div id="factsModal" class="panel-modal">
+        <div class="panel-modal-content">
+            <span class="close-btn" id="closeFactsButton">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Interesting Facts About Indian States</h2>
+            </div>
+            <div class="panel-details">
+                <h3>Geographical Wonders</h3>
+                <ul>
+                    <li>Sikkim is the least populous state but has the highest altitude tea garden in the world.</li>
+                    <li>Meghalaya's Mawsynram is the wettest place on Earth, receiving an average annual rainfall of 11,872mm.</li>
+                    <li>Rajasthan's Thar Desert is the 17th largest desert in the world and the 9th largest subtropical desert.</li>
+                </ul>
+                
+                <h3>Historical Milestones</h3>
+                <ul>
+                    <li>Tripura was an independent kingdom for over 800 years before joining India in 1949.</li>
+                    <li>Hyderabad State was the largest princely state before being integrated into India in 1948.</li>
+                    <li>Goa remained under Portuguese control until 1961, long after Indian independence.</li>
+                </ul>
+                
+                <h3>Linguistic Diversity</h3>
+                <ul>
+                    <li>Andhra Pradesh was the first state to be created on linguistic grounds in 1953.</li>
+                    <li>Arunachal Pradesh has over 50 distinct tribal groups speaking different dialects.</li>
+                    <li>Karnataka has the second highest number of nationally recognized monuments in India.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+
+    <script src="config.js"></script>
+    <script>
+        // API Configuration (Updated for 2025)
+     // API Configuration (Updated for 2025)
+        const GROK_API_KEY = config.GROQ_API_KEY;
+        const GROK_API_URL = config.GROQ_API_URL;
+        // Dashboard panel content
+        const panelContent = {
+            stateFormation: {
+                title: "State Formation History",
+                content: `
+                    <div class="panel-details">
+                        <h3>States Reorganisation Act, 1956</h3>
+                        <p>The States Reorganisation Act, 1956 was a major reform of the boundaries of India's states and territories, organizing them along linguistic lines. The Act came into effect on November 1, 1956.</p>
+                        
+                        <h3>Major State Formation Timeline</h3>
+                        <ul>
+                            <li><strong>1947</strong> - Independence and Partition</li>
+                            <li><strong>1950</strong> - Constitution of India comes into effect</li>
+                            <li><strong>1956</strong> - States Reorganisation Act</li>
+                            <li><strong>1960</strong> - Formation of Gujarat and Maharashtra</li>
+                            <li><strong>1966</strong> - Punjab reorganized into Punjab, Haryana</li>
+                            <li><strong>1972</strong> - Formation of Meghalaya, Manipur, and Tripura as states</li>
+                            <li><strong>1975</strong> - Sikkim becomes a state</li>
+                            <li><strong>1987</strong> - Goa attains statehood</li>
+                            <li><strong>2000</strong> - Formation of Jharkhand, Chhattisgarh, and Uttarakhand</li>
+                            <li><strong>2014</strong> - Telangana becomes the 29th state</li>
+                            <li><strong>2019</strong> - Jammu and Kashmir Reorganisation Act</li>
+                            <li><strong>2020</strong> - Delhi National Capital Territory Amendment</li>
+                            <li><strong>2023</strong> - Further administrative reforms in Union Territories</li>
+                            <li><strong>2025</strong> - Updated administration framework for all states</li>
+                        </ul>
+                    </div>
+                `
+            },
+            stateLeaders: {
+                title: "Notable State Leaders",
+                content: `
+                    <div class="panel-details">
+                        <h3>Longest-Serving Chief Ministers (Updated 2025)</h3>
+                        <ul>
+                            <li><strong>Pawan Chamling</strong> - Sikkim (1994-2019), 24+ years</li>
+                            <li><strong>Jyoti Basu</strong> - West Bengal (1977-2000), 23 years</li>
+                            <li><strong>Naveen Patnaik</strong> - Odisha (2000-2025), 25 years</li>
+                            <li><strong>Mamata Banerjee</strong> - West Bengal (2011-2025), 14+ years</li>
+                        </ul>
+                        
+                        <h3>Notable Women Chief Ministers</h3>
+                        <ul>
+                            <li><strong>Sucheta Kriplani</strong> - First woman CM (Uttar Pradesh, 1963-1967)</li>
+                            <li><strong>J. Jayalalithaa</strong> - Tamil Nadu (Multiple terms)</li>
+                            <li><strong>Mamata Banerjee</strong> - West Bengal (2011-present)</li>
+                            <li><strong>Mayawati</strong> - Uttar Pradesh (Four terms)</li>
+                            <li><strong>Vasundhara Raje</strong> - Rajasthan (Two terms)</li>
+                            <li><strong>Anandiben Patel</strong> - Gujarat (2014-2016)</li>
+                            <li><strong>Mehbooba Mufti</strong> - Jammu and Kashmir (2016-2018)</li>
+                            <li><strong>Sushma Nath</strong> - Bihar (2023-present)</li>
+                        </ul>
+                        
+                        <h3>Recent Governors (2025)</h3>
+                        <p>India has seen significant changes in gubernatorial appointments since 2023, with many new faces taking oath in various states. Governors continue to play crucial roles in state administration, especially during transitions of power and implementation of central government policies.</p>
+                    </div>
+                `
+            },
+            historicalEvents: {
+                title: "Key Historical Events",
+                content: `
+                    <div class="panel-details">
+                        <h3>Linguistic Reorganization Movement</h3>
+                        <p>The demand for linguistic states was a major movement in post-independence India, leading to the States Reorganisation Act of 1956.</p>
+                        
+                        <h3>Formation of Andhra Pradesh (1953)</h3>
+                        <p>Andhra Pradesh became the first state to be created on a linguistic basis, following the fast unto death by Potti Sriramulu.</p>
+                        
+                        <h3>Bombay State Bifurcation (1960)</h3>
+                        <p>The bilingual Bombay state was divided into Maharashtra and Gujarat following intense agitation.</p>
+                        
+                        <h3>Punjab Reorganization (1966)</h3>
+                        <p>Punjab was reorganized to create Haryana and Himachal Pradesh based on linguistic considerations.</p>
+                        
+                        <h3>North-Eastern Reorganization (1971-72)</h3>
+                        <p>Several states in the Northeast were carved out to address cultural and ethnic aspirations.</p>
+                        
+                        <h3>Telangana Movement</h3>
+                        <p>A long struggle led to the formation of Telangana as a separate state in 2014, carved out of Andhra Pradesh.</p>
+                        
+                        <h3>Jammu and Kashmir Reorganization (2019)</h3>
+                        <p>The state was reorganized into two Union Territories: Jammu & Kashmir and Ladakh, marking a significant administrative change.</p>
+                        
+                        <h3>State Boundary Adjustments (2022-2024)</h3>
+                        <p>Several minor boundary disputes between states were resolved through mutual agreements and central government mediation.</p>
+                    </div>
+                `
+            },
+            regionalInfo: {
+                title: "Regional Information",
+                content: `
+                    <div class="panel-details">
+                        <h3>Union Territories (2025)</h3>
+                        <p>India currently has 8 Union Territories governed directly by the Union Government:</p>
+                        <ul>
+                            <li>Andaman and Nicobar Islands</li>
+                            <li>Chandigarh</li>
+                            <li>Dadra and Nagar Haveli and Daman and Diu</li>
+                            <li>Delhi (National Capital Territory)</li>
+                            <li>Jammu and Kashmir</li>
+                            <li>Ladakh</li>
+                            <li>Lakshadweep</li>
+                            <li>Puducherry</li>
+                        </ul>
+                        
+                        <h3>Special Status States</h3>
+                        <p>Several states have been granted special provisions under the Constitution:</p>
+                        <ul>
+                            <li>Jammu and Kashmir (Article 370 abrogated in 2019)</li>
+                            <li>States in Northeast India (Article 371)</li>
+                            <li>Maharashtra and Gujarat (Article 371A)</li>
+                        </ul>
+                        
+                        <h3>Administrative Reforms (2023-2025)</h3>
+                        <p>Recent years have seen significant administrative reforms in various states, including:</p>
+                        <ul>
+                            <li>Implementation of the three-tier Panchayati Raj system in all states</li>
+                            <li>Enhanced powers for local bodies</li>
+                            <li>Digital governance initiatives at the state level</li>
+                            <li>Streamlined district administration</li>
+                            <li>New framework for center-state financial relations</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+
+        // Chatbot functionality
+        class Chatbot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendBtn = document.getElementById('sendBtn');
+                this.imageBtn = document.getElementById('imageBtn');
+                this.voiceBtn = document.getElementById('voiceBtn');
+                this.imageInput = document.getElementById('imageInput');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.errorMessage = document.getElementById('errorMessage');
+                
+                this.recognition = null;
+                this.isRecording = false;
+                
+                // Image generation API configuration
+                this.STABILITY_API_KEY = 'sk-LDpbEWyjCTjXkVo2wU6GWr2SYfF7S25JRE1cwlQVPAIzcrG9';
+                this.STABILITY_API_URL = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image';
+                
+                // Updated knowledge base for 2025
+                this.knowledgeBase = {
+                    lastUpdate: "June 2025",
+                    states: 28,
+                    unionTerritories: 8,
+                    recentEvents: [
+                        "Administrative reforms in northeastern states (2024)",
+                        "New digital governance framework for all states (2024)",
+                        "Enhanced cultural heritage preservation initiatives (2025)",
+                        "State boundary disputes resolution mechanisms (2025)"
+                    ]
+                };
+                
+                this.initializeEventListeners();
+                this.initializeSpeechRecognition();
+                
+                // Update the welcome message to reflect current knowledge
+                this.updateWelcomeMessage();
+            }
+            
+            updateWelcomeMessage() {
+                if (this.chatMessages) {
+                    this.chatMessages.innerHTML = `
+                        <div class="message bot">
+                            <div class="message-avatar">🇮🇳</div>
+                            <div class="message-content">
+                                <p>Namaste! I'm your <strong>Indian States Formation and Leadership</strong> expert with knowledge updated to ${this.knowledgeBase.lastUpdate}. Ask me anything about:</p>
+                                <ul>
+                                    <li>Indian states and their formation history (all ${this.knowledgeBase.states} states)</li>
+                                    <li>State reorganization and boundary changes through 2025</li>
+                                    <li>Chief Ministers and Governors throughout history</li>
+                                    <li>Political leadership in Indian states</li>
+                                    <li>Historical events related to state formation</li>
+                                    <li>Recent administrative reforms and governance changes</li>
+                                </ul>
+                                <p>You can also:</p>
+                                <ul>
+                                    <li>Ask me to <strong>generate an image</strong> related to Indian states</li>
+                                    <li><strong>Upload an image</strong> of maps or leaders for me to analyze</li>
+                                    <li>Use the <strong>microphone</strong> to speak your questions</li>
+                                </ul>
+                                <p>How can I assist you with Indian states formation and leadership today?</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            initializeEventListeners() {
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                this.imageBtn.addEventListener('click', () => this.imageInput.click());
+                this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+                this.voiceBtn.addEventListener('click', () => this.toggleVoiceInput());
+            }
+
+            initializeSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.continuous = false;
+                    this.recognition.interimResults = false;
+                    this.recognition.lang = 'en-US';
+
+                    this.recognition.onstart = () => {
+                        this.isRecording = true;
+                        this.voiceBtn.classList.add('recording');
+                        this.voiceBtn.innerHTML = '<i class="fas fa-circle" style="color: #ff5252;"></i>';
+                    };
+
+                    this.recognition.onend = () => {
+                        this.isRecording = false;
+                        this.voiceBtn.classList.remove('recording');
+                        this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    };
+
+                    this.recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        this.chatInput.value = transcript;
+                        // Automatically send the message after voice recognition
+                        setTimeout(() => this.sendMessage(), 500);
+                    };
+
+                    this.recognition.onerror = (event) => {
+                        this.showError('Speech recognition error: ' + event.error);
+                    };
+                }
+            }
+
+            toggleVoiceInput() {
+                if (!this.recognition) {
+                    this.showError('Speech recognition not supported in your browser');
+                    return;
+                }
+
+                if (this.isRecording) {
+                    this.recognition.stop();
+                } else {
+                    this.recognition.start();
+                }
+            }
+
+            async handleImageUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    this.showError('Please select a valid image file');
+                    return;
+                }
+
+                try {
+                    const base64 = await this.fileToBase64(file);
+                    this.addMessage('user', 'Image uploaded', base64);
+                    
+                    // Send image analysis request
+                    await this.analyzeImage(base64);
+                } catch (error) {
+                    this.showError('Error uploading image: ' + error.message);
+                }
+            }
+
+            fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            async analyzeImage(base64Image) {
+                this.showTypingIndicator();
+                
+                try {
+                    // Convert base64 to just the data part (remove data:image/...;base64, prefix)
+                    const base64Data = base64Image.split(',')[1];
+                    
+                    const response = await fetch(GROK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROK_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                           model: "llava-v1.5-7b-4096-preview",
+                            messages: [
+                               {
+                                    role: "system",
+                                    content: "You are an expert AI assistant specializing in analyzing images related to Indian states, their formation history, and political leadership. Your knowledge is focused exclusively on Indian states, territories, their historical formation, important dates, and political leaders throughout history. For any image, analyze it ONLY in the context of Indian states formation history and leadership. If the image shows politicians, state formation events, maps, flags, or historical moments related to Indian states, provide detailed information. If the image is NOT related to Indian state formation or leadership, politely inform the user that you can only discuss topics related to Indian states formation history and leadership. DO NOT provide general information about celebrities, films, sports, or other topics outside the scope of Indian state formation and political leadership. Your knowledge extends through June 2025."
+                                },
+                                {
+                                    role: "user",
+                                    content: [
+                                        {
+                                            type: "text",
+                                            text: "Analyze this image specifically in the context of Indian states formation and leadership history. If it's related to Indian states, their formation, boundaries, maps, political leaders, or historical events related to state creation, please provide details. If it's not related to these topics, let me know that you can only discuss Indian states formation and leadership."
+                                        },
+                                        {
+                                            type: "image_url",
+                                            image_url: {
+                                                url: `data:image/jpeg;base64,${base64Data}`
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            max_tokens: 1500,
+                            temperature: 0.5
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('API Error:', errorData);
+                        throw new Error(`API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                    }
+
+                    const data = await response.json();
+                    const botMessage = data.choices[0].message.content;
+                    
+                    this.hideTypingIndicator();
+                    this.addMessage('bot', botMessage);
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    this.addMessage('bot', 'Sorry, I encountered an issue analyzing this image. Please note that I can only analyze and discuss content related to Indian states formation and leadership history.');
+                    console.error('Image analysis error:', error);
+                }
+            }
+            
+            async generateImage(prompt) {
+                this.showTypingIndicator();
+                
+                try {
+                    // First make sure the prompt is related to Indian states formation or leadership
+                    const isRelevant = await this.checkRelevanceToIndianStates(prompt);
+                    
+                    if (!isRelevant) {
+                        this.hideTypingIndicator();
+                        this.addMessage('bot', "I'm sorry, I can only generate images related to Indian states, their formation history, maps, leaders, and related historical events. Please provide a request specific to these topics.");
+                        return;
+                    }
+                    
+                    // Get a refined prompt from the LLM
+                    const formattedPrompt = await this.getFormattedImagePrompt(prompt);
+                    
+                    // Display intermediate message
+                    this.addMessage('bot', `I'm creating an image based on your request: "${formattedPrompt}"\n\nGenerating image... please wait.`);
+                    
+                    // Make request to Stability AI
+                    const response = await fetch(this.STABILITY_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${this.STABILITY_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            text_prompts: [
+                                {
+                                    text: formattedPrompt,
+                                    weight: 1
+                                }
+                            ],
+                            cfg_scale: 7,
+                            height: 1024,
+                            width: 1024,
+                            samples: 1,
+                            steps: 30
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('Stability API Error:', errorData);
+                        throw new Error(`Image generation failed: ${response.status} - ${errorData.message || 'Unknown error'}`);
+                    }
+
+                    const responseData = await response.json();
+                    
+                    // Get the base64 image from the response
+                    const generatedImageBase64 = responseData.artifacts[0].base64;
+                    const fullImageSrc = `data:image/png;base64,${generatedImageBase64}`;
+                    
+                    // Hide typing indicator if it's still showing
+                    this.hideTypingIndicator();
+                    
+                    // Add the generated image to the chat
+                    this.addMessage('bot', `Here's the image I created based on your request about Indian states formation and leadership:`, fullImageSrc);
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    console.error('Image generation error:', error);
+                    
+                    // Fallback option with explanation
+                    this.addMessage('bot', 'I apologize, but I couldn\'t generate the image you requested. This might be due to API limitations or content restrictions. Please make sure your request is specifically about Indian states formation history or leadership. You can try a different description or use the image analysis feature instead by uploading an image.');
+                }
+            }
+            
+            async checkRelevanceToIndianStates(prompt) {
+                try {
+                    const response = await fetch(GROK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROK_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: "llama3-8b-8192",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: "You are a strict content filter that determines if a request is related to Indian states formation history and political leadership. Answer ONLY with 'YES' if the request is specifically about Indian states, their formation, history, boundaries, maps, political leaders, or historical events related to Indian states and territories. Answer 'NO' for any other topic including celebrities, entertainment, sports, food, or anything not directly related to Indian states formation and leadership."
+                                },
+                                {
+                                    role: "user",
+                                    content: prompt
+                                }
+                            ],
+                            max_tokens: 50,
+                            temperature: 0.1
+                        })
+                    });
+
+                    if (!response.ok) {
+                        return false; // Default to not relevant on error
+                    }
+
+                   const data = await response.json();
+                    const answer = data.choices[0].message.content.trim().toUpperCase();
+                    return answer.includes('YES');
+                } catch (error) {
+                    console.error('Error checking relevance:', error);
+                    return false; // Default to not relevant on error
+                }
+            }
+            
+            async getFormattedImagePrompt(userPrompt) {
+                try {
+                    const response = await fetch(GROK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROK_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: "llama3-8b-8192",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: "You are an expert at creating detailed image generation prompts specifically focused on Indian states formation and leadership. Your task is to take a user's image request and transform it into a highly detailed, descriptive prompt that will result in a beautiful, high-quality image. Focus only on enhancing prompts related to Indian history, state formation, maps, state boundaries, Indian political leaders, or historical events related to Indian states. Add appropriate cultural, historical, and geographical details specific to Indian states. Do not include any disclaimers or explanations - output ONLY the enhanced prompt text."
+                                },
+                                {
+                                    role: "user",
+                                    content: userPrompt
+                                }
+                            ],
+                            max_tokens: 300,
+                            temperature: 0.7
+                        })
+                    });
+
+                    if (!response.ok) {
+                        return userPrompt; // If there's an error, just use the original prompt
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0].message.content.trim();
+                } catch (error) {
+                    console.error('Error getting formatted prompt:', error);
+                    return userPrompt; // Return original prompt on error
+                }
+            }
+
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message) return;
+
+                this.addMessage('user', message);
+                this.chatInput.value = '';
+                this.showTypingIndicator();
+
+                // Check if this is an image generation request
+                if (message.toLowerCase().includes('generate image') || 
+                    message.toLowerCase().includes('create image') || 
+                    message.toLowerCase().includes('generate picture') || 
+                    message.toLowerCase().includes('create picture') ||
+                    message.toLowerCase().includes('draw') ||
+                    message.toLowerCase().includes('make an image') ||
+                    message.toLowerCase().includes('show me a picture') ||
+                    message.toLowerCase().includes('show me an image')) {
+                    
+                    await this.generateImage(message);
+                    return;
+                }
+
+                try {
+                    // First, check if question is relevant to our topic
+                    const isRelevant = await this.isMessageRelevant(message);
+                    
+                    if (!isRelevant) {
+                        this.hideTypingIndicator();
+                        this.addMessage('bot', "I'm sorry, I can only answer questions related to Indian states formation history and leadership. Please ask me about Indian states, their formation dates, boundaries, leaders, or related historical events.");
+                        return;
+                    }
+                    
+                    const response = await fetch(GROK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROK_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: "llama3-8b-8192",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: "You are a specialized AI assistant focused EXCLUSIVELY on Indian states formation history and leadership, with knowledge updated through June 2025. Your knowledge covers Indian states, their formation dates, reorganization, political leaders, chief ministers, governors, and related historical events. You must REFUSE to answer any question not directly related to these topics. For celebrities, entertainment, sports, general knowledge, or other topics outside Indian states formation and leadership, politely inform the user that you can only discuss Indian states formation history and leadership. Be engaging and informative ONLY about Indian states formation, reorganization, political divisions, and leadership throughout history. Include specific dates, names of leaders, and historical context when answering questions related to your specialized knowledge area. Your knowledge includes the most recent developments through June 2025, including the latest administrative reforms, leadership changes, and governance frameworks."
+                                },
+                                {
+                                    role: "user",
+                                    content: message
+                                }
+                            ],
+                            max_tokens: 1500,
+                            temperature: 0.7,
+                            stream: false
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('API Error:', response.status, errorData);
+                        throw new Error(`API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+                        throw new Error('Invalid response format from API');
+                    }
+                    
+                    const botMessage = data.choices[0].message.content;
+                    
+                    this.hideTypingIndicator();
+                    this.addMessage('bot', botMessage);
+                } catch (error) {
+                    this.hideTypingIndicator();
+                    console.error('Send message error:', error);
+                    this.addMessage('bot', 'Sorry, I encountered an error processing your request. Please try again with a question about Indian states formation or leadership.');
+                    this.showError('Error: ' + error.message);
+                }
+            }
+            
+            async isMessageRelevant(message) {
+                try {
+                    const response = await fetch(GROK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROK_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: "llama3-8b-8192",
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: "You are a strict content filter that determines if a question is related to Indian states formation history and political leadership. Answer only with 'YES' or 'NO'. Answer 'YES' if the question is about Indian states, their formation, reorganization, boundaries, maps, political leaders (Chief Ministers, Governors, etc.), or historical events related to Indian states and territories. Answer 'NO' for any other topic including celebrities, entertainment, sports, food, general knowledge questions, or anything not directly related to Indian states formation and leadership."
+                                },
+                                {
+                                    role: "user",
+                                    content: message
+                                }
+                            ],
+                            max_tokens: 10,
+                            temperature: 0.1
+                        })
+                    });
+
+                    if (!response.ok) {
+                        return false; // Default to not relevant on error
+                    }
+
+                    const data = await response.json();
+                    const answer = data.choices[0].message.content.trim().toUpperCase();
+                    return answer.includes('YES');
+                } catch (error) {
+                    console.error('Error checking relevance:', error);
+                    return true; // Default to allowing the question on error
+                }
+            }
+
+            addMessage(sender, text, image = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                messageDiv.style.opacity = '0';
+                messageDiv.style.transform = 'translateY(20px)';
+
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = sender === 'user' ? '👤' : '🇮🇳';
+
+                const content = document.createElement('div');
+                content.className = 'message-content';
+
+                if (image) {
+                    const img = document.createElement('img');
+                    img.src = image;
+                    img.className = 'image-preview';
+                    img.style.maxWidth = '280px'; // Larger preview for generated images
+                    img.style.maxHeight = '280px';
+                    img.onclick = function() {
+                        window.open(image, '_blank');
+                    };
+                    img.style.cursor = 'pointer';
+                    content.appendChild(img);
+                }
+
+                // Parse markdown-like formatting in text
+                if (text && typeof text === 'string') {
+                    // Convert *bold* to <strong>bold</strong>
+                    text = text.replace(/\*(.+?)\*/g, '<strong>$1</strong>');
+                    
+                    // Convert _italic_ to <em>italic</em>
+                    text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+                    
+                    // Add paragraph breaks for double newlines
+                    text = text.replace(/\n\n/g, '</p><p>');
+                    
+                    const textNode = document.createElement('div');
+                    textNode.innerHTML = `<p>${text}</p>`;
+                    content.appendChild(textNode);
+                }
+
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(content);
+
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                // Animate the message entrance with a slight delay
+                setTimeout(() => {
+                    messageDiv.style.opacity = '1';
+                    messageDiv.style.transform = 'translateY(0)';
+                    messageDiv.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                }, 50);
+            }
+
+            showTypingIndicator() {
+                this.typingIndicator.style.display = 'block';
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            hideTypingIndicator() {
+                this.typingIndicator.style.display = 'none';
+            }
+
+            showError(message) {
+                this.errorMessage.textContent = message;
+                this.errorMessage.style.animation = 'fadeInUp 0.3s ease';
+                setTimeout(() => {
+                    this.errorMessage.style.opacity = '0';
+                    this.errorMessage.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        this.errorMessage.textContent = '';
+                        this.errorMessage.style.opacity = '1';
+                        this.errorMessage.style.transition = '';
+                    }, 500);
+                }, 5000);
+            }
+        }
+
+        // Navigation functions
+        function navigateToLocalhost() {
+            window.location.href = "http://localhost:5000";
+        }
+        
+        function toggleTimeline() {
+            window.location.href = "http://localhost:3000";
+        }
+        
+        function openGame() {
+            window.location.href = "http://localhost:5001";
+        }
+        
+        function open3DModel() {
+            window.location.href = "model/model1.html";
+        }
+        
+        function time() {
+            window.location.href = "Visualization2/index1.html";
+        }
+        
+        function navigateTo() {
+            window.location.href = "achieve.html";
+        }
+
+        // Show Facts Modal
+        function showFacts() {
+            document.getElementById("factsModal").style.display = "block";
+        }
+
+        // Info box display for nav items
+        document.querySelectorAll('.navbar-link').forEach(item => {
+            item.addEventListener('click', function(event) {
+                if (this.getAttribute('href') === "#") {
+                    event.preventDefault();
+                    const infoBox = document.getElementById("infoBox");
+                    const infoHeading = document.getElementById("infoHeading");
+                    const infoText = document.getElementById("infoText");
+
+                    infoHeading.textContent = this.getAttribute('data-heading');
+                    infoText.textContent = this.getAttribute('data-info');
+
+                    infoBox.classList.add("active");
+
+                    // Hide after 5 seconds
+                    setTimeout(() => {
+                        infoBox.classList.remove("active");
+                    }, 5000);
+                }
+            });
+        });
+
+        // Modal handling
+        document.getElementById("showPopupButton").addEventListener("click", function() {
+            document.getElementById("myModal").style.display = "block";
+        });
+
+        document.getElementById("closePopupButton").addEventListener("click", function() {
+            document.getElementById("myModal").style.display = "none";
+        });
+
+        document.getElementById("closePanelButton").addEventListener("click", function() {
+            document.getElementById("panelModal").style.display = "none";
+        });
+
+        document.getElementById("closeFactsButton").addEventListener("click", function() {
+            document.getElementById("factsModal").style.display = "none";
+        });
+
+        document.getElementById("notificationClose").addEventListener("click", function() {
+            document.getElementById("notification").classList.remove("show");
+        });
+
+        window.addEventListener("click", function(event) {
+            if (event.target === document.getElementById("myModal")) {
+                document.getElementById("myModal").style.display = "none";
+            }
+            if (event.target === document.getElementById("panelModal")) {
+                document.getElementById("panelModal").style.display = "none";
+            }
+            if (event.target === document.getElementById("factsModal")) {
+                document.getElementById("factsModal").style.display = "none";
+            }
+        });
+
+        // Dashboard panel click handling
+        document.querySelectorAll('.dashboard-card').forEach(panel => {
+            panel.addEventListener('click', function() {
+                const panelType = this.getAttribute('data-panel');
+                const modalTitle = document.getElementById('panelModalTitle');
+                const modalContent = document.getElementById('panelModalContent');
+                
+                // Set content based on panel type
+                modalTitle.textContent = panelContent[panelType].title;
+                modalContent.innerHTML = panelContent[panelType].content;
+                
+                // Show the modal
+                document.getElementById('panelModal').style.display = "block";
+            });
+        });
+
+    
+       
+
+        // Update progress bar on scroll
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const x = e.clientX - e.target.getBoundingClientRect().left;
+                const y = e.clientY - e.target.getBoundingClientRect().top;
+                
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Stats counter animation
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Create Particles Effect
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const colors = ['#2563eb', '#3b82f6', '#6366f1', '#4338ca'];
+            
+            for (let i = 0; i < 80; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Set random properties
+                const size = Math.random() * 6 + 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const opacity = Math.random() * 0.3 + 0.1;
+                
+                // Position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Animation
+                const duration = Math.random() * 30 + 15;
+                const delay = Math.random() * 10;
+                
+                // Apply styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = color;
+                particle.style.opacity = opacity;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `floatParticle ${duration}s linear infinite`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Handle scroll events
+        function handleScroll() {
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                const navbar = document.getElementById('navbar');
+                
+                // Navbar transformation on scroll
+                if (scrollPosition > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                
+                // Show scroll to top button when scrolled down
+                if (scrollPosition > 500) {
+                    scrollIndicator.classList.add('visible');
+                } else {
+                    scrollIndicator.classList.remove('visible');
+                }
+            });
+            
+            // Scroll to top when clicked
+            scrollIndicator.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // Mobile menu toggle
+        function setupMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    const isOpen = navLinks.classList.contains('active');
+                    menuToggle.innerHTML = isOpen ? 
+                        '<i class="fas fa-times"></i>' : 
+                        '<i class="fas fa-bars"></i>';
+                });
+            }
+        }
+        
+        // Audio feedback for button clicks
+        function setupButtonSounds() {
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    // Create a subtle click sound
+                    const clickSound = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAB9");
+                    clickSound.volume = 0.2;
+                    clickSound.play().catch(err => {
+                        // Silently handle errors - may fail due to browser autoplay policies
+                        console.log("Audio playback failed", err);
+                    });
+                });
+            });
+        }
+        
+        // Smooth scroll for navigation links
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    
+                    if (targetId !== "#") {
+                        e.preventDefault();
+                        
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80, // Adjust for fixed header
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+        
+        // Initialize all components when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide loader after page loads
+            setTimeout(() => {
+                const loader = document.getElementById('pageLoader');
+                loader.classList.add('hidden');
+                
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+                
+                // Show notification
+                setTimeout(() => {
+                    document.getElementById('notification').classList.add('show');
+                    
+                    // Hide after 5 seconds
+                    setTimeout(() => {
+                        document.getElementById('notification').classList.remove('show');
+                    }, 5000);
+                }, 1000);
+            }, 1500);
+            
+            // Animate stats counters
+            animateValue('statesCount', 0, 28, 2000);
+            animateValue('utCount', 0, 8, 2000);
+            animateValue('historyYears', 0, 78, 2000);
+            animateValue('leaderCount', 0, 354, 2000);
+            
+            // Initialize components
+            const chatbot = new Chatbot();
+            createParticles();
+            handleScroll();
+            setupMobileMenu();
+            setupButtonSounds();
+            setupSmoothScroll();
+            
+            // Add animation to dashboard cards on scroll
+            const cards = document.querySelectorAll('.dashboard-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                observer.observe(card);
+            });
+            
+            // Add animation to team members
+            const teamMembers = document.querySelectorAll('.team-member');
+            const teamObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 150);
+                        teamObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            teamMembers.forEach(member => {
+                member.style.opacity = '0';
+                member.style.transform = 'translateY(30px)';
+                member.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                teamObserver.observe(member);
+            });
+            
+            // Add pulse animation to hero title
+            setTimeout(() => {
+                const heroTitle = document.querySelector('.hero-title');
+                if (heroTitle) {
+                    heroTitle.style.animation = 'gradientFlow 6s linear infinite, morphText 8s ease-in-out infinite';
+                }
+            }, 2000);
+
+            // Animate timeline items
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateX(0)';
+                        }, index * 200);
+                        timelineObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            timelineItems.forEach((item, index) => {
+                const isEven = index % 2 === 0;
+                item.style.opacity = '0';
+                item.style.transform = isEven ? 'translateX(-50px)' : 'translateX(50px)';
+                item.style.transition = 'opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                timelineObserver.observe(item);
+            });
+        });
+    </script>
+   
+
+</body>
+</html>

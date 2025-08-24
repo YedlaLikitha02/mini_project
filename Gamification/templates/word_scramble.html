@@ -1,0 +1,771 @@
+{% extends 'base.html' %}
+
+{% block title %}Word Scramble - Bharat States Saga{% endblock %}
+
+{% block styles %}
+<style>
+    :root {
+        --primary: #2563eb;
+        --secondary: #1e40af;
+        --accent: #64748b;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --neutral: #475569;
+        --surface: #1e293b;
+        --surface-light: #334155;
+        --border: #334155;
+        --gradient-primary: linear-gradient(135deg, #2563eb, #3b82f6);
+        --gradient-secondary: linear-gradient(135deg, #1e40af, #2563eb);
+        --gradient-accent: linear-gradient(135deg, #4338ca, #6366f1);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+        --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        background-color: var(--dark);
+        color: var(--light);
+        font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .word-container {
+        margin-bottom: 30px;
+        padding: 20px;
+        border-radius: var(--radius-lg);
+        background-color: rgba(30, 41, 59, 0.5);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+        border: 1px solid var(--border);
+    }
+    
+    .word-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(37, 99, 235, 0.3);
+        border-color: var(--primary);
+    }
+    
+    .word-container.solved {
+        background-color: rgba(37, 99, 235, 0.2);
+        border-color: var(--primary);
+    }
+    
+    .scrambled-word {
+        font-size: 2rem;
+        font-weight: bold;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+        text-align: center;
+        color: #ff9933;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .word-hint {
+        font-style: italic;
+        margin-bottom: 15px;
+        color: var(--accent);
+    }
+    
+    .word-input {
+        margin-bottom: 10px;
+    }
+    
+    .timer-display {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--light);
+    }
+    
+    .game-over-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(6px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .game-over-card {
+        background-color: rgba(30, 41, 59, 0.95);
+        padding: 30px;
+        border-radius: var(--radius-xl);
+        max-width: 500px;
+        text-align: center;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xl), 0 0 30px rgba(37, 99, 235, 0.2);
+        color: var(--light);
+        animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .game-over-card h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--light);
+    }
+    
+    .game-over-card .lead {
+        color: var(--accent);
+        margin-bottom: 20px;
+    }
+    
+    .game-over-card p {
+        margin-bottom: 8px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
+        text-transform: uppercase;
+        z-index: 1;
+    }
+    
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(-100%);
+        transition: var(--transition);
+        z-index: -1;
+    }
+    
+    .btn:hover::before {
+        transform: translateX(0);
+    }
+    
+    .btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+        transform: translateY(-3px);
+    }
+    
+    .btn-secondary {
+        background: var(--gradient-secondary);
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        box-shadow: 0 7px 14px rgba(30, 64, 175, 0.4);
+        transform: translateY(-3px);
+    }
+    
+    .btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        color: white;
+    }
+    
+    .btn-warning:hover {
+        box-shadow: 0 7px 14px rgba(245, 158, 11, 0.4);
+        transform: translateY(-3px);
+    }
+    
+    .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        opacity: 0.7;
+        animation: confetti-fall 5s linear forwards;
+    }
+    
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(calc(100vh + 100px)) rotate(720deg);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Timer countdown styles */
+    .countdown-timer {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 20px;
+    }
+    
+    .countdown-circle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+    
+    .countdown-circle-bg {
+        background-color: rgba(51, 65, 85, 0.6);
+        z-index: 1;
+    }
+    
+    .countdown-circle-progress {
+        background: conic-gradient(#ff9933 0%, transparent 0%);
+        z-index: 2;
+    }
+    
+    .countdown-text {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        font-size: 2rem;
+        font-weight: bold;
+        z-index: 3;
+        color: var(--light);
+    }
+    
+    /* Game progress bar */
+    .progress-container {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        color: var(--accent);
+        font-weight: 500;
+    }
+    
+    .progress {
+        height: 8px;
+        background-color: rgba(51, 65, 85, 0.6);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #2563eb, #6366f1);
+        background-size: 200% auto;
+        animation: gradientFlow 3s linear infinite;
+        transition: width 0.5s ease;
+    }
+    
+    @keyframes gradientFlow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
+    @keyframes borderGlow {
+        0%, 100% {
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+        }
+    }
+    
+    /* Word letter tiles */
+    .letter-tiles {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .letter-tile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: white;
+        font-weight: bold;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        user-select: none;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .letter-tile:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+    }
+    
+    .letter-tile.used {
+        opacity: 0.5;
+        pointer-events: none;
+        transform: scale(0.95);
+    }
+    
+    .answer-container {
+        display: flex;
+        justify-content: center;
+        min-height: 50px;
+        margin-bottom: 20px;
+        background-color: rgba(51, 65, 85, 0.4);
+        border-radius: var(--radius-md);
+        padding: 10px;
+    }
+    
+    .answer-letter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(30, 41, 59, 0.6);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        margin: 0 4px;
+        font-weight: bold;
+        color: var(--light);
+        transition: all 0.2s ease;
+    }
+    
+    .animate__animated {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+    
+    .animate__shakeX {
+        animation-name: shakeX;
+    }
+    
+    @keyframes shakeX {
+        from, to {
+            transform: translate3d(0, 0, 0);
+        }
+        
+        10%, 30%, 50%, 70%, 90% {
+            transform: translate3d(-10px, 0, 0);
+        }
+        
+        20%, 40%, 60%, 80% {
+            transform: translate3d(10px, 0, 0);
+        }
+    }
+    
+    .d-grid {
+        display: grid;
+    }
+    
+    .gap-2 {
+        gap: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2>Word Scramble <span class="badge bg-secondary">{{ difficulty }}</span></h2>
+        <p>Unscramble the letters to form words related to Indian states and their capitals.</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="countdown-timer">
+            <div class="countdown-circle countdown-circle-bg"></div>
+            <div class="countdown-circle countdown-circle-progress" id="timer-progress"></div>
+            <div class="countdown-text" id="timer-text">
+                05:00
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="progress-container">
+    <div class="progress-label">
+        <span>Progress:</span>
+        <span id="progress-text">0/{{ words|length }}</span>
+    </div>
+    <div class="progress">
+        <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+    </div>
+</div>
+
+<div id="word-list" class="row">
+    {% for word in words %}
+    <div class="col-md-6 mb-4">
+        <div class="word-container" data-word="{{ word.word|lower|replace(' ', '') }}" id="word-{{ loop.index }}">
+            <div class="word-hint">{{ word.hint }}</div>
+            <div class="letter-tiles" id="tiles-{{ loop.index }}">
+                {% for letter in word.scrambled %}
+                <div class="letter-tile" data-letter="{{ letter }}">{{ letter|upper }}</div>
+                {% endfor %}
+            </div>
+            <div class="answer-container" id="answer-{{ loop.index }}">
+                {% for _ in range(word.word|lower|replace(' ', '')|length) %}
+                <div class="answer-letter"></div>
+                {% endfor %}
+            </div>
+            <div class="text-center">
+                <button class="btn btn-sm btn-warning reset-word">Reset</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="game-over" class="game-over-overlay" style="display: none;">
+    <div class="game-over-card">
+        <h2>Game Complete!</h2>
+        <p class="lead">You've unscrambled all the words!</p>
+        <div class="mb-3">
+            <p>Time: <span id="final-time">00:00</span></p>
+            <p>Words Solved: <span id="solved-count">0</span>/<span id="total-count">0</span></p>
+            <p>Points Earned: <span id="points-earned">0</span></p>
+        </div>
+        <div class="d-grid gap-2">
+            <a href="/word_scramble?difficulty={{ difficulty }}" class="btn btn-primary">Play Again</a>
+            <a href="/home" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<div id="time-up" class="game-over-overlay" style="display: none;">
+    <div class="game-over-card">
+        <h2>Time's Up!</h2>
+        <p class="lead">You ran out of time!</p>
+        <div class="mb-3">
+            <p>Words Solved: <span id="time-up-solved-count">0</span>/<span id="time-up-total-count">0</span></p>
+            <p>Points Earned: <span id="time-up-points-earned">0</span></p>
+        </div>
+        <div class="d-grid gap-2">
+            <a href="/word_scramble?difficulty={{ difficulty }}" class="btn btn-primary">Try Again</a>
+            <a href="/home" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Game variables
+    const words = {{ words|tojson }};
+    let solvedWords = 0;
+    let gameStarted = false;
+    let timerInterval;
+    let timeRemaining = 300; // 5 minutes in seconds
+    let totalGameTime = 300;
+    
+    // Initialize the game
+    $(document).ready(function() {
+        setupGame();
+        
+        // Set total count for game over screen
+        $('#total-count').text(words.length);
+        $('#time-up-total-count').text(words.length);
+        
+        // Start the timer when the first letter is clicked
+        $(document).on('click', '.letter-tile:not(.used)', function() {
+            if (!gameStarted) {
+                startGame();
+            }
+        });
+        
+        // Handle letter tile clicks
+        $('.letter-tile').click(function() {
+            if ($(this).hasClass('used')) return;
+            
+            const letter = $(this).data('letter');
+            const wordContainer = $(this).closest('.word-container');
+            const wordId = wordContainer.attr('id');
+            
+            // Find the first empty answer slot
+            const emptySlot = wordContainer.find('.answer-letter:empty').first();
+            if (emptySlot.length) {
+                emptySlot.text(letter.toUpperCase()).data('tile', $(this));
+                $(this).addClass('used');
+                
+                // Check if word is complete
+                const answerContainer = wordContainer.find('.answer-container');
+                if (answerContainer.find('.answer-letter:empty').length === 0) {
+                    // Check if answer is correct
+                    const submittedWord = answerContainer.find('.answer-letter').map(function() {
+                        return $(this).text().toLowerCase();
+                    }).get().join('');
+                    
+                    const correctWord = wordContainer.data('word').toLowerCase();
+                    
+                    if (submittedWord === correctWord) {
+                        // Word is correct
+                        wordContainer.addClass('solved');
+                        solvedWords++;
+                        updateProgress();
+                        
+                        // Show confetti for the solved word
+                        createConfetti(wordContainer);
+                        
+                        // Check if all words are solved
+                        if (solvedWords === words.length) {
+                            endGame();
+                        }
+                    } else {
+                        // Word is incorrect, shake the container
+                        wordContainer.addClass('animate__animated animate__shakeX');
+                        setTimeout(function() {
+                            wordContainer.removeClass('animate__animated animate__shakeX');
+                            // Reset the word
+                            resetWord(wordId);
+                        }, 500);
+                    }
+                }
+            }
+        });
+        
+        // Reset word button
+        $('.reset-word').click(function() {
+            const wordId = $(this).closest('.word-container').attr('id');
+            resetWord(wordId);
+        });
+    });
+    
+    function setupGame() {
+        // Reset game state
+        solvedWords = 0;
+        gameStarted = false;
+        
+        // Adjust time based on difficulty
+        if ('{{ difficulty }}' === 'Easy') {
+            timeRemaining = 300; // 5 minutes
+            totalGameTime = 300;
+        } else if ('{{ difficulty }}' === 'Medium') {
+            timeRemaining = 240; // 4 minutes
+            totalGameTime = 240;
+        } else { // Hard
+            timeRemaining = 180; // 3 minutes
+            totalGameTime = 180;
+        }
+        
+        // Update timer display
+        updateTimerDisplay();
+    }
+    
+    function resetWord(wordId) {
+        // Clear answer slots
+        $(`#${wordId}`).find('.answer-letter').text('').removeData('tile');
+        
+        // Reset letter tiles
+        $(`#${wordId}`).find('.letter-tile').removeClass('used');
+    }
+    
+    function updateProgress() {
+        const percentage = (solvedWords / words.length) * 100;
+        $('#progress-bar').css('width', percentage + '%');
+        $('#progress-text').text(`${solvedWords}/${words.length}`);
+    }
+    
+    function createConfetti(container) {
+        // Get container position
+        const containerPos = container.offset();
+        const containerWidth = container.width();
+        
+        // Create 20 confetti particles
+        for (let i = 0; i < 20; i++) {
+            const confetti = $('<div class="confetti"></div>');
+            const x = containerPos.left + Math.random() * containerWidth;
+            const color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+            
+            confetti.css({
+                left: x + 'px',
+                top: containerPos.top + 'px',
+                backgroundColor: color,
+                animationDelay: Math.random() * 2 + 's'
+            });
+            
+            $('body').append(confetti);
+            
+            // Remove after animation
+            setTimeout(function() {
+                confetti.remove();
+            }, 5000);
+        }
+    }
+    
+    function startGame() {
+        gameStarted = true;
+        
+        // Clear any existing timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        
+        // Start timer
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+    
+    function updateTimer() {
+        timeRemaining--;
+        
+        // Update display
+        updateTimerDisplay();
+        
+        // Check if time is up
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            timeUp();
+        }
+    }
+    
+    function updateTimerDisplay() {
+        // Calculate minutes and seconds
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        
+        // Format the time
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Update text
+        $('#timer-text').text(formattedTime);
+        
+        // Update progress circle
+        const percentage = (timeRemaining / totalGameTime) * 100;
+        $('#timer-progress').css('background', `conic-gradient(#ff9933 ${percentage}%, transparent ${percentage}%)`);
+    }
+    
+    function timeUp() {
+        // Game over - out of time
+        $('#time-up-solved-count').text(solvedWords);
+        
+        // Submit score to server
+        $.ajax({
+            url: '/api/submit_game_score',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                game_type: 'word_scramble',
+                score: solvedWords,
+                time_taken: totalGameTime,  // Used all time
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                $('#time-up-points-earned').text(data.points_earned);
+                
+                // Handle level up
+                if (data.level_up) {
+                    alert(`Congratulations! You've reached level ${data.new_level}!`);
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    alert(`You've earned new badges: ${badgeNames}`);
+                }
+                
+                // Show time up screen
+                $('#time-up').fadeIn();
+            },
+            error: function(error) {
+                console.error("Error submitting score:", error);
+                alert("Failed to submit your score. Your progress might not be saved.");
+                $('#time-up').fadeIn();
+            }
+        });
+    }
+    
+    function endGame() {
+        // Stop timer
+        clearInterval(timerInterval);
+        
+        // Calculate final time
+        const timeElapsed = totalGameTime - timeRemaining;
+        const minutes = Math.floor(timeElapsed / 60);
+        const seconds = timeElapsed % 60;
+        const finalTimeStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
+        // Update game over screen
+        $('#final-time').text(finalTimeStr);
+        $('#solved-count').text(solvedWords);
+        
+        // Submit score to server
+        $.ajax({
+            url: '/api/submit_game_score',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                game_type: 'word_scramble',
+                score: solvedWords,
+                time_taken: timeElapsed,
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                $('#points-earned').text(data.points_earned);
+                
+                // Handle level up
+                if (data.level_up) {
+                    alert(`Congratulations! You've reached level ${data.new_level}!`);
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    alert(`You've earned new badges: ${badgeNames}`);
+                }
+                
+                // Show game over screen
+                $('#game-over').fadeIn();
+            },
+            error: function(error) {
+                console.error("Error submitting score:", error);
+                alert("Failed to submit your score. Your progress might not be saved.");
+                $('#game-over').fadeIn();
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telangana Development Timeline - KCR Achievements</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #64748b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --neutral: #475569;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --border: #334155;
+            --gradient-primary: linear-gradient(135deg, #2563eb, #3b82f6);
+            --gradient-secondary: linear-gradient(135deg, #1e40af, #2563eb);
+            --gradient-accent: linear-gradient(135deg, #4338ca, #6366f1);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.25);
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            color: var(--light);
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(90deg, #2563eb, #6366f1, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradientFlow 6s linear infinite;
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--accent);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .timeline-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-btn {
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            background: rgba(51, 65, 85, 0.4);
+            color: var(--accent);
+            box-shadow: var(--shadow-sm);
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+        }
+
+        .timeline-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(37, 99, 235, 0.4);
+            background: rgba(51, 65, 85, 0.6);
+            color: var(--light);
+            border-color: var(--primary);
+        }
+
+        .timeline-btn.active {
+            background: var(--gradient-primary);
+            transform: scale(1.05);
+            color: var(--light);
+            border: none;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            background: rgba(51, 65, 85, 0.4);
+            color: var(--accent);
+            border: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+
+        .filter-btn:hover {
+            background: rgba(51, 65, 85, 0.6);
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            color: var(--light);
+        }
+
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            color: var(--light);
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .map-container {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .custom-popup {
+            font-family: 'Manrope', Arial, sans-serif;
+        }
+
+        .popup-content {
+            max-width: 280px;
+        }
+
+        .popup-content h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .popup-content p {
+            color: var(--neutral);
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .popup-year {
+            background: var(--gradient-primary);
+            color: var(--light);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .details-btn {
+            background: var(--gradient-primary);
+            color: var(--light);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+            font-size: 0.8rem;
+        }
+
+        .details-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--surface);
+            margin: 2% auto;
+            padding: 0;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            color: var(--light);
+            border: 1px solid var(--border);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .modal-header .subtitle {
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--accent);
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(51, 65, 85, 0.4);
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+            background: rgba(51, 65, 85, 0.6);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 1.5rem 2rem;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: rgba(30, 41, 59, 0.4);
+            padding: 1.2rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.2);
+            border-color: var(--primary);
+        }
+
+        .stat-item h4 {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 15px rgba(37, 99, 235, 0.2);
+            border-color: var(--primary);
+        }
+
+        .highlights {
+            background: rgba(30, 41, 59, 0.4);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+        }
+
+        .highlights h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .highlights ul {
+            list-style: none;
+        }
+
+        .highlights li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--accent);
+        }
+
+        .highlights li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+            }
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .leaflet-popup-tip {
+            background: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 0.9rem;
+            }
+            
+            .timeline-selector {
+                gap: 0.6rem;
+            }
+            
+            .timeline-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+            
+            #map {
+                height: 450px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.85rem;
+            }
+            
+            .controls {
+                padding: 1rem;
+            }
+            
+            .timeline-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.7rem;
+            }
+            
+            #map {
+                height: 350px;
+            }
+            
+            .modal-header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .modal-body {
+                padding: 1rem 1.5rem;
+            }
+            
+            .stat-item p {
+                font-size: 1rem;
+            }
+            
+            .gallery-img {
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Telangana Development Timeline</h1>
+            <p>KCR's Transformational Journey (2014-2025)</p>
+        </div>
+
+        <div class="controls">
+            <div class="timeline-selector">
+                <button class="timeline-btn active" onclick="filterByTimeline('all')">All Projects</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2014-2015')">2014-2015</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2015-2016')">2015-2016</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2016-2017')">2016-2017</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2017-2018')">2017-2018</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2018-2019')">2018-2019</button>
+                <button class="timeline-btn" onclick="filterByTimeline('2022-2025')">2022-2025</button>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Global variables
+        let map;
+        let markersLayer;
+        let currentTimelineFilter = 'all';
+        let currentCategoryFilter = 'all';
+
+        // Comprehensive Telangana projects data with timeline
+        const projectsData = [
+            {
+                id: 1,
+                name: "Kaleshwaram Lift Irrigation Project",
+                category: "infrastructure",
+                timeline: "2016-2017",
+                lat: 18.8176,
+                lng: 79.7003,
+                description: "World's largest multi-stage lift irrigation project",
+                icon: "🏗️",
+                details: {
+                    title: "Kaleshwaram Lift Irrigation Project",
+                    subtitle: "Engineering Marvel of Telangana",
+                    cost: "₹80,500 Crores",
+                    beneficiaries: "37 Lakh Acres",
+                    completion: "2019",
+                    highlights: [
+                        "The Kaleshwaram Lift Irrigation Project (KLIP) is a a multi-purpose irrigation project ",
+                        "World's largest multi-stage lift irrigation project",
+                        "On 21 June 2019, the project was opened by Telangana Governor E. S. L. Narasimhan and Chief minister K. Chandrashekar Rao",
+                        "Pumps water from Godavari river to irrigate 37 lakh acres",
+                        "20 pumping stations with 1832 MW capacity",
+                        "Barrages at Medigadda, Annaram, and Sundilla",
+                        "The project aims to produce a total of 240 TMC (195 from Medigadda Barrage, 20 from Sripada Yellampalli project and 25 from groundwater), of which 169 has been allocated for irrigation, 30 for Hyderabad municipal water, 16 for miscellaneous industrial uses and 10 for drinking water in nearby villages",
+                        "Benefits 13 districts of Telangana",
+                        "Transformed drought-prone areas into green fields"
+                    ],
+                    images: [
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Lakshmi_pumphouse_aerial_view.png/1024px-Lakshmi_pumphouse_aerial_view.png",
+                        "https://images.livemint.com/img/2019/06/21/600x338/PTI6_21_2019_000334B_1561142063921_1561142078400.jpg",
+                        "https://pwonlyias.com/wp-content/uploads/2023/11/Untitled-031.webp",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSmLEUIWZgBeEmHXGOtqYtsngBsSTvB3s2Q&s"
+
+                    ]
+                }
+            },
+            {
+                id: 2,
+                name: "Mission Bhagiratha",
+                category: "infrastructure",
+                timeline: "2016-2017",
+                lat: 17.3850,
+                lng: 78.4867,
+                description: "Providing safe drinking water to every household",
+                icon: "💧",
+                details: {
+                    title: "Mission Bhagiratha",
+                    subtitle: "Safe Drinking Water for All",
+                    cost: "₹43,791 Crores",
+                    beneficiaries: "2.5 Crore People",
+                    completion: "2018",
+                    highlights: [
+                        "Mission Bhagiratha is a safe drinking water project for every village in Telangana State, with a budget of ₹43,791 crores",
+                        "Largest drinking water supply project in the world",
+                        "The project aims to provide piped water to 2.32 crore people in 20 lakh households in urban and 60 lakhs in rural areas of Telangana",
+                        "The project was launched by the Prime Minister of India, Narendra Modi at Komatibanda village, Medak district in Gajwel constituency on 6 August 2016.",
+                        "Water quality monitoring through advanced technology",
+                        "The 150 water treatment plants, 62 pumping stations, 35,573 Overhead service reservoirs, 27 intake wells are set up. The electric motors and pumping systems were sourced from BHEL with advanced technology.",
+                        "Eliminated water-borne diseases significantly"
+                    ],
+                    images: [
+                        "https://images.livemint.com/rf/Image-621x414/LiveMint/Period2/2016/08/10/Photos/Processed/narendramodi4-kl2C--621x414@LiveMint.jpg",
+                        "https://cdn.s3waas.gov.in/s3ea5d2f1c4608232e07d3aa3d998e5135/uploads/2020/01/2020022023.jpg",
+                        "https://media.telanganatoday.com/wp-content/uploads/2020/10/Mission-Bhagiratha.jpg",
+                        "https://meil.in/sites/default/files/2024-09/Gajwel_share.jpg"
+                    ]
+                }
+            },
+            {
+                id: 3,
+                name: "Mission Kakatiya",
+                category: "agriculture",
+                timeline: "2014-2015",
+                lat: 18.0011,
+                lng: 79.5885,
+                description: "Restoration of minor irrigation tanks",
+                icon: "🌊",
+                details: {
+                    title: "Mission Kakatiya",
+                    subtitle: "Reviving Traditional Water Bodies",
+                    cost: "₹20,000 Crores",
+                    beneficiaries: "46,531 Tanks",
+                    completion: "Ongoing",
+                    highlights: [
+                        "Mission Kakatiya is a tank restoration and rejuvenation program in the state of Telangana",
+                        "The Program was inaugurated on 12 March 2015 by the Hon'ble Chief Minister Sri K. Chandrashekhar Rao in Sadashiva Nagar Village",
+                        "The objective of Mission Kakatiya is to enhance the development of agriculture based income for small and marginal farmers, by accelerating the development of minor irrigation infrastructure, strengthening community based irrigation management and adopting a comprehensive programme for restoration of tanks.",
+                        "Increased groundwater levels significantly",
+                        "Enhanced agricultural productivity by 30%",
+                        "Community participation in tank restoration",
+                        "Preserved historical water management systems"
+                    ],
+                    images: [
+                        "https://assets.thehansindia.com/h-upload/2022/07/08/1301933-kcr.webp",
+                        "https://cdn.s3waas.gov.in/s3795c7a7a5ec6b460ec00c5841019b9e9/uploads/2020/07/2020072340.jpg",
+                        "https://assets.thehansindia.com/h-upload/2023/06/08/1356359-mission-kakatiya.webp",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbcBBF60taZW6tknwLDgQs4-XVH54TAtQZxw&s"
+                    ]
+                }
+            },
+            {
+                id: 4,
+                name: "Rythu Bandhu",
+                category: "agriculture",
+                timeline: "2018-2019",
+                lat: 17.0005,
+                lng: 79.1288,
+                description: "Financial assistance to farmers for cultivation",
+                icon: "🌾",
+                details: {
+                    title: "Rythu Bandhu",
+                    subtitle: "Investment Support for Farmers",
+                    cost: "₹12,000 Crores annually",
+                    beneficiaries: "58 Lakh Farmers",
+                    completion: "2018 onwards",
+                    highlights: [
+                        "Rythu Bandhu scheme, also known as Farmer's Investment Support Scheme (FISS), is a welfare program to support farmer's investment for two crops a year by the Government of Telangana",
+                        "The scheme was announced by the Former Chief Minister of Telangana, K. Chandrashekhar Rao at Farmers Coordination Committee (Rythu Samanvaya Samithi) conference at Jayashankar Agriculture University on 25 February 2018.",
+                        "The government is providing 58.33 lakh (5.8 million) farmers,Direct investment support of ₹10,000 per acre per season",
+                        "Covers both Kharif and Rabi seasons",
+                        "Benefits 58 lakh farmer families",
+                        "No intermediaries - direct bank transfer",
+                        "Largest farmer investment support scheme in India",
+                        "Reduced farmer suicides significantly"
+                    ],
+                    images: [
+                        "https://overseasnews.in/wp-content/uploads/2018/05/Telangana-Chief-Minister-KCR-launches-Rythu-Bandhu-Scheme-in-Karimnagar-19.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuLNRyifTVKwtcPxxVH0P1a5YYkiMOPHEc-A&s",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9lwp_XKZZCJJZbVna5Cd_eKgE9uUdOXE_8A&s",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFbpkZXwgHnwXQvtyBCDV35lkXOQ7POZClmQ00gOkPFRQ6_EZIQ5eZVP5PK_mVWwhEJ3I&usqp=CAU"
+                    ]
+                }
+            },
+            {
+                id: 5,
+                name: "T-Hub",
+                category: "technology",
+                timeline: "2014-2015",
+                lat: 17.4435,
+                lng: 78.3772,
+                description: "India's leading innovation ecosystem",
+                icon: "💻",
+                details: {
+                    title: "T-Hub",
+                    subtitle: "Fostering Innovation and Entrepreneurship",
+                    cost: "₹200 Crores",
+                    beneficiaries: "1000+ Startups",
+                    completion: "2015",
+                    highlights: [
+                        "T–Hub (Technology Hub) is an innovation intermediary and largest business incubator based in Raidurg, Hyderabad, Telangana, India.",
+                        "The first phase of T-Hub was formally launched by S. L. Narasimhan, Governor of Telangana; Ratan Tata, Chairman Emeritus of Tata Sons; and K. T. Rama Rao, Telangana IT & Panchayat Raj Minister on 5 November 2015 later T-Hub 2.0 was inaugurated on 28 June, 2022, by Telangana Chief Minister K Chandrashekhar Rao ",
+                        "T-Hub has designed and delivered more than 100 innovation programs in the last seven years[16] to 2000 startups",
+                        "Partnership with global tech giants",
+                        "T-Hub has a number of different incubation and advancement programs for startups at different stages of their growth , Created over 40,000 jobs",
+                        "Focus on emerging technologies like AI, IoT, blockchain",
+                        "Raised over $1 billion in funding for startups"
+                    ],
+                    images: [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzWaSXMTLwjTtlc_BAfveOVANh1KoQCcMfPBvm4AagS-7IrVsOpM5MiYd_c-HctjhgHF4&usqp=CAU",
+                        "https://upload.wikimedia.org/wikipedia/commons/4/40/T-Hub_Logo-PNG.png",
+                        "https://t-hub.co/wp-content/uploads/2024/01/video-new-thumbnail-1-1.webp",
+                       "https://ktrvision.wordpress.com/wp-content/uploads/2016/12/us-tour-day-one-washington-dc-4.jpg?w=685"
+                    ]
+                }
+            },
+            {
+                id: 6,
+                name: "Hyderabad Metro Rail",
+                category: "infrastructure",
+                timeline: "2014-2015",
+                lat: 17.4065,
+                lng: 78.4772,
+                description: "Modern metro rail connecting Hyderabad",
+                icon: "🚇",
+                details: {
+                    title: "Hyderabad Metro Rail",
+                    subtitle: "Transforming Urban Transportation",
+                    cost: "₹18,800 Crores",
+                    beneficiaries: "3 Million Daily Commuters",
+                    completion: "2017-2019",
+                    highlights: [
+                        "The Hyderabad Metro is a rapid transit system, serving the city of Hyderabad, Telangana, India",
+                        "A 30-kilometre (19-mile) stretch from Miyapur to Nagole, with 24 stations, was inaugurated on 28 November 2017 by Prime Minister Narendra Modi.",
+                        "Largest metro rail project in PPP mode globally,It is estimated to cost ₹18,800 crore (US$2.2 billion). As of February 2020, about 490,000 people use the Metro per day.",
+                        "69 km operational network with 57 stations",
+                        "Reduces travel time by 50-60%",
+                        "Eco-friendly electric trains",
+                        "Integration with IT corridor and airport",
+                        "Daily ridership of 4+ lakh passengers"
+                    ],
+                    images: [
+                        "https://d1c4d7gnm6as1q.cloudfront.net/Pictures/480xany/5/4/8/21548_tn_in-hyderabad_metro_red_line_extension_3.jpg",
+                        "https://www.99acres.com/microsite/articles/files/2016/05/hyderabad_metro_slide01.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Y_V6sxXWxRdow2evw6qu6qdTUbdBM4vC1Q&s",
+                        "https://upload.wikimedia.org/wikipedia/commons/8/8e/Erragadda_Metro_Station_Hyderabad.jpg"
+                    ]
+                }
+            },
+            {
+                id: 7,
+                name: "KG to PG",
+                category: "education",
+                timeline: "2018-2019",
+                lat: 17.2403,
+                lng: 80.1696,
+                description: "Free education from KG to PG",
+                icon: "🎓",
+                details: {
+                    title: "KG to PG Education",
+                    subtitle: "Free Quality Education for All",
+                    cost: "₹15,000 Crores annually",
+                    beneficiaries: "60 Lakh Students",
+                    completion: "2018 onwards",
+                    highlights: [
+                        "Free education from KG to Post Graduation",
+                        "Benefits 60 lakh students across the state",
+                        "Includes free textbooks, uniforms, and meals",
+                        "Focus on quality education infrastructure",
+                        "Digital classrooms and smart learning",
+                        "Significant improvement in literacy rates"
+                    ],
+                    images: [
+                        "https://media.telanganatoday.com/wp-content/uploads/2023/02/KTR.jpg",
+                        "https://media.telanganatoday.com/wp-content/uploads/2022/08/kg-to-pg-center-gambhiraope.jpg",
+                        "https://assets.thehansindia.com/h-upload/2023/02/01/1333146-tr.webp",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRC6HENtRSAQenUDaw4a3oei_UaQJm4g2-Clg&s"
+                    ]
+                }
+            },
+            {
+                id: 8,
+                name: "Rythu Bima",
+                category: "agriculture",
+                timeline: "2018-2019",
+                lat: 18.9891,
+                lng: 79.7473,
+                description: "Life insurance for farmers",
+                icon: "🛡️",
+                details: {
+                    title: "Rythu Bima",
+                    subtitle: "Life Insurance Security for Farmers",
+                    cost: "₹2,000 Crores",
+                    beneficiaries: "58 Lakh Farmers",
+                    completion: "2018",
+                    highlights: [
+                        "Telangana Rythubima Scheme is a scheme introduced by the Telangana government for the farmers of Telangana state,The Rythu Bima Scheme was officially launched by Chief Minister KCR on 14 August 2018 ..",
+                        "This scheme is designed to provide insurance compensation of Rs 5 lakh to the nominee from LIC within 10 days in case of death of a farmer due to any reason",
+                        "500 crore rupees have been allocated in the 2018 Telangana state budget for the implementation of this scheme ,Covers 58 lakh farmer families",
+                        "The premium of the Rythubima Scheme increased to 56.54 percent, and the government paid a total of Rs 3,556 per farmer to LIC as premium for 32.16 lakh farmers.",
+                        "24x7 claim settlement process",
+                        "Additional ₹5 lakh for accidental death",
+                        "Fastest claim settlement in India"
+                    ],
+                    images: [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpkFiXRCvcw5TrpjpgdLlisviFBpp-7EVf3A&s",
+                        "http://d2e1hu1ktur9ur.cloudfront.net/wp-content/uploads/2023/05/Rythu-Bima-1.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlOYMK8PLuSPPOyyIFScM3L_6TNZFs8DiuPaKutlEjhzyohx856vivTpKvRPQMCf-VfsQ&usqp=CAU",
+                    ]
+                }
+            },
+            {
+                id: 9,
+                name: "TS-iPASS",
+                category: "technology",
+                timeline: "2014-2015",
+                lat: 17.5449,
+                lng: 78.5718,
+                description: "Single window clearance for industries",
+                icon: "🏭",
+                details: {
+                    title: "TS-iPASS",
+                    subtitle: "Industrial Project Approval & Self Certification System",
+                    cost: "₹500 Crores",
+                    beneficiaries: "10,000+ Industries",
+                    completion: "2015",
+                    highlights: [
+                        "Telangana Industrial Project Approval and Self-Certification System (TG-iPASS) is a certification service to establish Industries, manufacturing, and services, in the state of Telangana, India",
+                        "The process allows a single mechanism for doing business with the state, including obtaining required permissions within stipulated timelines.",
+                        "15-day approval guarantee for new industries",
+                        "Online self-certification system,The bill received the assent of the Governor on 3 December 2014, and the service went online on 1 April 2016.",
+                        "Attracted ₹2 lakh crore investments",
+                        "Created 15+ lakh jobs",
+                        "Won multiple national awards"
+                    ],
+                    images: [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREWM4ATHOiJwGoaiJDJ3UQgiN9uPDcCysViA&s",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6vHTGiujOsDbuziItzx1LYxpk1NYydQT7MQ&s"
+                    ]
+                }
+            },
+            {
+                id: 10,
+                name: "Haritha Haram",
+                category: "infrastructure",
+                timeline: "2015-2016",
+                lat: 18.1124,
+                lng: 79.0193,
+                description: "Largest tree plantation program",
+                icon: "🌳",
+                details: {
+                    title: "Haritha Haram",
+                    subtitle: "Green Telangana Mission",
+                    cost: "₹5,000 Crores",
+                    beneficiaries: "230+ Crore Saplings",
+                    completion: "Ongoing",
+                    highlights: [
+                        "Haritha Haram is an afforestation programme undertaken by the Telangana government Largest tree plantation program in India",
+                        "Haritha Haram was officially launched by the Chief Minister of Telangana , Kalvakuntla Chandrasekhar Rao, on 3 July 2015 at the Chilukuru Balaji Temple",
+                        "The Telangana government has planted 273.33 crore saplings by spending Rs 10,822 crore till June 2023",
+                        "In the Haritha Haram program, instead of planting any particular plant as a temporary measure, they are planting plants according to the needs of the respective areas, keeping in mind the long-term benefits, and taking care of them with commitment so that their benefits reach the society",
+                        "Increased forest cover by 24%",
+                        "Urban green cover improved significantly",
+                        "Community participation in afforestation",
+                        "Biodiversity conservation initiatives"
+                    ],
+                    images: [
+                        "https://cdn.s3waas.gov.in/s32a38a4a9316c49e5a833517c45d31070/uploads/2019/06/2019062819.jpg",
+                        "https://s3.ap-southeast-1.amazonaws.com/images.deccanchronicle.com/dc-Cover-bsnudco08r3igtj44duecnr7m4-20170713025432.Medi.jpeg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRchsfKUF5hQiuE2sHswoTrH8X4ppaEVIK2qw&s",
+                        
+                    ]
+                }
+            },
+            {
+                id: 11,
+                name: "Aasara Pensions",
+                category: "welfare",
+                timeline: "2014-2015",
+                lat: 18.1345,
+                lng: 79.1235,
+                description: "Enhanced pension for elderly and disabled",
+                icon: "👴",
+                details: {
+                    title: "Aasara Pensions",
+                    subtitle: "Social Security for Vulnerable Sections",
+                    cost: "₹8,000 Crores annually",
+                    beneficiaries: "40 Lakh Beneficiaries",
+                    completion: "2014 onwards",
+                    highlights: [
+                        "Aasara pension is a pension scheme by the Government of Telangana. It is a welfare scheme of pensions to old people, widows, Goud community, elephantiasis patients, AIDS afflicted people, physically disabled and beedi workers.[1] By March 2018, the number of beneficiaries stood at 42 lakhs.",
+                        "The pension scheme was started on 8 November 2014 by Chief Minister of Telangana, Kalvakuntla Chandrashekhar Rao in Kothur in Mahboobnagar district.",
+                        "Increased pension from ₹200 to ₹2,016",
+                        "Covers elderly, widows, disabled persons",
+                        "40+ lakh beneficiaries across the state",
+                        "Direct bank transfer system",
+                        "Regular pension amount increases",
+                        "Dignity and security for vulnerable sections"
+                    ],
+                    images: [
+                        "https://cdn.s3waas.gov.in/s3a3f390d88e4c41f2747bfa2f1b5f87db/uploads/2019/12/2020010453.jpg",
+                        "https://assets.thehansindia.com/h-upload/2022/09/15/1312529-aasara-pension-scheme.webp",
+                        "https://pbs.twimg.com/media/FhL6CugUYAA6oJf.jpg"
+                    ]
+                }
+            },
+            {
+                id: 12,
+                name: "KCR Kits",
+                category: "healthcare",
+                timeline: "2017-2018",
+                lat: 17.1232,
+                lng: 79.2088,
+                description: "Free maternity kits for newborns",
+                icon: "👶",
+                details: {
+                    title: "KCR Kits",
+                    subtitle: "Maternal and Child Health Initiative",
+                    cost: "₹1,200 Crores",
+                    beneficiaries: "15+ Lakh Mothers",
+                    completion: "2017 onwards",
+                    highlights: [
+                        "MCH Kit, previously known as Amma Odi and KCR Kit is a welfare program for families launched by the Government of Telangana.",
+                        "Amma Vodi provides transport facility for pregnant women before and after delivery. The program provides financial and medical assistance to women undergoing delivery of the child at any government hospital in the state , Free maternity kits worth ₹12,000 for each delivery",
+                        "The flagship scheme was launched on 2 June 2017 by the Chief Minister of Telangana, Kalvakuntla Chandrashekar Rao,with an aim to improve the health of new born child and mother. The government earmarked Rupees 605 crores in 2017 budget",
+                        "Covers 15+ lakh mothers across the state",
+                        "Includes baby clothes, medicines, and essentials",
+                        "Nutritional support for mother and child",
+                        "Reduced infant mortality rate significantly",
+                        "Improved maternal health outcomes"
+                    ],
+                    images: [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM9Mi-nLsxGGsU458UBtsI73QK7Yv28dFAVQ&s",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9UjLcGq7MHInoOSf6nXXPwaz4e7CKordLnw&s",
+                        "https://media.telanganatoday.com/wp-content/uploads/2022/03/KCR-Kits.jpg",
+                    ]
+                }
+            },
+            {
+                id: 13,
+                name: "Double Bedroom Housing",
+                category: "welfare",
+                timeline: "2018-2019",
+                lat: 17.1232,
+                lng: 79.0193,
+                description: "Free houses for poor families",
+                icon: "🏠",
+                details: {
+                    title: "Double Bedroom Housing Scheme",
+                    subtitle: "Dignified Housing for the Poor",
+                    cost: "₹25,000 Crores",
+                    beneficiaries: "5 Lakh Houses",
+                    completion: "Ongoing",
+                    highlights: [
+                        "Double Bedroom Housing scheme or 2BHK scheme is a housing project designed by the Government of Telangana.",
+                        "The scheme aims to make the city of Hyderabad a slum-free city by providing free-of-cost housing to the shelter-less poor in rural and urban areas.The plan aims to provide 2.72 lakh by March 2019, followed by an additional 3 lakh by 2024",
+                        "The scheme was announced in the election manifesto of Telangana Rashtra Samithi, in May, 2014.",
+                        "5 lakh houses planned across the state",
+                        "Modern amenities and infrastructure",
+                        "Women ownership of houses",
+                        "Integrated township development",
+                        "Transformed slums into dignified colonies"
+                    ],
+                    images: [
+                        "https://www.manatelangana.news/wp-content/uploads/2022/09/Double-Bedroom-Housing-Sche.jpg",
+                        "https://upload.wikimedia.org/wikipedia/commons/8/8d/2BHK_Dignity_Housing_Colony%2C_Saidabad.jpg",
+                        "https://media.telanganatoday.com/wp-content/uploads/2023/10/2BHKs.jpg"
+                    ]
+                }
+            },
+            {
+                id: 14,
+                name: "Aarogya Lakshmi",
+                category: "healthcare",
+                timeline: "2015-2016",
+                lat: 18.1894,
+                lng: 79.0453,
+                description: "Enhanced health coverage",
+                icon: "🏥",
+                details: {
+                    title: "Aarogya Lakshmi",
+                    subtitle: "Comprehensive Health Coverage",
+                    cost: "₹3,000 Crores annually",
+                    beneficiaries: "1.2 Crore Families",
+                    completion: "2018",
+                    highlights: [
+                        "Aarogya Lakshmi scheme is a nutritional program to support pregnant and lactating women by the Government of Telangana.",
+                        "The scheme is available for women below and above poverty line, over 2.71 lakh pregnant women and 2.03 lakh lactating mothers are being served one full meal at 35,000 Anganwadi centres in the State",
+                        "The scheme was launched by Chief Minister of Telangana, K. Chandrashekhar Rao on 1 January 2015.The scheme is an improved version of Amrutha Hastham.",
+                        "Covers 1.2 crore families (entire population)",
+                        "Cashless treatment in 1000+ hospitals",
+                        "Covers 2000+ medical procedures",
+                        "No income limit for eligibility",
+                        "Reduced out-of-pocket health expenses by 60%"
+                    ],
+                    images: [
+                        "https://d2e1hu1ktur9ur.cloudfront.net/wp-content/uploads/2022/07/70-3.jpg",
+                        "https://i.ytimg.com/vi/-OX2lVUZLYA/maxresdefault.jpg",
+                        "https://pm-yojana.in/uploads/images/2022/03/webp/image_750x_6226f2004fd1b.webp"
+                    ]
+                }
+            },
+            {
+                id: 15,
+                name: "Dalit Bandhu",
+                category: "welfare",
+                timeline: "2022-2025",
+                lat: 18.4386,
+                lng: 79.1288,
+                description: "Economic empowerment of Dalits",
+                icon: "💼",
+                details: {
+                    title: "Dalit Bandhu",
+                    subtitle: "Economic Empowerment Scheme",
+                    cost: "₹18,000 Crores",
+                    beneficiaries: "20 Lakh Dalit Families",
+                    completion: "Ongoing",
+                    highlights: [
+                        "The Telangana Dalit Bandhu Scheme is a scheme launched by the Telangana State Government for the empowerment of Dalits . Eligible Dalits will be provided with financial assistance of Rs. 10 lakh per family under this scheme.",
+                        "The Telangana Government has designed this scheme with the aim of empowering Dalits by making them conscious of defining their own development and participating in production.",
+                        "Chief Minister K Chandrashekhar Rao announced at a public meeting held in Haliya , Nalgonda district on 10 February 2021 that Rs 1,000 crore would be allocated for Dalits in the 2021 budget under the name 'CM Dalit Empowerment Scheme'",
+                        "Covers 20 lakh Dalit families",
+                        "Focus on entrepreneurship and skill development",
+                        "Interest-free loans and grants",
+                        "Largest SC welfare scheme in India",
+                        "Promotes self-employment and dignity"
+                    ],
+                    images: [
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDItutogfO6TH8f58Tf-NI4QIEVmoRBKoR7BVOg23uebFFlCiJFG4JzkKWXhMrr_fLffw&usqp=CAU",
+                        "https://d2e1hu1ktur9ur.cloudfront.net/wp-content/uploads/2023/01/dalitha-bandu-scems-AA-copy.jpg",
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_WqGpVzbRET9bA-oHSfsajkJWeXQAv_meyw&s"
+                    ]
+                }
+            }
+        ];
+
+        // Initialize map focused on Telangana
+        function initMap() {
+            // Telangana boundary coordinates
+            map = L.map('map').setView([18.1124, 79.0193], 7);
+            
+            // Use a more detailed tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18,
+                minZoom: 6
+            }).addTo(map);
+
+            // Set max bounds to restrict to Telangana region
+            const telanganaHeroBounds = [
+                [15.8, 77.2], // Southwest coordinates
+                [19.9, 81.8]  // Northeast coordinates
+            ];
+            map.setMaxBounds(telanganaHeroBounds);
+            
+            markersLayer = L.layerGroup().addTo(map);
+            loadMarkers();
+        }
+
+        // Create custom markers with emoji icons
+        function createCustomIcon(project) {
+            return L.divIcon({
+                className: 'custom-marker',
+                html: `
+                    <div style="
+                        background: var(--gradient-primary);
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                        border: 2px solid var(--light);
+                        box-shadow: var(--shadow-md);
+                        cursor: pointer;
+                        animation: pulse 2s infinite;
+                    ">
+                        ${project.icon}
+                    </div>
+                `,
+                iconSize: [36, 36],
+                iconAnchor: [18, 18],
+                popupAnchor: [0, -18]
+            });
+        }
+
+        // Load markers on map
+        function loadMarkers() {
+            markersLayer.clearLayers();
+            
+            projectsData.forEach(project => {
+                if (shouldShowProject(project)) {
+                    const marker = L.marker([project.lat, project.lng], { 
+                        icon: createCustomIcon(project) 
+                    })
+                    .bindPopup(`
+                        <div class="popup-content">
+                            <div class="popup-year">${project.timeline}</div>
+                            <h3>${project.icon} ${project.name}</h3>
+                            <p>${project.description}</p>
+                            <button onclick="showProjectDetails(${project.id})" class="details-btn">
+                                🔍 View Complete Details
+                            </button>
+                        </div>
+                    `, {
+                        maxWidth: 280,
+                        className: 'custom-popup'
+                    })
+                    .addTo(markersLayer);
+
+                    // Add hover effect
+                    marker.on('mouseover', function() {
+                        this.openPopup();
+                    });
+                }
+            });
+        }
+
+        // Check if project should be shown based on filters
+        function shouldShowProject(project) {
+            const timelineMatch = currentTimelineFilter === 'all' || project.timeline === currentTimelineFilter;
+            const categoryMatch = currentCategoryFilter === 'all' || project.category === currentCategoryFilter;
+            return timelineMatch && categoryMatch;
+        }
+
+        // Filter by timeline
+        function filterByTimeline(timeline) {
+            currentTimelineFilter = timeline;
+            loadMarkers();
+            
+            // Update active button
+            document.querySelectorAll('.timeline-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategoryFilter = category;
+            loadMarkers();
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Show project details modal
+        function showProjectDetails(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const modal = document.getElementById('projectModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <div class="modal-header">
+                    <h2>${project.icon} ${project.details.title}</h2>
+                    <p class="subtitle">${project.details.subtitle}</p>
+                    <div class="popup-year" style="margin-top: 10px;">${project.timeline}</div>
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="project-stats">
+                        <div class="stat-item">
+                            <h4>💰 Investment</h4>
+                            <p>${project.details.cost}</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>👥 Beneficiaries</h4>
+                            <p>${project.details.beneficiaries}</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>⏰ Completion</h4>
+                            <p>${project.details.completion}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="image-gallery">
+                        ${project.details.images.map(img => 
+                            `<img src="${img}" alt="${project.name}" class="gallery-img">`
+                        ).join('')}
+                    </div>
+                    
+                    <div class="highlights">
+                        <h3>🌟 Key Achievements & Highlights</h3>
+                        <ul>
+                            ${project.details.highlights.map(highlight => 
+                                `<li>${highlight}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            
+            // Add some entrance animations
+            setTimeout(() => {
+                document.querySelector('.header').style.animation = 'fadeInDown 1s ease-out';
+                document.querySelector('.controls').style.animation = 'fadeInUp 1s ease-out 0.2s both';
+                document.querySelector('.map-container').style.animation = 'fadeInUp 1s ease-out 0.4s both';
+            }, 100);
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add responsive behavior
+        window.addEventListener('resize', function() {
+            if (map) {
+                map.invalidateSize();
+            }
+        });
+    </script>
+</body>
+</html>

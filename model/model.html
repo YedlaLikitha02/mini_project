@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Mouth Overlay Lip Sync</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #222;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        button {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #phoneme {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            background: #ff6b6b;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        #debug {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="phoneme">-</div>
+        <div id="debug">
+            <div>Mouth Status: Not created</div>
+            <div>Position: -</div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <button id="playBtn">Play</button>
+        <div id="progress">
+            <div id="progressBar"></div>
+        </div>
+        <div id="time">0:00 / 0:00</div>
+        <button onclick="testMouthAnimation()">Test Animation</button>
+        <button onclick="adjustMouthPosition()">Adjust Position</button>
+        <button onclick="toggleMouthVisibility()">Toggle Mouth</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        // Complete lip sync data
+          const lipSyncData = [
+            [0.00, "X"], [0.29, "B"], [0.63, "C"], [0.70, "B"], [0.84, "C"], [1.12, "E"], [1.19, "B"], [1.61, "A"],
+            [1.76, "C"], [1.92, "B"], [1.99, "E"], [2.13, "C"], [2.20, "A"], [2.28, "C"], [2.49, "B"], [2.56, "D"],
+            [2.91, "C"], [2.99, "X"], [3.47, "H"], [3.77, "C"], [3.91, "B"], [4.47, "C"], [4.54, "B"], [4.68, "C"],
+            [4.75, "A"], [4.86, "B"], [5.00, "X"], [5.27, "B"], [5.48, "C"], [5.62, "B"], [5.69, "C"], [5.76, "D"],
+            [6.04, "E"], [6.25, "B"], [6.60, "A"], [6.68, "B"], [6.72, "D"], [6.76, "A"], [6.84, "H"], [7.03, "C"],
+            [7.10, "A"], [7.18, "F"], [7.25, "B"], [7.98, "F"], [8.03, "B"], [8.95, "A"], [9.03, "C"], [9.22, "B"],
+            [9.29, "C"], [9.57, "A"], [9.65, "C"], [9.72, "B"], [10.14, "X"], [10.78, "B"], [11.23, "C"], [11.32, "B"],
+            [11.81, "C"], [11.88, "B"], [12.02, "C"], [12.09, "H"], [12.30, "B"], [12.53, "A"], [12.70, "B"], [12.84, "A"],
+            [12.92, "D"], [13.11, "C"], [13.16, "B"], [13.69, "A"], [13.81, "B"], [14.10, "X"], [14.48, "C"], [14.53, "B"],
+            [14.92, "C"], [15.27, "B"], [15.48, "A"], [15.56, "C"], [15.71, "B"], [15.92, "X"], [16.26, "B"], [16.99, "C"],
+            [17.13, "B"], [17.34, "X"], [17.58, "B"], [18.02, "E"], [18.09, "H"], [18.16, "C"], [18.30, "B"], [18.89, "C"],
+            [18.97, "D"], [19.18, "B"], [19.25, "F"], [19.32, "B"], [20.07, "C"], [20.23, "B"], [20.44, "G"], [20.51, "B"],
+            [20.58, "C"], [20.65, "A"], [20.73, "D"], [20.91, "C"], [20.96, "B"], [21.28, "X"], [22.37, "B"], [22.75, "A"],
+            [22.83, "B"], [22.89, "C"], [23.09, "B"], [23.30, "D"], [23.37, "B"], [23.79, "X"], [24.07, "B"], [24.12, "C"],
+            [24.24, "B"], [25.15, "X"], [25.58, "C"], [26.07, "B"], [26.70, "X"], [27.52, "B"], [27.66, "C"], [27.80, "B"],
+            [28.08, "C"], [28.29, "B"], [28.99, "A"], [29.07, "C"], [29.14, "B"], [29.42, "X"], [30.08, "C"], [30.19, "B"],
+            [30.26, "C"], [30.47, "B"], [30.75, "X"], [31.20, "F"], [31.24, "C"], [31.49, "B"], [31.98, "A"], [32.06, "C"],
+            [32.13, "B"], [32.27, "F"], [32.48, "X"], [33.49, "F"], [33.69, "C"], [33.76, "B"], [33.83, "C"], [34.04, "B"],
+            [34.18, "C"], [34.46, "X"], [35.03, "B"], [35.08, "G"], [35.13, "B"], [35.20, "D"], [36.08, "C"], [36.15, "B"],
+            [36.39, "X"], [36.96, "D"], [37.14, "B"], [37.21, "D"], [37.36, "C"], [37.43, "A"], [37.60, "B"], [39.09, "X"],
+            [39.55, "A"], [39.63, "B"], [39.76, "A"], [39.84, "C"], [39.92, "A"], [40.00, "H"], [40.09, "C"], [40.16, "D"],
+            [40.58, "C"], [40.66, "X"], [41.89, "B"], [42.75, "D"], [42.89, "F"], [43.10, "B"], [43.38, "C"], [43.59, "B"],
+            [43.87, "X"], [44.37, "B"], [44.51, "D"], [45.10, "C"], [45.18, "B"], [45.70, "X"], [46.15, "F"], [46.22, "B"],
+            [46.77, "C"], [46.84, "B"], [47.68, "A"], [47.76, "C"], [47.90, "A"], [47.98, "C"], [48.06, "B"], [48.34, "X"],
+            [49.27, "A"], [49.39, "B"], [49.69, "C"], [49.76, "B"], [50.04, "H"], [50.18, "B"], [50.53, "A"], [50.63, "C"],
+            [50.71, "F"], [50.99, "B"], [51.27, "C"], [51.41, "B"], [51.48, "X"], [52.37, "B"], [52.43, "C"], [52.56, "A"],
+            [52.65, "B"], [52.78, "C"], [52.92, "B"], [54.04, "X"], [54.80, "B"], [55.37, "A"], [55.45, "C"], [55.50, "B"],
+            [55.76, "A"], [55.84, "C"], [55.96, "B"], [56.24, "X"], [56.76, "B"], [56.81, "C"], [56.86, "B"], [57.07, "C"],
+            [57.21, "B"], [57.49, "F"], [57.56, "B"], [57.63, "D"], [58.23, "C"], [58.30, "B"], [58.54, "X"], [58.92, "B"],
+            [60.04, "X"], [60.69, "C"], [60.78, "B"], [60.85, "H"], [60.92, "D"], [60.99, "B"], [61.06, "H"], [61.20, "C"],
+            [61.34, "B"], [61.41, "D"], [61.97, "B"], [62.11, "X"], [62.75, "B"], [63.80, "A"], [63.98, "B"], [64.05, "C"],
+            [64.12, "B"], [64.40, "A"], [64.51, "B"], [64.66, "C"], [64.94, "X"], [65.91, "F"], [66.25, "B"], [66.74, "C"],
+            [66.81, "A"], [66.89, "C"], [66.99, "B"], [67.62, "X"], [68.43, "B"], [68.87, "D"], [69.21, "C"], [69.29, "A"],
+            [69.37, "B"], [69.94, "X"], [70.40, "A"], [70.52, "C"], [70.68, "B"], [70.89, "C"], [71.10, "B"], [71.17, "A"],
+            [71.30, "C"], [71.50, "B"], [71.57, "C"], [71.64, "A"], [71.74, "F"], [71.81, "D"], [71.88, "B"], [72.02, "F"],
+            [72.23, "D"], [72.33, "C"], [72.37, "A"], [72.66, "X"], [73.34, "F"], [73.50, "E"], [73.57, "F"], [73.64, "A"],
+            [73.72, "B"], [74.17, "C"], [74.24, "B"], [74.73, "C"], [74.87, "B"], [75.29, "X"], [75.95, "C"], [76.00, "B"],
+            [76.26, "D"], [76.33, "B"], [76.61, "F"], [76.96, "B"], [77.27, "E"], [77.46, "F"], [77.53, "B"], [77.60, "D"],
+            [77.81, "F"], [77.95, "B"], [78.51, "X"], [78.66, "B"], [78.86, "C"], [79.00, "A"], [79.08, "C"], [79.31, "A"],
+            [79.39, "C"], [79.49, "B"], [79.70, "X"], [80.53, "C"], [80.61, "A"], [80.69, "C"], [80.90, "D"], [81.32, "B"],
+            [81.39, "A"], [81.47, "C"], [81.59, "B"], [82.26, "E"], [82.33, "A"], [82.39, "C"], [82.56, "A"], [82.64, "D"],
+            [82.75, "B"], [83.10, "G"], [83.31, "C"], [83.52, "B"], [83.73, "X"], [84.63, "H"], [84.68, "C"], [84.80, "B"],
+            [85.08, "E"], [85.15, "C"], [85.22, "B"], [85.29, "H"], [85.64, "B"], [85.78, "C"], [85.92, "B"], [85.99, "E"],
+            [86.20, "B"], [86.27, "C"], [86.34, "B"], [86.83, "C"], [87.04, "X"], [87.56, "F"], [87.64, "A"], [87.72, "D"],
+            [87.79, "B"], [88.63, "X"], [89.10, "B"], [89.55, "A"], [89.63, "C"], [89.72, "B"], [90.21, "X"], [90.51, "B"],
+            [90.70, "C"], [90.84, "B"], [90.91, "C"], [90.98, "G"], [91.29, "B"], [91.75, "A"], [91.83, "D"], [92.01, "B"],
+            [92.08, "A"], [92.16, "B"], [92.38, "C"], [92.52, "A"], [92.60, "C"], [92.93, "B"], [93.54, "A"], [93.66, "C"],
+            [93.72, "B"], [93.78, "E"], [93.85, "H"], [93.99, "D"], [94.24, "C"], [94.31, "B"], [94.62, "C"], [94.69, "D"],
+            [94.83, "B"], [95.18, "C"], [95.53, "E"], [95.67, "F"], [95.81, "B"], [95.95, "C"], [96.02, "D"], [96.30, "B"],
+            [96.44, "X"], [97.17, "B"], [97.58, "C"], [97.79, "E"], [97.86, "F"], [97.93, "B"], [98.35, "X"], [98.86, "C"],
+            [99.04, "B"], [99.49, "D"], [99.65, "B"], [99.72, "G"], [99.79, "B"], [100.84, "C"], [100.98, "B"], [101.12, "D"],
+            [101.61, "B"], [101.75, "C"], [102.03, "B"], [102.73, "D"], [102.89, "C"], [102.93, "B"], [103.26, "A"], [103.35, "B"],
+            [103.71, "X"], [104.01, "B"], [104.74, "F"], [104.81, "C"], [104.88, "A"], [104.96, "B"], [105.00, "C"], [105.11, "B"],
+            [105.67, "X"], [105.85, "B"], [106.09, "F"], [106.23, "C"], [106.30, "F"], [106.37, "A"], [106.45, "C"], [106.59, "B"],
+            [107.08, "X"], [107.46, "B"], [107.80, "C"], [107.87, "B"], [108.15, "F"], [108.22, "D"], [108.36, "B"], [108.78, "C"],
+            [108.99, "B"], [109.27, "X"], [109.68, "B"], [111.41, "X"], [111.81, "C"], [111.93, "A"], [112.01, "C"], [112.16, "B"],
+            [112.44, "C"], [112.51, "B"], [113.07, "X"], [113.85, "C"], [113.92, "D"], [113.99, "B"], [114.20, "C"], [114.34, "H"],
+            [114.76, "B"], [114.83, "C"], [115.18, "B"], [115.32, "C"], [115.46, "B"], [115.67, "X"], [116.13, "B"], [117.26, "X"],
+            [117.52, "B"], [117.88, "A"], [117.96, "C"], [118.28, "B"], [118.35, "C"], [118.42, "F"], [118.63, "E"], [118.77, "B"],
+            [119.05, "X"], [119.42, "C"], [119.49, "B"], [119.83, "A"], [119.91, "C"], [119.95, "B"], [119.99, "A"], [120.14, "C"],
+            [120.21, "B"], [120.76, "X"], [121.15, "B"], [121.27, "C"], [121.34, "F"], [121.55, "D"], [121.62, "B"], [121.76, "A"],
+            [121.84, "C"], [121.91, "B"], [122.32, "X"], [122.53, "B"], [122.70, "C"], [123.12, "D"], [123.26, "B"], [123.47, "C"],
+            [123.61, "B"], [123.75, "C"], [123.82, "B"], [124.38, "C"], [124.45, "B"], [125.03, "F"], [125.09, "C"], [125.15, "B"],
+            [125.64, "A"], [125.72, "D"], [125.91, "B"], [125.98, "C"], [126.05, "A"], [126.16, "B"], [126.38, "C"], [126.45, "B"],
+            [126.73, "X"], [127.13, "B"], [127.20, "F"], [127.41, "B"], [127.55, "H"], [127.76, "C"], [127.83, "G"], [128.08, "F"],
+            [128.15, "B"], [128.29, "C"], [128.43, "E"], [128.57, "C"], [128.99, "B"], [129.13, "X"], [129.32, "B"], [130.10, "A"],
+            [130.22, "D"], [130.37, "B"], [130.58, "G"], [130.79, "B"], [131.00, "X"], [131.33, "B"], [131.52, "C"], [131.59, "B"],
+            [131.75, "E"], [131.81, "F"], [131.95, "A"], [132.03, "C"], [132.10, "B"], [132.61, "C"], [132.66, "D"], [132.70, "B"],
+            [133.26, "F"], [133.33, "D"], [133.40, "B"], [133.54, "C"], [133.61, "B"], [133.75, "G"], [133.96, "X"], [134.29, "C"],
+            [134.37, "B"], [134.44, "C"], [134.58, "B"], [134.93, "A"], [135.01, "D"], [135.09, "B"], [135.23, "F"], [135.30, "B"],
+            [135.65, "X"], [136.02, "F"], [136.06, "B"], [136.45, "C"], [136.59, "B"], [137.01, "X"], [137.62, "A"], [137.70, "C"],
+            [137.82, "B"], [137.96, "F"], [138.10, "B"], [138.17, "C"], [138.24, "B"], [138.45, "X"], [138.73, "B"], [139.04, "C"],
+            [139.25, "B"], [139.60, "X"], [139.87, "B"], [140.08, "D"], [140.27, "E"], [140.32, "F"], [140.57, "B"], [140.78, "C"],
+            [140.85, "B"], [141.51, "F"], [141.61, "B"], [142.03, "C"], [142.10, "B"], [142.45, "X"], [142.83, "B"], [143.04, "A"],
+            [143.13, "F"], [143.17, "G"], [143.21, "B"], [144.05, "A"], [144.13, "C"], [144.34, "B"], [144.55, "C"], [144.62, "B"],
+            [144.69, "D"], [144.83, "C"], [144.90, "A"], [144.98, "D"], [145.15, "C"], [145.19, "B"], [145.38, "X"], [145.80, "F"],
+            [145.86, "C"], [145.98, "F"], [146.19, "B"], [146.33, "C"], [146.47, "B"], [147.10, "E"], [147.30, "B"], [147.51, "F"],
+            [147.65, "C"], [147.79, "G"], [148.00, "B"], [148.14, "X"], [148.44, "B"], [149.11, "A"], [149.19, "D"], [149.24, "B"],
+            [149.57, "E"], [149.64, "C"], [149.85, "X"], [150.58, "B"], [151.07, "C"], [151.21, "B"], [151.35, "C"], [151.49, "G"],
+            [151.77, "B"], [152.40, "X"], [153.99, "B"], [154.04, "A"], [154.12, "C"], [154.26, "B"], [154.40, "C"], [154.61, "B"],
+            [154.68, "C"], [154.75, "A"], [154.83, "E"], [154.98, "F"], [155.12, "B"], [155.19, "C"], [155.26, "F"], [155.40, "A"],
+            [155.48, "B"], [155.71, "X"], [156.39, "B"], [156.95, "C"], [157.02, "B"], [157.09, "C"], [157.16, "B"], [157.37, "F"],
+            [157.44, "C"], [157.79, "E"], [157.93, "F"], [158.00, "X"], [158.39, "C"], [158.71, "G"], [158.78, "B"], [158.99, "E"],
+            [159.06, "C"], [159.13, "D"], [159.20, "B"], [159.48, "X"], [160.40, "A"], [160.48, "B"], [160.58, "C"], [160.86, "E"],
+            [160.93, "A"], [161.26, "B"], [161.61, "C"], [161.75, "B"], [162.31, "C"], [162.38, "E"], [162.45, "A"], [162.84, "X"],
+            [163.04, "A"], [163.16, "C"], [163.31, "B"], [163.38, "A"], [163.46, "D"], [163.71, "B"], [163.78, "H"], [163.92, "B"],
+            [164.41, "X"], [164.88, "B"], [164.94, "C"], [165.06, "B"], [165.20, "H"], [165.34, "B"], [165.62, "A"], [165.74, "C"],
+            [165.80, "B"], [166.06, "C"], [166.13, "B"], [166.55, "X"], [166.71, "B"], [166.79, "A"], [166.87, "C"], [166.93, "B"],
+            [167.19, "A"], [167.27, "C"], [167.32, "B"], [167.64, "D"], [168.02, "C"], [168.12, "B"], [168.19, "D"], [168.33, "B"],
+            [168.54, "C"], [168.61, "B"], [168.68, "X"], [169.56, "C"], [169.77, "B"], [170.19, "F"], [170.54, "B"], [171.17, "E"],
+            [171.38, "X"], [171.93, "C"], [172.02, "B"], [172.09, "H"], [172.16, "D"], [172.30, "B"], [172.86, "C"], [172.93, "B"],
+            [173.28, "C"], [173.35, "A"], [173.77, "B"], [174.10, "C"], [174.17, "A"], [174.25, "C"], [174.48, "B"], [174.55, "F"],
+            [174.79, "B"], [174.95, "X"], [175.56, "C"], [175.61, "B"], [176.08, "G"], [176.15, "C"], [176.50, "B"], [177.05, "F"],
+            [177.10, "C"], [177.21, "B"], [177.28, "A"], [177.36, "F"], [177.51, "B"], [177.58, "D"], [178.11, "B"], [178.17, "A"],
+            [178.25, "B"], [178.39, "C"], [178.53, "G"], [178.60, "B"], [178.95, "X"], [179.74, "C"], [179.81, "B"], [179.88, "D"],
+            [180.17, "C"], [180.25, "A"], [180.40, "D"], [180.76, "H"], [181.04, "X"], [181.43, "B"], [181.48, "C"], [181.73, "F"],
+            [181.80, "B"], [182.89, "E"], [183.05, "C"], [183.12, "B"], [183.47, "F"], [183.96, "B"], [184.65, "F"], [184.74, "B"],
+            [184.81, "C"], [184.88, "B"], [185.37, "D"], [185.62, "C"], [185.69, "B"], [185.93, "X"], [186.19, "B"], [186.44, "C"],
+            [186.51, "B"], [186.86, "C"], [186.93, "A"], [187.20, "E"], [187.24, "B"], [187.56, "C"], [187.63, "B"], [187.77, "C"],
+            [187.91, "A"], [188.02, "X"], [188.40, "C"], [188.75, "D"], [189.24, "B"], [189.38, "A"], [189.46, "C"], [189.61, "B"],
+            [189.96, "X"], [190.17, "B"], [190.52, "C"], [190.66, "A"], [190.74, "C"], [190.89, "B"], [191.24, "X"], [191.52, "B"],
+            [191.85, "C"], [191.92, "A"], [192.00, "D"], [192.12, "B"], [192.47, "X"], [192.69, "B"], [193.05, "C"], [193.26, "A"],
+            [193.34, "C"], [193.53, "D"], [193.60, "B"], [193.67, "C"], [193.80, "F"], [193.95, "B"], [194.30, "E"], [194.37, "F"],
+            [194.44, "X"], [194.88, "B"], [195.12, "A"], [195.20, "C"], [195.38, "B"], [195.45, "D"], [195.80, "E"], [196.03, "F"],
+            [196.50, "C"], [196.64, "F"], [196.71, "A"], [196.79, "C"], [197.17, "B"], [197.68, "A"], [197.85, "B"], [198.49, "A"],
+            [198.57, "D"], [198.72, "B"], [198.86, "F"], [199.00, "C"], [199.28, "B"], [199.35, "C"], [199.42, "A"], [199.50, "B"],
+            [199.82, "X"], [200.25, "B"], [200.44, "G"], [200.51, "B"], [201.07, "C"], [201.14, "B"], [201.21, "A"], [201.29, "B"],
+            [201.89, "F"], [202.12, "D"], [202.26, "C"], [202.40, "D"], [202.54, "B"], [202.68, "D"], [202.82, "B"], [202.96, "F"],
+            [203.31, "B"], [203.74, "D"], [203.85, "B"], [203.92, "A"],  [204.00, "F"], [204.05, "B"], [204.79, "C"], [204.86, "A"], [205.11, "C"], [205.18, "B"], [205.31, "D"], 
+            [205.45, "C"], [205.52, "A"], [205.60, "B"], [206.33, "C"], [206.35, "A"], [206.41, "C"], [206.47, "A"], 
+            [206.53, "B"], [206.70, "D"], [207.15, "C"], [207.23, "B"], [207.57, "C"], [207.77, "E"], [207.82, "F"], 
+            [208.28, "D"], [208.35, "B"], [208.42, "F"], [208.91, "X"], [209.21, "B"], [209.52, "A"], [209.60, "C"], 
+            [209.70, "B"], [209.91, "C"], [209.98, "B"], [210.82, "X"], [211.18, "F"], [211.43, "B"], [211.50, "C"], 
+            [211.71, "B"], [212.27, "F"], [212.34, "B"], [212.83, "F"], [212.97, "B"], [213.04, "E"], [213.25, "B"], 
+            [213.32, "D"], [213.39, "C"], [213.46, "B"], [213.60, "X"], [213.85, "B"], [214.58, "C"], [214.65, "G"], 
+            [214.72, "C"], [214.79, "B"], [215.07, "F"], [215.14, "A"], [215.22, "B"], [215.52, "X"], [215.84, "B"], 
+            [216.59, "F"], [216.66, "C"], [216.87, "B"], [217.61, "C"], [217.65, "B"], [217.69, "A"], [217.87, "B"], 
+            [218.04, "G"], [218.11, "B"], [218.60, "C"], [218.74, "B"], [219.30, "C"], [219.44, "B"], [219.86, "C"], 
+            [220.00, "D"], [220.49, "B"], [220.62, "C"], [220.69, "D"], [220.82, "B"], [221.17, "G"], [221.38, "B"], 
+            [221.59, "C"], [221.66, "B"], [221.73, "C"], [221.80, "B"], [222.08, "X"], [222.33, "B"], [222.47, "A"], 
+            [222.55, "B"], [222.65, "A"], [222.85, "B"], [222.92, "D"], [222.98, "B"], [223.05, "A"], [223.13, "D"], 
+            [223.22, "B"], [223.29, "E"], [223.57, "F"], [223.64, "C"], [223.71, "E"], [223.78, "F"], [223.85, "X"], 
+            [224.51, "C"], [224.77, "B"], [225.82, "X"], [226.19, "F"], [226.24, "B"], [226.71, "F"], [226.78, "B"], 
+            [227.27, "X"], [227.60, "B"], [228.72, "X"], [229.38, "C"], [229.45, "B"], [229.52, "H"], [229.66, "E"], 
+            [229.73, "F"], [229.87, "C"], [229.94, "B"], [230.08, "C"], [230.29, "B"], [230.43, "C"], [230.50, "A"], 
+            [230.58, "B"], [230.94, "D"], [231.08, "B"], [231.36, "X"], [231.92, "B"], [232.17, "C"], [232.31, "D"], 
+            [232.59, "C"], [232.80, "B"], [233.15, "X"], [233.52, "B"], [233.97, "A"], [234.05, "C"], [234.14, "B"], 
+            [234.21, "C"], [234.49, "B"], [235.09, "C"], [235.14, "B"], [235.60, "F"], [235.67, "B"], [236.66, "E"], 
+            [236.97, "C"], [237.04, "B"], [237.11, "C"], [237.18, "B"], [237.70, "C"], [237.77, "B"], [238.61, "G"], 
+            [238.68, "B"], [239.03, "C"], [239.14, "D"], [239.21, "B"], [240.02, "D"], [240.36, "C"], [240.71, "B"], 
+            [241.27, "F"], [241.41, "B"], [241.48, "D"], [241.83, "C"], [241.91, "X"], [242.27, "C"], [242.39, "B"], 
+            [242.67, "F"], [242.95, "B"], [243.36, "C"], [243.43, "B"], [243.99, "C"], [244.06, "B"], [245.00, "D"], 
+            [245.49, "C"], [245.57, "A"], [245.62, "B"], [245.79, "C"], [245.93, "E"], [246.00, "F"], [246.07, "X"], 
+            [246.55, "B"], [246.60, "C"], [246.65, "B"], [246.79, "C"], [247.07, "F"], [247.14, "B"], [247.63, "X"], 
+            [247.84, "B"], [248.66, "C"], [248.73, "B"], [248.87, "E"], [249.08, "F"], [249.15, "B"], [249.46, "C"], 
+            [249.53, "B"], [249.73, "C"], [249.87, "B"], [250.08, "A"], [250.16, "C"], [250.33, "B"], [250.96, "H"], 
+            [251.03, "C"], [251.10, "B"], [251.38, "X"], [251.74, "F"], [251.91, "B"], [252.47, "X"], [252.81, "B"], 
+            [253.23, "C"], [253.30, "B"], [253.58, "C"], [253.65, "A"], [254.10, "H"], [254.15, "C"], [254.26, "B"], 
+            [254.87, "F"], [254.94, "C"], [255.00, "F"], [255.07, "B"], [255.35, "C"], [255.42, "B"], [256.05, "A"], 
+            [256.13, "B"], [256.19, "C"], [256.24, "B"], [256.59, "X"], [257.02, "B"], [257.22, "C"], [257.50, "B"], 
+            [257.99, "C"], [258.06, "A"], [258.14, "B"], [258.78, "C"], [258.99, "A"], [259.08, "C"], [259.27, "B"], 
+            [259.48, "C"], [259.55, "B"], [259.72, "F"], [259.76, "B"], [259.80, "C"], [260.08, "X"], [260.39, "B"], 
+            [261.17, "C"], [261.38, "G"], [261.45, "B"], [261.52, "F"], [261.87, "B"], [262.28, "D"], [262.32, "B"], 
+            [262.99, "X"], [263.13, "B"], [263.30, "A"], [263.39, "B"], [263.45, "C"], [263.78, "B"], [263.85, "G"], 
+            [264.13, "F"], [264.20, "E"], [264.27, "B"], [264.90, "X"], [265.16, "B"], [265.36, "C"], [265.43, "B"], 
+            [265.71, "A"], [265.79, "D"], [265.87, "B"], [266.29, "X"], [266.67, "H"], [266.88, "B"], [267.86, "X"], 
+            [268.08, "B"], [268.34, "C"], [268.41, "B"], [269.11, "C"], [269.25, "B"], [269.74, "X"], [269.93, "B"], 
+            [270.51, "A"], [270.59, "B"], [270.63, "E"], [270.88, "F"], [271.09, "X"], [271.30, "B"], [271.56, "D"], 
+            [272.05, "B"], [272.19, "C"], [272.26, "E"], [272.40, "F"], [272.54, "X"], [272.87, "B"], [273.02, "D"], 
+            [273.21, "C"], [273.26, "B"], [273.79, "A"], [273.87, "B"], [274.19, "X"], [274.55, "B"], [274.62, "C"], 
+            [275.04, "B"], [275.11, "F"], [275.81, "B"], [276.06, "A"], [276.18, "C"], [276.24, "B"], [276.58, "F"], 
+            [276.65, "C"], [276.72, "B"], [277.56, "A"], [277.73, "B"], [277.85, "C"], [277.99, "B"], [278.55, "F"], 
+            [279.04, "X"], [279.41, "B"], [279.56, "C"], [279.77, "B"], [279.84, "C"], [279.98, "B"], [280.54, "D"], 
+            [280.65, "C"], [280.79, "B"], [280.86, "C"], [280.93, "B"], [281.14, "C"], [282.26, "B"], [282.61, "X"], 
+            [282.84, "B"], [282.95, "C"], [283.09, "B"], [283.37, "C"], [283.44, "B"], [283.72, "F"], [283.93, "B"], 
+            [284.98, "C"], [285.12, "B"], [285.89, "D"], [285.99, "C"], [286.03, "G"], [286.10, "C"], [286.17, "H"], 
+            [286.38, "X"], [286.77, "B"], [287.39, "C"], [287.53, "E"], [287.60, "F"], [287.67, "C"], [287.81, "F"], 
+            [288.09, "B"], [289.42, "C"], [289.53, "B"], [289.67, "C"], [289.74, "B"], [290.79, "A"], [290.87, "B"], 
+            [291.02, "D"], [291.72, "C"], [291.80, "X"], [292.09, "E"], [292.16, "C"], [292.23, "B"], [292.30, "D"], 
+            [292.49, "C"], [292.54, "B"], [292.79, "D"], [292.93, "B"], [293.07, "C"], [293.21, "E"], [293.49, "F"], 
+            [293.56, "B"], [293.70, "X"], [293.90, "B"], [294.58, "E"], [294.65, "F"], [294.72, "D"], [294.86, "B"], 
+            [295.14, "X"], [295.41, "B"], [295.61, "C"], [296.24, "B"], [296.52, "X"], [296.64, "X"]
+    
+
+        ];
+
+        let scene, camera, renderer, model;
+        let audio, isPlaying = false;
+        let headMesh = null;
+        let mouthMesh = null;
+        let mouthPosition = { x: 0, y: -0.2, z: 1.0 };
+        let mouthVisible = true;
+
+        const canvas = document.getElementById('canvas');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('time');
+        const phonemeDisplay = document.getElementById('phoneme');
+        const debug = document.getElementById('debug');
+
+        function initScene() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x2a2a2a);
+
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 5);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(2, 2, 2);
+            scene.add(directionalLight);
+        }
+
+        function loadModel() {
+            const loader = new THREE.GLTFLoader();
+            
+            loader.load('kcrmodel.glb', (gltf) => {
+                console.log('Model loaded successfully');
+                model = gltf.scene;
+                
+                // Center and scale
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                
+                model.position.sub(center);
+                const maxDimension = Math.max(size.x, size.y, size.z);
+                if (maxDimension > 0) {
+                    model.scale.setScalar(2 / maxDimension);
+                }
+
+                scene.add(model);
+
+                // Find the head mesh
+                model.traverse((child) => {
+                    if (child.isMesh && child.name === 'FBHead002') {
+                        headMesh = child;
+                        console.log('Found head mesh:', child.name);
+                        createMouthOverlay();
+                    }
+                });
+
+                updateDebugInfo();
+            });
+        }
+
+        function createMouthOverlay() {
+            console.log('Creating mouth overlay');
+            
+            // Create a more visible mouth - an ellipse
+            const mouthShape = new THREE.Shape();
+            mouthShape.ellipse(0, 0, 0.15, 0.08, 0, Math.PI * 2, false, 0);
+            
+            const mouthGeometry = new THREE.ShapeGeometry(mouthShape);
+            
+            // Bright red material to make it clearly visible
+            const mouthMaterial = new THREE.MeshBasicMaterial({
+                color: 0xff0000, // Bright red for testing
+                transparent: true,
+                opacity: 0.8,
+                side: THREE.DoubleSide
+            });
+            
+            mouthMesh = new THREE.Mesh(mouthGeometry, mouthMaterial);
+            
+            // Position the mouth overlay
+            mouthMesh.position.set(mouthPosition.x, mouthPosition.y, mouthPosition.z);
+            mouthMesh.scale.set(1, 0.5, 1); // Start with neutral mouth
+            
+            // Add to the model (not the scene, so it moves with the head)
+            model.add(mouthMesh);
+            
+            console.log('Mouth overlay created at position:', mouthPosition);
+            updateDebugInfo();
+        }
+
+        function animateMouth(phoneme) {
+            if (!mouthMesh) return;
+            
+            phonemeDisplay.textContent = phoneme;
+            console.log('Animating mouth for phoneme:', phoneme);
+            
+            // Animate the mouth shape based on phonemes
+            switch(phoneme) {
+                case 'A':
+                    mouthMesh.scale.set(1.4, 1.8, 1); // Very wide and tall (ah sound)
+                    mouthMesh.material.color.setHex(0xff4444); // Lighter red
+                    break;
+                case 'B':
+                    mouthMesh.scale.set(0.6, 0.2, 1); // Almost closed (b, p, m sounds)
+                    mouthMesh.material.color.setHex(0x880000); // Darker red
+                    break;
+                case 'C':
+                    mouthMesh.scale.set(1.1, 0.9, 1); // Medium open (i, e sounds)
+                    mouthMesh.material.color.setHex(0xff6666);
+                    break;
+                case 'D':
+                    mouthMesh.scale.set(1.2, 1.4, 1); // Open (d, t, n sounds)
+                    mouthMesh.material.color.setHex(0xff2222);
+                    break;
+                case 'E':
+                    mouthMesh.scale.set(1.5, 0.7, 1); // Wide but not tall (e sound)
+                    mouthMesh.material.color.setHex(0xff8888);
+                    break;
+                case 'F':
+                    mouthMesh.scale.set(0.8, 0.3, 1); // Small opening (f, v sounds)
+                    mouthMesh.material.color.setHex(0xaa0000);
+                    break;
+                case 'G':
+                    mouthMesh.scale.set(1.3, 1.5, 1); // Open (g, k sounds)
+                    mouthMesh.material.color.setHex(0xff3333);
+                    break;
+                case 'H':
+                    mouthMesh.scale.set(1.0, 0.8, 1); // Slight open (h sound)
+                    mouthMesh.material.color.setHex(0xff7777);
+                    break;
+                case 'X':
+                default:
+                    mouthMesh.scale.set(1.0, 0.4, 1); // Neutral/closed
+                    mouthMesh.material.color.setHex(0xff0000);
+                    break;
+            }
+            
+            updateDebugInfo();
+        }
+
+        function testMouthAnimation() {
+            console.log('Starting mouth animation test');
+            const phonemes = ['X', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+            let index = 0;
+            
+            function testNext() {
+                if (index < phonemes.length) {
+                    console.log(`Testing phoneme: ${phonemes[index]}`);
+                    animateMouth(phonemes[index]);
+                    index++;
+                    setTimeout(testNext, 1000); // 1 second between each
+                } else {
+                    console.log('Animation test complete');
+                    animateMouth('X');
+                }
+            }
+            
+            testNext();
+        }
+
+        function adjustMouthPosition() {
+            if (!mouthMesh) return;
+            
+            // Cycle through different positions to find the right spot
+            const positions = [
+                { x: 0, y: -0.2, z: 1.0 },   // Front center low
+                { x: 0, y: 0, z: 1.0 },      // Front center middle
+                { x: 0, y: 0.2, z: 1.0 },    // Front center high
+                { x: 0, y: -0.4, z: 1.0 },   // Front center very low
+                { x: 0, y: -0.2, z: 0.8 },   // Closer to face
+                { x: 0, y: -0.2, z: 1.2 },   // Further from face
+            ];
+            
+            static let posIndex = 0;
+            mouthPosition = positions[posIndex % positions.length];
+            mouthMesh.position.set(mouthPosition.x, mouthPosition.y, mouthPosition.z);
+            
+            console.log('Mouth position adjusted to:', mouthPosition);
+            updateDebugInfo();
+            
+            posIndex++;
+        }
+
+        function toggleMouthVisibility() {
+            if (!mouthMesh) return;
+            
+            mouthVisible = !mouthVisible;
+            mouthMesh.visible = mouthVisible;
+            console.log('Mouth visibility:', mouthVisible);
+            updateDebugInfo();
+        }
+
+        function updateDebugInfo() {
+            const mouthStatus = mouthMesh ? `Created (visible: ${mouthMesh.visible})` : 'Not created';
+            const position = mouthMesh ? `(${mouthPosition.x.toFixed(1)}, ${mouthPosition.y.toFixed(1)}, ${mouthPosition.z.toFixed(1)})` : '-';
+            
+            debug.innerHTML = `
+                <div>Mouth Status: ${mouthStatus}</div>
+                <div>Position: ${position}</div>
+                <div>Current Phoneme: ${phonemeDisplay.textContent}</div>
+            `;
+        }
+
+        function loadAudio() {
+            audio = new Audio('audio_output.wav');
+            
+            audio.addEventListener('loadedmetadata', () => {
+                console.log('Audio loaded, duration:', audio.duration);
+            });
+            
+            audio.addEventListener('timeupdate', updateLipSync);
+            audio.addEventListener('ended', onAudioEnded);
+        }
+
+        function updateLipSync() {
+            if (!audio || !isPlaying) return;
+
+            const currentTime = audio.currentTime;
+            let currentPhoneme = 'X';
+            
+            for (let i = 0; i < lipSyncData.length; i++) {
+                if (currentTime >= lipSyncData[i][0]) {
+                    currentPhoneme = lipSyncData[i][1];
+                } else {
+                    break;
+                }
+            }
+
+            animateMouth(currentPhoneme);
+            
+            // Update progress
+            const progress = (currentTime / audio.duration) * 100;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+            
+            const formatTime = (time) => {
+                const min = Math.floor(time / 60);
+                const sec = Math.floor(time % 60);
+                return `${min}:${sec.toString().padStart(2, '0')}`;
+            };
+            
+            timeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(audio.duration)}`;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        function togglePlayback() {
+            if (!audio) return;
+
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = 'Play';
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    playBtn.textContent = 'Pause';
+                    isPlaying = true;
+                }).catch(console.error);
+            }
+        }
+
+        function onAudioEnded() {
+            isPlaying = false;
+            playBtn.textContent = 'Play';
+            animateMouth('X');
+            audio.currentTime = 0;
+            progressBar.style.width = '0%';
+        }
+
+        // Mouse controls
+        let mouseDown = false;
+        let rotationX = 0, rotationY = 0;
+
+        canvas.addEventListener('mousedown', () => mouseDown = true);
+        canvas.addEventListener('mouseup', () => mouseDown = false);
+        canvas.addEventListener('mousemove', (event) => {
+            if (!mouseDown) return;
+            
+            rotationY += event.movementX * 0.01;
+            rotationX += event.movementY * 0.01;
+            rotationX = Math.max(-Math.PI/3, Math.min(Math.PI/3, rotationX));
+            
+            const radius = 5;
+            camera.position.x = Math.sin(rotationY) * Math.cos(rotationX) * radius;
+            camera.position.y = Math.sin(rotationX) * radius;
+            camera.position.z = Math.cos(rotationY) * Math.cos(rotationX) * radius;
+            camera.lookAt(0, 0, 0);
+        });
+
+        // Global functions
+        window.testMouthAnimation = testMouthAnimation;
+        window.adjustMouthPosition = adjustMouthPosition;
+        window.toggleMouthVisibility = toggleMouthVisibility;
+
+        playBtn.addEventListener('click', togglePlayback);
+
+        initScene();
+        loadModel();
+        loadAudio();
+        animate();
+    </script>
+</body>
+</html>

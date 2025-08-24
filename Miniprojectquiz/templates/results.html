@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results - Indian States Quiz{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <h2>Quiz Results</h2>
+    
+    <div class="results-summary">
+        <div class="user-info">
+            <h3>Great job, {{ result.user_name }}!</h3>
+        </div>
+        
+        <div class="score-card">
+            <div class="final-score">
+                <span class="score-label">Your Score:</span>
+                <span class="score-value">{{ result.score }} / {{ result.total_questions }}</span>
+            </div>
+            <div class="score-percentage">
+                {{ (result.score / result.total_questions * 100) | round(1) }}%
+            </div>
+        </div>
+        
+        {% if result.score == result.total_questions %}
+            <div class="perfect-score">Perfect Score! Impressive knowledge of Indian states!</div>
+        {% elif result.score >= result.total_questions * 0.8 %}
+            <div class="great-score">Excellent! You really know your Indian states history!</div>
+        {% elif result.score >= result.total_questions * 0.6 %}
+            <div class="good-score">Good job! You have solid knowledge of Indian states.</div>
+        {% elif result.score >= result.total_questions * 0.4 %}
+            <div class="average-score">Not bad! Keep learning about Indian states history.</div>
+        {% else %}
+            <div class="low-score">Keep studying! Indian states have fascinating histories to discover.</div>
+        {% endif %}
+    </div>
+    
+    <div class="answers-review">
+        <h3>Questions Review</h3>
+        
+        {% for answer in result.answers %}
+        <div class="question-review {% if answer.is_correct %}correct{% else %}incorrect{% endif %}">
+            <div class="question">{{ loop.index }}. {{ answer.question }}</div>
+            <div class="answer-details">
+                <div class="user-answer">
+                    <span class="label">Your answer:</span>
+                    <span class="value {% if answer.is_correct %}correct-text{% else %}incorrect-text{% endif %}">
+                        {{ answer.user_answer }}
+                    </span>
+                </div>
+                
+                {% if not answer.is_correct %}
+                <div class="correct-answer">
+                    <span class="label">Correct answer:</span>
+                    <span class="value correct-text">{{ answer.correct_answer }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="top-scores">
+        <h3>Top Scores</h3>
+        
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in top_scores %}
+                <tr {% if score.quiz_id == result.quiz_id %}class="current-user"{% endif %}>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ score.user_name }}</td>
+                    <td>{{ score.score }} / {{ score.total_questions }}</td>
+                    <td>{{ (score.score / score.total_questions * 100) | round(1) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{{ url_for('index') }}" class="button primary-button">Try Again</a>
+        <a href="{{ url_for('leaderboard') }}" class="button secondary-button">View Full Leaderboard</a>
+    </div>
+</div>
+{% endblock %}

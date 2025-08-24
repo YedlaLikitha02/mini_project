@@ -1,0 +1,811 @@
+{% extends 'base.html' %}
+
+{% block title %}Timeline Game - Bharat States Saga{% endblock %}
+
+{% block styles %}
+<style>
+    .timeline-container {
+        position: relative;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px 0;
+    }
+    
+    .timeline-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        transform: translateY(-50%);
+        z-index: 1;
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    }
+    
+    .timeline-events {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(10px);
+    }
+    
+   .timeline-event {
+        padding: 12px 18px;
+        background: rgba(51, 65, 85, 0.6);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        cursor: grab;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--light);
+        font-weight: 500;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .timeline-event::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 1.5s ease;
+        pointer-events: none;
+    }
+    
+    .timeline-event:hover {
+        background: rgba(51, 65, 85, 0.8);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary);
+    }
+    
+    .timeline-event:hover::after {
+        opacity: 1;
+        transform: translateX(100%);
+    }
+    
+    .timeline-event.dragging {
+        opacity: 0.7;
+        cursor: grabbing;
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        transform: scale(1.05);
+    }
+    
+    .timeline-slots {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .timeline-slot {
+        width: 120px;
+        height: 80px;
+        border: 2px dashed var(--primary);
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .timeline-slot.highlight {
+        background: rgba(37, 99, 235, 0.2);
+        border-style: solid;
+        box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+        transform: translateY(-5px);
+    }
+    
+    .timeline-slot.correct {
+        border-color: #28a745;
+        background: rgba(40, 167, 69, 0.2);
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+    }
+    
+    .timeline-slot.incorrect {
+        border-color: #dc3545;
+        background: rgba(220, 53, 69, 0.2);
+        box-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+    }
+    
+    .game-over-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .game-over-card {
+        background: rgba(30, 41, 59, 0.95);
+        padding: 30px;
+        border-radius: var(--radius-lg);
+        max-width: 500px;
+        text-align: center;
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-xl);
+        color: var(--light);
+        animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .game-over-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(37, 99, 235, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
+    .year-marker {
+        position: absolute;
+        top: -28px;
+        transform: translateX(-50%);
+        font-weight: 600;
+        color: var(--primary);
+        background: rgba(30, 41, 59, 0.8);
+        padding: 4px 10px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        font-size: 0.85rem;
+    }
+    
+    /* Custom button */
+    .btn-timeline-check {
+        display: inline-block;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: var(--shadow-md);
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+    
+    .btn-timeline-check:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+    }
+    
+    .btn-timeline-check:active {
+        transform: translateY(-2px);
+    }
+    
+    .btn-timeline-check::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transform: translateX(-100%);
+    }
+    
+    .btn-timeline-check:hover::before {
+        animation: shimmer 1.5s infinite;
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeOutUp {
+        to {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.8; }
+    }
+    
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+    
+    /* Loading spinner style */
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 3px solid rgba(37, 99, 235, 0.3);
+        border-top-color: var(--primary);
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Game stats style */
+    .game-stat {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(37, 99, 235, 0.2);
+        padding: 8px 15px;
+        border-radius: var(--radius-lg);
+        margin: 5px 10px;
+        font-weight: 500;
+    }
+    
+    .game-stat i {
+        margin-right: 8px;
+        color: var(--primary);
+    }
+    
+    .game-stat span {
+        font-weight: 700;
+        color: var(--light);
+    }
+    
+    /* Confetti style */
+    .confetti {
+        position: absolute;
+        border-radius: 50%;
+        animation: confetti-fall 5s linear forwards;
+        z-index: 2000;
+        pointer-events: none;
+    }
+    
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(-100px) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(calc(100vh + 100px)) rotate(720deg);
+            opacity: 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-history me-2"></i>State Formation Timeline <span class="badge" style="background: var(--gradient-secondary);">{{ difficulty }}</span></h2>
+            </div>
+            <div class="card-body">
+                <p class="mb-4"><i class="fas fa-info-circle me-2" style="color: var(--primary);"></i>Arrange the historical events in the correct chronological order of state formation in India. Drag events to the timeline slots with the correct year.</p>
+                
+                <div id="loading" class="text-center py-5">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-3" style="color: var(--accent); font-weight: 500;">Loading timeline events...</p>
+                </div>
+                
+                <div id="timeline-content" style="display: none;">
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-slots" id="timeline-slots">
+                            <!-- Timeline slots will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-5 mb-3">
+                        <div class="col-md-8 mx-auto">
+                            <h4 class="mb-3 text-center"><i class="fas fa-list-ul me-2" style="color: var(--primary);"></i>Historical Events</h4>
+                            <div class="timeline-events" id="timeline-events">
+                                <!-- Timeline events will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-primary btn-lg" id="check-timeline">
+                            <i class="fas fa-check-circle me-2"></i>Check Timeline
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="game-over" class="game-over-overlay" style="display: none;">
+    <div class="game-over-card">
+        <h2 class="mb-3"><i class="fas fa-trophy me-2" style="color: gold;"></i>Game Complete!</h2>
+        <p class="lead mb-4">You've completed the timeline game!</p>
+        
+        <div class="mb-4">
+            <div class="game-stat">
+                <i class="fas fa-check-circle"></i>
+                Correct Placements: <span id="correct-count" class="ms-2">0</span>/<span id="total-count">0</span>
+            </div>
+            <div class="game-stat">
+                <i class="fas fa-star"></i>
+                Points Earned: <span id="points-earned" class="ms-2">0</span>
+            </div>
+        </div>
+        
+        <div class="d-grid gap-2 mt-4">
+            <a href="/timeline_game?difficulty={{ difficulty }}" class="btn btn-primary">
+                <i class="fas fa-redo me-2"></i>Play Again
+            </a>
+            <a href="/home" class="btn btn-secondary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let timelineEvents = [];
+    let correctPlacements = 0;
+    
+    $(document).ready(function() {
+        // Add pulse animation to timeline line
+        setInterval(function() {
+            $('.timeline-line').css('box-shadow', '0 0 15px rgba(37, 99, 235, 0.7)');
+            setTimeout(function() {
+                $('.timeline-line').css('box-shadow', '0 0 10px rgba(37, 99, 235, 0.3)');
+            }, 500);
+        }, 2000);
+        
+        // Load timeline events from API
+        $.ajax({
+            url: '/api/timeline_events',
+            method: 'GET',
+            success: function(data) {
+                timelineEvents = data;
+                console.log("Timeline events loaded:", timelineEvents);
+                
+                // Adjust number of events based on difficulty
+                if ('{{ difficulty }}' === 'Easy') {
+                    timelineEvents = timelineEvents.filter((_, index) => index % 3 === 0);
+                } else if ('{{ difficulty }}' === 'Medium') {
+                    timelineEvents = timelineEvents.filter((_, index) => index % 2 === 0);
+                }
+                
+                // Hide loading spinner
+                $('#loading').hide();
+                $('#timeline-content').show();
+                
+                // Setup the game with the events
+                setupGame();
+            },
+            error: function(error) {
+                console.error("Error loading timeline events:", error);
+                $('#loading').html(`
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x mb-3" style="color: #dc3545;"></i>
+                        <p class="mt-3">Failed to load timeline events. Please try again.</p>
+                        <button class="btn btn-primary mt-3" onclick="location.reload()">Retry</button>
+                    </div>
+                `);
+            }
+        });
+        
+        // Check timeline button - make sure to use click event here
+        $('#check-timeline').on('click', function() {
+            console.log("Check timeline button clicked");
+            // Add click animation
+            $(this).css('transform', 'scale(0.95)');
+            setTimeout(() => {
+                $(this).css('transform', '');
+            }, 200);
+            
+            checkTimeline();
+        });
+    });
+    
+    function setupGame() {
+        // Create timeline slots with animation
+        let slotsHtml = '';
+        timelineEvents.forEach((event, index) => {
+            slotsHtml += `
+                <div class="timeline-slot" data-index="${index}" style="opacity: 0; transform: translateY(20px);">
+                    <div class="year-marker">${event.year}</div>
+                    <div class="slot-content"></div>
+                </div>
+            `;
+        });
+        $('#timeline-slots').html(slotsHtml);
+        
+        // Animate slots in
+        $('.timeline-slot').each(function(index) {
+            setTimeout(() => {
+                $(this).css({
+                    'opacity': '1',
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                });
+            }, 100 * index);
+        });
+        
+        // Create shuffled events without years
+        let shuffledEvents = [...timelineEvents];
+        shuffleArray(shuffledEvents);
+        
+        let eventsHtml = '';
+        shuffledEvents.forEach((event, index) => {
+            // Only display the event text, not the year
+            eventsHtml += `
+                <div class="timeline-event" draggable="true" data-year="${event.year}" data-event="${event.event}" style="opacity: 0; transform: translateY(20px);">
+                    <i class="fas fa-grip-lines me-2" style="color: var(--primary); opacity: 0.7;"></i>
+                    ${event.event}
+                </div>
+            `;
+        });
+        $('#timeline-events').html(eventsHtml);
+        
+        // Animate events in
+        $('.timeline-event').each(function(index) {
+            setTimeout(() => {
+                $(this).css({
+                    'opacity': '1',
+                    'transform': 'translateY(0)',
+                    'transition': 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                });
+            }, 100 * index);
+        });
+        
+        // Setup drag and drop
+        setupDragAndDrop();
+        
+        // Set total count for game over screen
+        $('#total-count').text(timelineEvents.length);
+    }
+    
+    function setupDragAndDrop() {
+        const events = document.querySelectorAll('.timeline-event');
+        const slots = document.querySelectorAll('.timeline-slot');
+        
+        events.forEach(event => {
+            event.addEventListener('dragstart', function(e) {
+                this.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', JSON.stringify({
+                    year: this.dataset.year,
+                    event: this.dataset.event
+                }));
+                
+                // Play sound effect
+                playSound('drag');
+            });
+            
+            event.addEventListener('dragend', function() {
+                this.classList.remove('dragging');
+            });
+        });
+        
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('highlight');
+            });
+            
+            slot.addEventListener('dragleave', function() {
+                this.classList.remove('highlight');
+            });
+            
+            slot.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('highlight');
+                
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                const eventElement = document.querySelector(`.timeline-event[data-year="${data.year}"][data-event="${data.event}"]`);
+                
+                // Check if slot is empty
+                if (this.querySelector('.timeline-event') === null) {
+                    // Move the event to the slot
+                    eventElement.style.margin = '0';
+                    this.querySelector('.slot-content').appendChild(eventElement);
+                    eventElement.setAttribute('draggable', 'false');
+                    
+                    // Play sound effect
+                    playSound('drop');
+                    
+                    // Add a subtle animation to the event
+                    eventElement.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        eventElement.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            });
+        });
+    }
+    
+    function checkTimeline() {
+        console.log("Checking timeline...");
+        const slots = document.querySelectorAll('.timeline-slot');
+        let correct = 0;
+        let total = 0;
+        
+        slots.forEach(slot => {
+            const index = parseInt(slot.dataset.index);
+            const eventElement = slot.querySelector('.timeline-event');
+            
+            if (eventElement) {
+                total++;
+                const eventYear = parseInt(eventElement.dataset.year);
+                const correctYear = parseInt(timelineEvents[index].year);
+                
+                if (eventYear === correctYear) {
+                    slot.classList.add('correct');
+                    correct++;
+                    
+                    // Add success animation
+                    eventElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    eventElement.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        eventElement.style.transform = 'scale(1)';
+                    }, 500);
+                } else {
+                    slot.classList.add('incorrect');
+                    
+                    // Add error animation
+                    eventElement.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    eventElement.style.transform = 'translateX(5px)';
+                    setTimeout(() => {
+                        eventElement.style.transform = 'translateX(-5px)';
+                        setTimeout(() => {
+                            eventElement.style.transform = 'translateX(0)';
+                        }, 100);
+                    }, 100);
+                }
+            }
+        });
+        
+        correctPlacements = correct;
+        console.log(`Correct placements: ${correct}/${total}`);
+        
+        // If all slots are filled, end the game
+        if (total === timelineEvents.length) {
+            console.log("All slots filled, ending game");
+            endGame();
+        } else {
+            // Play alert sound
+            playSound('alert');
+            
+            // Create custom alert modal
+            $('body').append(`
+                <div class="game-over-overlay" id="custom-alert" style="z-index: 2000;">
+                    <div class="game-over-card" style="max-width: 400px; transform: scale(0.9);">
+                        <i class="fas fa-info-circle fa-3x mb-3" style="color: var(--primary);"></i>
+                        <h4 class="mb-3">Incomplete Timeline</h4>
+                        <p>You've placed ${correct} events correctly out of ${total} filled slots.</p>
+                        <p>Fill all slots to complete the game.</p>
+                        <button class="btn btn-primary mt-3" onclick="$('#custom-alert').fadeOut(300, function() { $(this).remove(); });">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            `);
+            
+            // Animate the alert in
+            $('#custom-alert .game-over-card').css({
+                'transform': 'scale(1)',
+                'transition': 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            });
+        }
+    }
+    
+    function endGame() {
+        // Play success sound
+        playSound('success');
+        
+        // Submit score to server
+        $.ajax({
+            url: '/api/submit_game_score',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                game_type: 'timeline',
+                score: correctPlacements,
+                time_taken: 0,  // No timer for this game
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                $('#correct-count').text(correctPlacements);
+                $('#points-earned').text(data.points_earned);
+                
+                // Handle level up
+                if (data.level_up) {
+                    // Create level up notification
+                    $('body').append(`
+                        <div class="position-fixed top-50 start-50 translate-middle" style="z-index: 2000; pointer-events: none;">
+                            <div style="background: var(--gradient-primary); padding: 20px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); animation: fadeInUp 0.5s forwards, fadeOutUp 0.5s 3s forwards;">
+                                <h3 class="mb-0"><i class="fas fa-level-up-alt me-2"></i>Level Up!</h3>
+                                <p class="mb-0">You've reached level ${data.new_level}!</p>
+                            </div>
+                        </div>
+                    `);
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    // Create badge notification
+                    setTimeout(() => {
+                        $('body').append(`
+                            <div class="position-fixed top-50 start-50 translate-middle" style="z-index: 2000; pointer-events: none;">
+                                <div style="background: var(--gradient-secondary); padding: 20px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); animation: fadeInUp 0.5s forwards, fadeOutUp 0.5s 3s forwards;">
+                                    <h3 class="mb-0"><i class="fas fa-award me-2"></i>New Badges!</h3>
+                                    <p class="mb-0">${badgeNames}</p>
+                                </div>
+                            </div>
+                        `);
+                    }, data.level_up ? 1000 : 0);
+                }
+                
+                // Show game over screen
+                $('#game-over').fadeIn(500);
+                
+                // Add confetti effect
+                createConfetti();
+            },
+            error: function(error) {
+                console.error("Error submitting score:", error);
+                
+                // Show game over screen anyway
+                $('#game-over').fadeIn(500);
+                $('#points-earned').text('Error saving score');
+            }
+        });
+    }
+    
+    // Create confetti effect
+    function createConfetti() {
+        const colors = ['#2563eb', '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7'];
+        
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const size = Math.random() * 10 + 5;
+            const left = Math.random() * 100;
+            
+            confetti.style.backgroundColor = color;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            confetti.style.left = `${left}%`;
+            confetti.style.top = '0';
+            confetti.style.opacity = Math.random() * 0.5 + 0.5;
+            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+            
+            document.body.appendChild(confetti);
+            
+            // Remove confetti after animation
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+    }
+    
+    // Sound effects
+    function playSound(type) {
+        // Create simple sound effects using AudioContext
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            switch(type) {
+                case 'drag':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 300;
+                    gainNode.gain.value = 0.1;
+                    oscillator.start();
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                    setTimeout(() => oscillator.stop(), 200);
+                    break;
+                case 'drop':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 500;
+                    gainNode.gain.value = 0.1;
+                    oscillator.start();
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    setTimeout(() => oscillator.stop(), 300);
+                    break;
+                case 'success':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 500;
+                    gainNode.gain.value = 0.1;
+                    oscillator.start();
+                    
+                    setTimeout(() => {
+                        oscillator.frequency.value = 600;
+                        setTimeout(() => {
+                            oscillator.frequency.value = 700;
+                            setTimeout(() => {
+                                oscillator.frequency.value = 800;
+                                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                            }, 100);
+                        }, 100);
+                    }, 100);
+                    
+                    setTimeout(() => oscillator.stop(), 800);
+                    break;
+                case 'alert':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 300;
+                    gainNode.gain.value = 0.1;
+                    oscillator.start();
+                    
+                    setTimeout(() => {
+                        oscillator.frequency.value = 200;
+                        setTimeout(() => {
+                            oscillator.frequency.value = 300;
+                            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                        }, 200);
+                    }, 200);
+                    
+                    setTimeout(() => oscillator.stop(), 700);
+                    break;
+            }
+        } catch(err) {
+            console.log('Audio error:', err);
+        }
+    }
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+</script>
+{% endblock %}

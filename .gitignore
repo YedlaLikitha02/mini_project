@@ -1,0 +1,7 @@
+# Ignore node_modules and audio files
+node_modules/
+*.wav
+*.mp3
+.DS_Store
+.env
+config.js

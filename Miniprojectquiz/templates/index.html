@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Indian States Quiz{% endblock %}
+
+{% block content %}
+<div class="welcome-container">
+    <h2>Test Your Knowledge of Indian States</h2>
+    <p>Challenge yourself with questions about the formation and leadership of Indian states through history.</p>
+    
+    <div class="start-quiz-form">
+        <form action="{{ url_for('start_quiz') }}" method="post">
+            <div class="form-group">
+                <label for="user_name">Your Name:</label>
+                <input type="text" id="user_name" name="user_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="num_questions">Number of Questions:</label>
+                <select id="num_questions" name="num_questions">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="start-button">Start Quiz</button>
+        </form>
+    </div>
+    
+    <div class="quiz-info">
+        <h3>About This Quiz</h3>
+        <p>This quiz covers various aspects of Indian states including:</p>
+        <ul>
+            <li>Formation of states after independence</li>
+            <li>Reorganization on linguistic basis</li>
+            <li>Important leaders and their contributions</li>
+            <li>Historical movements behind state formation</li>
+            <li>Key dates and events in the evolution of modern Indian states</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

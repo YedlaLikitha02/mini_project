@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz - Indian States Knowledge Test{% endblock %}
+
+{% block extra_head %}
+<meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h2>Indian States Quiz</h2>
+        <div class="quiz-progress">
+            <span id="question-number">{{ question_number }}</span> / <span id="total-questions">{{ total_questions }}</span>
+        </div>
+        <div class="quiz-score">
+            Score: <span id="current-score">0</span>
+        </div>
+    </div>
+    
+    <div id="quiz-content">
+        <div id="loading-indicator">
+            <p>Loading question...</p>
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="question-container" style="display: none;">
+            <h3 id="question-text"></h3>
+            
+            <div id="options-container" class="options-container">
+                <!-- Options will be populated by JavaScript -->
+            </div>
+            
+            <div id="feedback-container" class="feedback-container" style="display: none;">
+                <div id="feedback-message"></div>
+                <div id="explanation"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="quiz-actions">
+        <button id="next-button" style="display: none;">Next Question</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}

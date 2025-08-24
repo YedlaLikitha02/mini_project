@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ state }} Quiz - Bharat States Saga{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-8">
+        <h2>{{ state }} <span class="badge bg-info">{{ category }}</span> <span class="badge bg-secondary">{{ difficulty }}</span></h2>
+        <div class="quiz-progress mt-2">
+            <div class="progress" style="height: 20px;">
+                <div id="quiz-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+            </div>
+            <div class="text-center mt-1">
+                <small id="quiz-progress-text">Loading quiz progress...</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="timer">Time: <span id="timer">30</span>s</div>
+        <div class="streak-counter">
+            <i class="fas fa-fire"></i> Streak: <span id="current-streak">0</span>
+        </div>
+    </div>
+</div>
+
+<div class="card question-card">
+    <div class="card-body">
+        <div id="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Generating your question about {{ state }}...</p>
+        </div>
+        
+        <div id="error-container" class="text-center py-5 alert alert-danger" style="display: none;">
+            <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+            <p id="error-message">Error loading question. Please try again.</p>
+            <button id="retry-button" class="btn btn-primary mt-3">Try Again</button>
+        </div>
+        
+        <div id="question-container" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 id="question-text" class="mb-4"></h4>
+                    <div id="options-container" class="mt-4">
+                        <!-- Options will be loaded here -->
+                    </div>
+                    <div id="feedback-container" class="mt-4" style="display: none;">
+                        <div id="feedback-text"></div>
+                        <div id="explanation-text" class="mt-2"></div>
+                        <button id="next-question" class="btn btn-primary mt-3">Next Question</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="level-complete" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Quiz Level Completed!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="py-4">
+                    <i class="fas fa-award fa-5x text-warning mb-3"></i>
+                    <h4>Congratulations!</h4>
+                    <p class="lead">You've completed Quiz Level <span id="completed-level">1</span>!</p>
+                    <p>You've earned <span id="bonus-points" class="text-success fw-bold">0</span> bonus points!</p>
+                    <p>Get ready for the next level!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="score-popup" class="score-animation" style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentQuestion = null;
+    let timer = 30;
+    let timerInterval = null;
+    let userAnswered = false;
+    let startTime = null;
+    let quizLevelModal;
+    
+    $(document).ready(function() {
+        // Initialize level complete modal
+        quizLevelModal = new bootstrap.Modal(document.getElementById('level-complete'));
+        
+        // Load user stats
+        $.ajax({
+            url: '/api/user_stats',
+            method: 'GET',
+            success: function(data) {
+                $('#current-streak').text(data.streak);
+                
+                // Update quiz progress if available
+                if (data.quiz_progress) {
+                    updateQuizProgress(
+                        data.quiz_progress.questions_answered,
+                        data.quiz_progress.current_level
+                    );
+                }
+            },
+            error: function() {
+                console.error("Failed to load user stats");
+            }
+        });
+        
+        // Generate first question
+        generateQuestion();
+        
+        // Handle next question button
+        $('#next-question').click(function() {
+            generateQuestion();
+        });
+        
+        // Handle retry button
+        $('#retry-button').click(function() {
+            $('#error-container').hide();
+            generateQuestion();
+        });
+    });
+    
+    function updateQuizProgress(questionsAnswered, currentLevel) {
+        // Get total questions needed for this level
+        const totalQuestions = getQuestionsForLevel(currentLevel);
+        
+        // Calculate percentage
+        const percentage = Math.min(100, Math.round((questionsAnswered / totalQuestions) * 100));
+        
+        // Update progress bar
+        $('#quiz-progress-bar').css('width', percentage + '%');
+        $('#quiz-progress-text').text(`Quiz Level ${currentLevel}: ${questionsAnswered}/${totalQuestions} questions`);
+    }
+    
+    function getQuestionsForLevel(level) {
+        const levelQuestions = {
+            1: 5,
+            2: 10,
+            3: 15,
+            4: 20,
+            5: 25
+        };
+        
+        return levelQuestions[level] || 25;
+    }
+    
+    function generateQuestion() {
+        // Reset UI
+        $('#loading').show();
+        $('#question-container').hide();
+        $('#error-container').hide();
+        $('#feedback-container').hide();
+        userAnswered = false;
+        
+        // Clear timer if it's running
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        // Reset timer display
+        timer = 30;
+        $('#timer').text(timer);
+        
+        // Generate new question
+        $.ajax({
+            url: '/api/generate_question',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                state: '{{ state }}',
+                category: '{{ category }}',
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                currentQuestion = data;
+                console.log("Question loaded:", data);
+                
+                // Update UI
+                $('#question-text').text(data.question);
+                
+                // Create options
+                let optionsHtml = '';
+                data.options.forEach(function(option, index) {
+                    optionsHtml += `
+                        <div class="card option-card mb-2" data-index="${index}">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="option-letter me-3 bg-primary text-white rounded-circle" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">
+                                        ${String.fromCharCode(65 + index)}
+                                    </div>
+                                    <div>${option}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                $('#options-container').html(optionsHtml);
+                
+                // Attach click event to options
+                $('.option-card').click(function() {
+                    if (!userAnswered) {
+                        userAnswered = true;
+                        const selectedIndex = $(this).data('index');
+                        handleAnswer(selectedIndex);
+                    }
+                });
+                
+                // Show question
+                $('#loading').hide();
+                $('#question-container').show();
+                
+                // Start timer
+                startTime = new Date();
+                startTimer();
+            },
+           error: function(error) {
+                console.error('Error generating question:', error);
+                $('#loading').hide();
+                $('#error-message').text('Error generating question. Please try again.');
+                $('#error-container').show();
+            }
+        });
+    }
+    
+    function startTimer() {
+        timer = 30;
+        $('#timer').text(timer);
+        
+        // Clear any existing timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        
+        // Start a new timer
+        timerInterval = setInterval(function() {
+            timer--;
+            $('#timer').text(timer);
+            
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                
+                if (!userAnswered) {
+                    userAnswered = true;
+                    handleAnswer(null); // No answer selected (timeout)
+                }
+            }
+        }, 1000);
+    }
+    
+    function handleAnswer(selectedIndex) {
+        // Stop timer
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        // Calculate time taken
+        const endTime = new Date();
+        const timeTaken = (endTime - startTime) / 1000; // in seconds
+        
+        const correctIndex = currentQuestion.correct_answer;
+        const isCorrect = selectedIndex === correctIndex;
+        
+        // Highlight correct and selected options
+        $('.option-card').each(function() {
+            const index = $(this).data('index');
+            
+            if (index === correctIndex) {
+                $(this).addClass('correct');
+            } else if (index === selectedIndex && !isCorrect) {
+                $(this).addClass('incorrect');
+            }
+        });
+        
+        // Show feedback
+        $('#feedback-text').html(isCorrect ? 
+            '<div class="alert alert-success"><i class="fas fa-check-circle"></i> Correct!</div>' : 
+            '<div class="alert alert-danger"><i class="fas fa-times-circle"></i> Incorrect!</div>');
+        
+        $('#explanation-text').html(`<div class="card">
+            <div class="card-header">Explanation</div>
+            <div class="card-body">${currentQuestion.explanation}</div>
+        </div>`);
+        
+        $('#feedback-container').show();
+        
+        // Submit answer to server
+        $.ajax({
+            url: '/api/submit_answer',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                question_id: currentQuestion._id,
+                selected_answer: selectedIndex,
+                correct_answer: correctIndex,
+                time_taken: timeTaken,
+                state: '{{ state }}',
+                category: '{{ category }}',
+                difficulty: '{{ difficulty }}'
+            }),
+            success: function(data) {
+                // Update streak
+                $('#current-streak').text(data.new_streak);
+                
+                try {
+                    $('#navbar-streak').text(data.new_streak);
+                    $('#navbar-score').text(data.new_score);
+                } catch (e) {
+                    console.log("Navbar elements not available");
+                }
+                
+                // Update quiz progress
+                if (data.questions_to_next_level !== undefined) {
+                    const currentLevel = data.quiz_level_completed ? 
+                        data.new_quiz_level : 
+                        (data.new_quiz_level || data.quiz_level_completed ? data.new_quiz_level - 1 : 1);
+                    const questionsForLevel = getQuestionsForLevel(currentLevel);
+                    const questionsAnswered = questionsForLevel - data.questions_to_next_level;
+                    
+                    updateQuizProgress(questionsAnswered, currentLevel);
+                }
+                
+                // Show points animation if correct
+                if (data.is_correct) {
+                    $('#score-popup').text(`+${data.points_earned} points!`);
+                    $('#score-popup').show();
+                    setTimeout(function() {
+                        $('#score-popup').hide();
+                    }, 1500);
+                }
+                
+                // Handle quiz level completion
+                if (data.quiz_level_completed) {
+                    $('#completed-level').text(data.new_quiz_level - 1);
+                    $('#bonus-points').text(data.bonus_points || 0);
+                    
+                    // Show level completion modal
+                    setTimeout(function() {
+                        quizLevelModal.show();
+                    }, 1000);
+                }
+                
+                // Handle level up
+                if (data.level_up) {
+                    alert(`Congratulations! You've reached level ${data.new_level}!`);
+                    try {
+                        $('#navbar-level').text(data.new_level);
+                    } catch (e) {
+                        console.log("Navbar level element not available");
+                    }
+                }
+                
+                // Handle new badges
+                if (data.new_badges && data.new_badges.length > 0) {
+                    let badgeNames = data.new_badges.map(badge => 
+                        badge.replace('_', ' ').replace(/^\w|\s\w/g, c => c.toUpperCase())
+                    ).join(', ');
+                    
+                    alert(`You've earned new badges: ${badgeNames}`);
+                }
+            },
+            error: function(error) {
+                console.error('Error submitting answer:', error);
+                alert('Error submitting your answer. Your progress might not be saved.');
+            }
+        });
+    }
+</script>
+{% endblock %}
